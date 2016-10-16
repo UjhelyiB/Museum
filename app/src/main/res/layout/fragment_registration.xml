@@ -7,24 +7,27 @@
         android:id="@+id/etRegistratonEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/enter_email"/>
+        android:hint="@string/enter_email"
+        android:inputType="textEmailAddress"/>
 
     <EditText
         android:id="@+id/etRegistrationPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/enter_password"/>
+        android:hint="@string/enter_password"
+        android:inputType="textPassword"/>
 
     <EditText
         android:id="@+id/etRegistrationPasswordAgain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/enter_password_again"/>
+        android:hint="@string/enter_password_again"
+        android:inputType="textPassword"/>
 
     <Button
         android:id="@+id/btRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/login"/>
+        android:text="@string/register"/>
 
 </LinearLayout>

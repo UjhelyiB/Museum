@@ -37,9 +37,9 @@ public class RegistrationFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(tryRegister()){
-                    Toast.makeText(getActivity(), REGISTRATION_SUCCESSFUL, Toast.LENGTH_SHORT);
+                    Toast.makeText(getActivity(), REGISTRATION_SUCCESSFUL, Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(getActivity(), REGISTRATION_UNSUCCESSFUL, Toast.LENGTH_SHORT);
+                    Toast.makeText(getActivity(), REGISTRATION_UNSUCCESSFUL, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -48,6 +48,7 @@ public class RegistrationFragment extends Fragment {
     }
 
     //TODO
+    //reade from DB
     private boolean tryRegister(){
         return true;
     }

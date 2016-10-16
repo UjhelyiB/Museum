@@ -16,6 +16,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btRegistrationPage;
     Button btContinue;
 
+    public static final String KEY_TOP = "KEY_TOP";
 
     @Override
     protected void  onCreate(Bundle savedInstanceState){
@@ -48,14 +49,16 @@ public class LoginActivity extends AppCompatActivity {
         btContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                continueToApplication();
+
+                continueToApplicationWithoutAuth();
             }
         });
     }
 
-    private void continueToApplication() {
+    public void continueToApplicationWithoutAuth() {
         Intent intent = new Intent();
         intent.setClass(LoginActivity.this, ApplicationActivity.class);
+        intent.putExtra(KEY_TOP, false);
         startActivity(intent);
     }
 
