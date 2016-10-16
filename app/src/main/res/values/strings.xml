@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Museum</string>
+    <string name="enter_password">Enter your password here!</string>
+    <string name="enter_email">Enter your email address here</string>
+    <string name="login">Login</string>
+    <string name="enter_password_again">Enter your password again!</string>
+    <string name="login_page">Login Page</string>
+    <string name="registration_page">Registration Page</string>
+    <string name="continue_without_login">Continue Without Login</string>
+    <string name="museum">Museum</string>
 </resources>
