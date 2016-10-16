@@ -1,11 +1,14 @@
 package hu.bme.museum;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import java.util.Map;
 
 public class ApplicationActivity extends AppCompatActivity {
 
@@ -39,10 +42,40 @@ public class ApplicationActivity extends AppCompatActivity {
                 if(!getIntent().getBooleanExtra(LoginActivity.KEY_TOP, false)){
                     Toast.makeText(ApplicationActivity.this, PLEASE_LOG_IN_TO_PLAY_THE_GAME, Toast.LENGTH_SHORT).show();
                 }else{
-
+                    startGame();
                 }
             }
         });
 
+        btExhibitions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startExhibitions();
+            }
+        });
+
+        btMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startMap();
+            }
+        });
+
+    }
+
+    public void startGame(){
+        Intent intent = new Intent();
+        intent.setClass(ApplicationActivity.this, GameActivity.class);
+        startActivity(intent);
+    }
+    public void startExhibitions(){
+        Intent intent = new Intent();
+        intent.setClass(ApplicationActivity.this, ExhibitionsActivity.class);
+        startActivity(intent);
+    }
+    public void startMap(){
+        Intent intent = new Intent();
+        intent.setClass(ApplicationActivity.this, MapActivity.class);
+        startActivity(intent);
     }
 }
