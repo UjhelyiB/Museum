@@ -48,11 +48,15 @@ public class LoginActivity extends AppCompatActivity {
         btContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(LoginActivity.this, ApplicationActivity.class);
-                startActivity(intent);
+                continueToApplication();
             }
         });
+    }
+
+    private void continueToApplication() {
+        Intent intent = new Intent();
+        intent.setClass(LoginActivity.this, ApplicationActivity.class);
+        startActivity(intent);
     }
 
     private void showFragment(String tag){

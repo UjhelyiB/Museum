@@ -12,13 +12,13 @@
     <EditText
         android:id="@+id/etRegistrationPassword"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:hint="@string/enter_password"/>
 
     <EditText
         android:id="@+id/etRegistrationPasswordAgain"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:hint="@string/enter_password_again"/>
 
     <Button
