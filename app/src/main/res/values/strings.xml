@@ -9,4 +9,7 @@
     <string name="registration_page">Registration Page</string>
     <string name="continue_without_login">Continue Without Login</string>
     <string name="museum">Museum</string>
+    <string name="game">Game</string>
+    <string name="exhibitions">Exhibitions</string>
+    <string name="map">Map</string>
 </resources>

@@ -5,7 +5,36 @@
 
     <TextView
         android:id="@+id/tvMainTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/museum"/>
+        android:text="@string/museum"
+        android:gravity="center"
+        android:textSize="30dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btGame"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:text="@string/game" />
+
+        <Button
+            android:id="@+id/btExhibitions"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:text="@string/exhibitions"/>
+
+        <Button
+            android:id="@+id/btMap"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:text="@string/map"/>
+
+    </LinearLayout>
+
 </LinearLayout>
