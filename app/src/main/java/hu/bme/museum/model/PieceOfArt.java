@@ -19,4 +19,8 @@ public class PieceOfArt {
     public String getTitle(){
         return title;
     }
+
+    public int getPicture() {
+        return picture;
+    }
 }

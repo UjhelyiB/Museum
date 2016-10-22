@@ -1,7 +1,6 @@
 package hu.bme.museum;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -16,6 +15,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -57,17 +57,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private final LocationListener mLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(final Location location) {
-            if (location != null) {
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
-
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
-                        .zoom(17)                   // Sets the zoom
-                        .bearing(90)                // Sets the orientation of the camera to east
-                        .tilt(40)                   // Sets the tilt of the camera to 30 degrees
-                        .build();                   // Creates a CameraPosition from the builder
-                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            }
+            updateMapWithLocation(location);
         }
 
         @Override
@@ -99,11 +89,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     public void onMapReady(GoogleMap map) {
         this.map = map;
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        //map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-
-        updateMapWitchCurrentLocation();
+        updateMapWithLocation(getCurrentLocation());
 
         loadPieces();
 
@@ -114,13 +100,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     private void addMarkers() {
         for (int i = 0; i < piecesOfArt.size(); i++) {
-            map.addMarker(new MarkerOptions().position(piecesOfArt.get(i).getPosition()));
+            map.addMarker(new MarkerOptions()
+                    .position(piecesOfArt.get(i).getPosition())
+                    .icon(BitmapDescriptorFactory.fromResource(piecesOfArt.get(i).getPicture()))
+                    .title(piecesOfArt.get(i).getTitle()));
         }
 
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                marker.showInfoWindow();
                 return false;
             }
         });
@@ -129,28 +117,29 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     //TODO
     //load from DB
     public void loadPieces() {
-        piecesOfArt.add(new PieceOfArt("Painting1", R.drawable.husvetskanzen_125x83, new LatLng(47, 19)));
+        piecesOfArt.add(new PieceOfArt("House", R.drawable.husvetskanzen_60x60, new LatLng(47, 19)));
+        piecesOfArt.add(new PieceOfArt("Tractor", R.drawable.tractor_60x60, new LatLng(47.005, 19.005)));
     }
 
-    public void updateMapWitchCurrentLocation() {
 
+    public Location getCurrentLocation(){
         Criteria criteria = new Criteria();
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (!requestNeededPermission()) {
-                return;
+                return null;
             }
         }
+        return locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+    }
 
-        //map.setMyLocationEnabled(true);
-        Location location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
-
+    public void updateMapWithLocation(Location location) {
         if (location != null) {
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 13));
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(location.getLatitude(), location.getLongitude()))      // Sets the center of the map to location user
-                    .zoom(17)                   // Sets the zoom
+                    .zoom(15)                   // Sets the zoom
                     .bearing(90)                // Sets the orientation of the camera to east
                     .tilt(40)                   // Sets the tilt of the camera to 30 degrees
                     .build();                   // Creates a CameraPosition from the builder
