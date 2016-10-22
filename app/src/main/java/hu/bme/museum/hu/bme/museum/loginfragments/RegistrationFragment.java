@@ -48,7 +48,7 @@ public class RegistrationFragment extends Fragment {
     }
 
     //TODO
-    //reade from DB
+    //read from DB
     private boolean tryRegister(){
         return true;
     }

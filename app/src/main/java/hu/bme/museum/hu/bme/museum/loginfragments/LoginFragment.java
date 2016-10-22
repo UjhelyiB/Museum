@@ -47,7 +47,7 @@ public class LoginFragment extends Fragment {
     }
 
     //TODO
-    //reade from DB
+    //read from DB
     private boolean tryToLogin(){
         return true;
     }

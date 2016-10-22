@@ -1,8 +1,10 @@
 package hu.bme.museum;
 
+import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresPermission;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -73,6 +75,7 @@ public class ApplicationActivity extends AppCompatActivity {
         intent.setClass(ApplicationActivity.this, ExhibitionsActivity.class);
         startActivity(intent);
     }
+
     public void startMap(){
         Intent intent = new Intent();
         intent.setClass(ApplicationActivity.this, MapActivity.class);
