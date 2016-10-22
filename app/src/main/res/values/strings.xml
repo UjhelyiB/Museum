@@ -12,4 +12,5 @@
     <string name="game">Game</string>
     <string name="exhibitions">Exhibitions</string>
     <string name="map">Map</string>
+    <string name="title_activity_map">Map</string>
 </resources>
