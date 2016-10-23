@@ -8,8 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import hu.bme.museum.hu.bme.museum.loginfragments.LoginFragment;
-import hu.bme.museum.hu.bme.museum.loginfragments.RegistrationFragment;
+import hu.bme.museum.loginfragments.LoginFragment;
+import hu.bme.museum.loginfragments.RegistrationFragment;
 
 public class LoginActivity extends AppCompatActivity {
     Button btLoginPage;

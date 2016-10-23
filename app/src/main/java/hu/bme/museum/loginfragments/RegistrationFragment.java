@@ -1,4 +1,4 @@
-package hu.bme.museum.hu.bme.museum.loginfragments;
+package hu.bme.museum.loginfragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
