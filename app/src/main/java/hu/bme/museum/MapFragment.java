@@ -31,13 +31,15 @@ import hu.bme.museum.model.PieceOfArt;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-public class MapFragment extends TabFragment implements OnMapReadyCallback {
+public class MapFragment extends TabFragment implements OnMapReadyCallback, LocationListener {
 
     private static final int REQUEST_CODE_ACCESS_FINE_LOCATION_PERM = 267;
     private static final long LOCATION_REFRESH_TIME = 20000;
     private static final float LOCATION_REFRESH_DISTANCE = 20;
 
     private GoogleMap map;
+
+    Marker userMarker;
     private ArrayList<PieceOfArt> piecesOfArt = new ArrayList<>();
     LocationManager locationManager;
     private static View rootView;
@@ -119,11 +121,14 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
         loadPieces();
 
         addMarkers();
-
-
     }
 
     private void addMarkers() {
+        Location userLocation = getCurrentLocation();
+        userMarker = map.addMarker(new MarkerOptions().position(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.usermarker))
+                .title("You"));
+
         for (int i = 0; i < piecesOfArt.size(); i++) {
             map.addMarker(new MarkerOptions()
                     .position(piecesOfArt.get(i).getPosition())
@@ -142,7 +147,7 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
     //TODO
     //load from DB
     public void loadPieces() {
-        piecesOfArt.add(new PieceOfArt("House", R.drawable.husvetskanzen_60x60, new LatLng(47, 19)));
+        piecesOfArt.add(new PieceOfArt("House", R.drawable.husvetskanzen_60x60, new LatLng(47.003, 19.005)));
         piecesOfArt.add(new PieceOfArt("Tractor", R.drawable.tractor_60x60, new LatLng(47.005, 19.005)));
     }
 
@@ -192,5 +197,32 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
     @Override
     public String getTabTitle() {
         return "Map";
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        updateMapWithLocation(location);
+
+        if(userMarker != null){
+            userMarker.remove();
+        }
+        userMarker = map.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude()))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.usermarker))
+                .title("You"));
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
     }
 }
