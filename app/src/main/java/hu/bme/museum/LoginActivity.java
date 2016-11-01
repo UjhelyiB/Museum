@@ -16,8 +16,6 @@ public class LoginActivity extends AppCompatActivity {
     Button btRegistrationPage;
     Button btContinue;
 
-    public static final String KEY_TOP = "KEY_TOP";
-
     @Override
     protected void  onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -30,7 +28,6 @@ public class LoginActivity extends AppCompatActivity {
     private void initUI() {
         btLoginPage = (Button) findViewById(R.id.btLoginPage);
         btRegistrationPage = (Button) findViewById(R.id.btRegistrationPage);
-        btContinue = (Button) findViewById(R.id.btContinueWithoutLogin);
 
         btLoginPage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,20 +43,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        btContinue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                continueToApplicationWithoutAuth();
-            }
-        });
-    }
-
-    public void continueToApplicationWithoutAuth() {
-        Intent intent = new Intent();
-        intent.setClass(LoginActivity.this, ApplicationActivity.class);
-        intent.putExtra(KEY_TOP, false);
-        startActivity(intent);
     }
 
     private void showFragment(String tag){

@@ -6,9 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by dominic on 2016.11.01.
- */
 public class SearchFragment extends TabFragment {
 
     @Nullable
