@@ -2,6 +2,9 @@ package hu.bme.museum;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -31,11 +34,11 @@ import hu.bme.museum.model.PieceOfArt;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-public class MapFragment extends TabFragment implements OnMapReadyCallback, LocationListener {
+public class MapFragment extends TabFragment implements OnMapReadyCallback {
 
     private static final int REQUEST_CODE_ACCESS_FINE_LOCATION_PERM = 267;
-    private static final long LOCATION_REFRESH_TIME = 20000;
-    private static final float LOCATION_REFRESH_DISTANCE = 20;
+    private static final long LOCATION_REFRESH_TIME = 5000;
+    private static final float LOCATION_REFRESH_DISTANCE = 10;
 
     private GoogleMap map;
 
@@ -85,6 +88,10 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback, Loca
         @Override
         public void onLocationChanged(final Location location) {
             updateMapWithLocation(location);
+
+            if(userMarker != null){
+                userMarker.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+            }
         }
 
         @Override
@@ -126,7 +133,7 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback, Loca
     private void addMarkers() {
         Location userLocation = getCurrentLocation();
         userMarker = map.addMarker(new MarkerOptions().position(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.usermarker))
+                .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.user_marker_icon)))
                 .title("You"));
 
         for (int i = 0; i < piecesOfArt.size(); i++) {
@@ -199,30 +206,14 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback, Loca
         return "Map";
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        updateMapWithLocation(location);
+    private Bitmap getBitmap(int drawableRes) {
+        Drawable drawable = getResources().getDrawable(drawableRes);
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
 
-        if(userMarker != null){
-            userMarker.remove();
-        }
-        userMarker = map.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude()))
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.usermarker))
-                .title("You"));
-    }
-
-    @Override
-    public void onStatusChanged(String s, int i, Bundle bundle) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String s) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String s) {
-
+        return bitmap;
     }
 }
