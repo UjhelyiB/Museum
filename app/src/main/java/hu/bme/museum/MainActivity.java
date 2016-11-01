@@ -14,7 +14,6 @@ public class MainActivity extends AppCompatActivity {
         startLogin();
     }
 
-
     protected void startLogin(){
         Intent intent = new Intent();
 
@@ -22,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Ignore login for now!
         intent.setClass(MainActivity.this, ApplicationActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 }
