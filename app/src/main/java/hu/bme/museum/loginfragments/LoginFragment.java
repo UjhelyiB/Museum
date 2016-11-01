@@ -55,7 +55,6 @@ public class LoginFragment extends Fragment {
     public void continueToApplicationWithAuth(){
         Intent intent = new Intent();
         intent.setClass(getActivity(), ApplicationActivity.class);
-        intent.putExtra(LoginActivity.KEY_TOP, true);
         startActivity(intent);
     }
 }

@@ -15,7 +15,6 @@ import java.util.Map;
 public class ApplicationActivity extends AppCompatActivity {
 
     public static final String LOGIN_SUCCESSFUL = "Login successful!";
-    public static final String PLEASE_LOG_IN_TO_PLAY_THE_GAME = "Please log in to play the game!";
 
     Button btGame;
     Button btExhibitions;
@@ -26,9 +25,7 @@ public class ApplicationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_application);
 
-        if( getIntent().getBooleanExtra(LoginActivity.KEY_TOP, false)){
-            Toast.makeText(ApplicationActivity.this, LOGIN_SUCCESSFUL, Toast.LENGTH_SHORT).show();
-        }
+        Toast.makeText(ApplicationActivity.this, LOGIN_SUCCESSFUL, Toast.LENGTH_SHORT).show();
 
         initUI();
     }
@@ -41,11 +38,7 @@ public class ApplicationActivity extends AppCompatActivity {
         btGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!getIntent().getBooleanExtra(LoginActivity.KEY_TOP, false)){
-                    Toast.makeText(ApplicationActivity.this, PLEASE_LOG_IN_TO_PLAY_THE_GAME, Toast.LENGTH_SHORT).show();
-                }else{
                     startGame();
-                }
             }
         });
 
