@@ -8,10 +8,9 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,12 +40,22 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
     private GoogleMap map;
     private ArrayList<PieceOfArt> piecesOfArt = new ArrayList<>();
     LocationManager locationManager;
+    private static View rootView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_map, null, false);
+        if (rootView != null) {
+            ViewGroup parent = (ViewGroup) rootView.getParent();
+            if (parent != null)
+                parent.removeView(rootView);
+        }
+        try {
+            rootView = inflater.inflate(R.layout.fragment_map, container, false);
+        } catch (InflateException e) {
+        /* map is already there, just return rootView as it is */
+        }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().
