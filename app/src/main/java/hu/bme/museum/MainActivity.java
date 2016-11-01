@@ -12,12 +12,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         startLogin();
-
     }
+
 
     protected void startLogin(){
         Intent intent = new Intent();
-        intent.setClass(MainActivity.this, LoginActivity.class);
+
+        // TODO add login support
+
+        // Ignore login for now!
+        intent.setClass(MainActivity.this, ApplicationActivity.class);
         startActivity(intent);
     }
 }

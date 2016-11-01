@@ -13,4 +13,8 @@
     <string name="exhibitions">Exhibitions</string>
     <string name="map">Map</string>
     <string name="title_activity_map">Map</string>
+    <string name="searchFragmentTitle">Search</string>
+    <string name="mapFragmentTitle">Map</string>
+    <string name="exhibitionsFragmentTitle">Browse</string>
+    <string name="gameFragmentTitle">Game</string>
 </resources>
