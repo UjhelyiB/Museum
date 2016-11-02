@@ -132,9 +132,12 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
 
     private void addMarkers() {
         Location userLocation = getCurrentLocation();
-        userMarker = map.addMarker(new MarkerOptions().position(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))
-                .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.user_marker_icon)))
-                .title("You"));
+        if (userLocation != null) {
+            userMarker = map.addMarker(new MarkerOptions().position(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))
+                    .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.user_marker_icon)))
+                    .title("You"));
+        }
+
 
         for (int i = 0; i < piecesOfArt.size(); i++) {
             map.addMarker(new MarkerOptions()
@@ -182,8 +185,8 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
                     .target(new LatLng(location.getLatitude(), location.getLongitude()))
                         // Sets the center of the map to location user
                     .zoom(15)                   // Sets the zoom
-                    .bearing(90)                // Sets the orientation of the camera to east
-                    .tilt(40)                   // Sets the tilt of the camera to 30 degrees
+                    .bearing(0)                // Sets the orientation of the camera to north
+                    .tilt(40)                   // Sets the tilt of the camera to 40 degrees
                     .build();                   // Creates a CameraPosition from the builder
             map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }

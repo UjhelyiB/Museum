@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1080349310022",
+    "firebase_url": "https://museumapp-cfb3a.firebaseio.com",
+    "project_id": "museumapp-cfb3a",
+    "storage_bucket": "museumapp-cfb3a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080349310022:android:bc56fd19e2df5ac0",
+        "android_client_info": {
+          "package_name": "hu.bme.museum"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1080349310022-6ptpkqc7qs8u4p87ms9vhkcccqi4i3gk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4yR-509AYZamwuZgJCBmL2j_8SliJU_A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
