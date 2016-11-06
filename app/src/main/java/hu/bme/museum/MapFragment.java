@@ -142,7 +142,7 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
             map.addMarker(new MarkerOptions()
                     .position(piecesOfArt.get(i).getPosition())
                     //.icon(BitmapDescriptorFactory.fromResource(piecesOfArt.get(i).getPicture()))
-                    .title(piecesOfArt.get(i).getTitle()));
+                    .title(piecesOfArt.get(i).getName()));
         }
 
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {

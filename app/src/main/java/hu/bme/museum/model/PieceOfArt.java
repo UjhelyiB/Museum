@@ -3,30 +3,33 @@ package hu.bme.museum.model;
 import com.google.android.gms.maps.model.LatLng;
 
 public class PieceOfArt {
-    private String title;
+
+    private String name;
     private String picture;
     private LatLng position;
-    private String description;
+    private String desc;
 
-    public PieceOfArt(String title, String picture, LatLng position, String Description) {
-        this.title = title;
+    public PieceOfArt(){
+
+    }
+
+    public PieceOfArt(String name, String picture, LatLng position, String desc) {
+        this.name = name;
         this.picture = picture;
         this.position = position;
-        this.description = description;
+        this.desc = desc;
     }
 
     public LatLng getPosition(){
         return position;
     }
-    public String getTitle(){
-        return title;
+    public String getName(){
+        return name;
     }
 
     public String getPicture() {
         return picture;
     }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getDesc() { return desc; }
 }
