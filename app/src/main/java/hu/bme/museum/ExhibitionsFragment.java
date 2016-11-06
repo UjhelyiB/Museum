@@ -98,7 +98,7 @@ public class ExhibitionsFragment extends TabFragment {
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
 
-                    artworkRecyclerView.scrollToPosition(0);
+                artworkRecyclerView.scrollToPosition(0);
             }
         });
 
