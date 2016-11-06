@@ -97,17 +97,8 @@ public class ExhibitionsFragment extends TabFragment {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
-                int friendlyMessageCount = firebaseRecyclerAdapter.getItemCount();
-                int lastVisiblePosition =
-                        linearLayoutManager.findLastCompletelyVisibleItemPosition();
-                // If the recycler view is initially being loaded or the
-                // user is at the bottom of the list, scroll to the bottom
-                // of the list to show the newly added message.
-                if (lastVisiblePosition == -1 ||
-                        (positionStart >= (friendlyMessageCount - 1) &&
-                                lastVisiblePosition == (positionStart - 1))) {
-                    artworkRecyclerView.scrollToPosition(positionStart);
-                }
+
+                    artworkRecyclerView.scrollToPosition(0);
             }
         });
 
