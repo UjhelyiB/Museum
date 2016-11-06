@@ -1,17 +1,27 @@
 package hu.bme.museum;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import hu.bme.museum.login.LoginActivity;
 
-public class MainActivity extends AppCompatActivity {
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+    private static final String TAG = "MainActivity";
+
+    private static FirebaseAuth firebaseAuth;
+    private static FirebaseUser firebaseUser;
+
+    //private static GoogleApiClient googleApiClient;
 
     private static String userName;
 
@@ -24,10 +34,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected void checkLogin(){
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
 
-        if (mFirebaseUser == null) {
+        if (firebaseUser == null) {
             // Not signed in, launch the LogIn activity
             Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(loginIntent);
@@ -35,14 +45,31 @@ public class MainActivity extends AppCompatActivity {
             finish();
             return;
         } else {
-            userName = mFirebaseUser.getDisplayName();
+            userName = firebaseUser.getDisplayName();
+
             startActivity(new Intent(MainActivity.this, ApplicationActivity.class));
 
             finish();
             return;
 
         }
-
-
     }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
+    }
+
+//    public static FirebaseAuth getFirebaseAuth() {
+//        return firebaseAuth;
+//    }
+//
+//    public static FirebaseUser getFirebaseUser() {
+//        return firebaseUser;
+//    }
+//    public static GoogleApiClient getGoogleApiClient() {
+//        return googleApiClient;
+//    }
+
 }
