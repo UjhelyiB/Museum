@@ -4,32 +4,57 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class PieceOfArt {
 
-    private String name;
-    private String picture;
-    private LatLng position;
-    private String desc;
+    public String name;
+    public String author;
+    public String description;
+    public String imageLink;
+    public LatLng position;
+    public String date;
+    public String exhibition_id;
+
 
     public PieceOfArt(){
 
     }
 
-    public PieceOfArt(String name, String picture, LatLng position, String desc) {
+    public PieceOfArt(String name, String imageLink, LatLng position, String description, String author) {
         this.name = name;
-        this.picture = picture;
+        this.imageLink = imageLink;
         this.position = position;
-        this.desc = desc;
+        this.description = description;
+        this.author = author;
     }
 
     public LatLng getPosition(){
         return position;
     }
+
+    public void setAuthor(String author){
+        this.author = author;
+    }
+    public String getAuthor(){
+        return author;
+    }
+
     public String getName(){
         return name;
     }
 
-    public String getPicture() {
-        return picture;
+    public void setImageLink(String imageLink){
+        this.imageLink = imageLink;
     }
 
-    public String getDesc() { return desc; }
+    public String getPicture() {
+        return imageLink;
+    }
+
+    public void setDescription(String description){
+        this.description = description;
+    }
+
+    public String getDescription() { return description; }
+
+    public void setDate(String date){this.date = date;}
+
+    public String getDate(){return date;}
 }

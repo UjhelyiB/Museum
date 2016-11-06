@@ -5,10 +5,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -16,18 +16,15 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import hu.bme.museum.model.PieceOfArt;
 
 public class ExhibitionsFragment extends TabFragment {
 
-    private static final String ARTWORK_CHILD = "messages";
+    private static final String ARTWORK_CHILD = "artworks";
     LinearLayout artworksLinearLayout;
     private ProgressBar mProgressBar;
 
@@ -78,8 +75,12 @@ public class ExhibitionsFragment extends TabFragment {
             @Override
             protected void populateViewHolder(MessageViewHolder viewHolder, PieceOfArt artwork, int position) {
                 mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+
                 viewHolder.artworkTitle.setText(artwork.getName());
-                viewHolder.artworkDescription.setText(artwork.getDesc());
+                viewHolder.artworkDescription.setText(artwork.getDescription());
+                viewHolder.artworkAuthorbutton.setText(artwork.getAuthor());
+                viewHolder.artworkDate.setText(artwork.getDate());
+
                 if (artwork.getPicture() == null) {
                     viewHolder.artworkPicture
                             .setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.artwork_placeholder));
@@ -123,12 +124,16 @@ public class ExhibitionsFragment extends TabFragment {
         public ImageView artworkPicture;
         public TextView artworkTitle;
         public TextView artworkDescription;
+        public Button artworkAuthorbutton;
+        public TextView artworkDate;
 
         public MessageViewHolder(View v) {
             super(v);
             artworkPicture = (ImageView) v.findViewById(R.id.artworkImageView);
             artworkTitle = (TextView) v.findViewById(R.id.artworkTitleTextView);
+            artworkAuthorbutton = (Button) v.findViewById(R.id.artworkArtistNameButton);
             artworkDescription = (TextView) v.findViewById(R.id.artworkDescriptionTextView);
+            artworkDate = (TextView) v.findViewById(R.id.artworkDateTextView);
 
         }
     }
