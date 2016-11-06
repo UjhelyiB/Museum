@@ -1,27 +1,35 @@
 {
   "project_info": {
-    "project_number": "1080349310022",
-    "firebase_url": "https://museumapp-cfb3a.firebaseio.com",
-    "project_id": "museumapp-cfb3a",
-    "storage_bucket": "museumapp-cfb3a.appspot.com"
+    "project_number": "950336849972",
+    "firebase_url": "https://friendlychat-33d4c.firebaseio.com",
+    "project_id": "friendlychat-33d4c",
+    "storage_bucket": "friendlychat-33d4c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1080349310022:android:bc56fd19e2df5ac0",
+        "mobilesdk_app_id": "1:950336849972:android:b5d75907de594a2d",
         "android_client_info": {
           "package_name": "hu.bme.museum"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1080349310022-6ptpkqc7qs8u4p87ms9vhkcccqi4i3gk.apps.googleusercontent.com",
+          "client_id": "950336849972-21ubgr0ovpgucglbo2kg15ifs3m49pu0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hu.bme.museum",
+            "certificate_hash": "F386363F45F56B929C1FCA0B17595BA5EF80920E"
+          }
+        },
+        {
+          "client_id": "950336849972-69hbbv7hojmv6e9id84aha1ut4pks1la.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB4yR-509AYZamwuZgJCBmL2j_8SliJU_A"
+          "current_key": "AIzaSyB_LtsZgMCMp8qKZKPcwIXFzGmaF5azTtQ"
         }
       ],
       "services": {
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "950336849972-69hbbv7hojmv6e9id84aha1ut4pks1la.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

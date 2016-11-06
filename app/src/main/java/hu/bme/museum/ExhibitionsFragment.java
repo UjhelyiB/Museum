@@ -27,7 +27,7 @@ import hu.bme.museum.model.PieceOfArt;
 
 public class ExhibitionsFragment extends TabFragment {
 
-    private static final String ARTWORK_CHILD = "artworks";
+    private static final String ARTWORK_CHILD = "messages";
     LinearLayout artworksLinearLayout;
     private ProgressBar mProgressBar;
 
@@ -45,36 +45,23 @@ public class ExhibitionsFragment extends TabFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        mProgressBar = (ProgressBar) getActivity().findViewById(R.id.progressBar);
+
 
         this.inflater = inflater;
         View rootView = inflater.inflate(R.layout.fragment_exhibitions, null, false);
 
-        //LinearLayout
-        //artworksLinearLayout = (LinearLayout) rootView.findViewById(R.id.artworksLinearLayout);
+        mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 
         //RecyclerViewInit
         artworkRecyclerView = (RecyclerView) rootView.findViewById(R.id.artworkRecyclerView);
+
         linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setStackFromEnd(true);
         artworkRecyclerView.setLayoutManager(linearLayoutManager);
 
         setUpFirebase();
 
-        //getArtworksTheSimpleWay();
-
-        //addArtworks();
-
         return rootView;
-    }
-
-    public void addArtworks() {
-        for (int i = 0; i < 3; ++i) {
-            View newArtwork = inflater.inflate(R.layout.artwork, null);
-            TextView title = (TextView) newArtwork.findViewById(R.id.artworkTitleTextView);
-            title.setText(title.getText() + " " + (i+1));
-            artworksLinearLayout.addView(newArtwork);
-        }
     }
 
     public void setUpFirebase(){
@@ -90,7 +77,6 @@ public class ExhibitionsFragment extends TabFragment {
 
             @Override
             protected void populateViewHolder(MessageViewHolder viewHolder, PieceOfArt artwork, int position) {
-                Log.d("xy", "asdfsd");
                 mProgressBar.setVisibility(ProgressBar.INVISIBLE);
                 viewHolder.artworkTitle.setText(artwork.getName());
                 viewHolder.artworkDescription.setText(artwork.getDesc());
@@ -102,16 +88,6 @@ public class ExhibitionsFragment extends TabFragment {
                             .load(artwork.getPicture())
                             .into(viewHolder.artworkPicture);
                 }
-                String s = databaseReference.child("artworks").child("example_artwork_id").child("name").getKey();
-                String desc = databaseReference.child("artworks").child("example_artwork_id").child("desc").getKey();
-
-                View newArtwork = inflater.inflate(R.layout.artwork, null);
-                TextView title = (TextView) newArtwork.findViewById(R.id.artworkTitleTextView);
-                title.setText(s);
-                TextView tvDesc = (TextView) newArtwork.findViewById(R.id.artworkDescriptionTextView);
-                tvDesc.setText(desc);
-                artworksLinearLayout.addView(newArtwork);
-
             }
 
         };
@@ -136,44 +112,6 @@ public class ExhibitionsFragment extends TabFragment {
 
         artworkRecyclerView.setLayoutManager(linearLayoutManager);
         artworkRecyclerView.setAdapter(firebaseRecyclerAdapter);
-    }
-
-    public void getArtworksTheSimpleWay(){
-
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-
-        databaseReference.child("artworks").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.d("xy", "asdfsd");
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()){
-                    PieceOfArt artwork = postSnapshot.getValue(PieceOfArt.class);
-
-                    View newArtwork = inflater.inflate(R.layout.artwork, null);
-                    TextView title = (TextView) newArtwork.findViewById(R.id.artworkTitleTextView);
-                    title.setText(artwork.getName());
-                    TextView tvDesc = (TextView) newArtwork.findViewById(R.id.artworkDescriptionTextView);
-                    tvDesc.setText(artwork.getDesc());
-                    artworksLinearLayout.addView(newArtwork);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-//        String s = databaseReference.child("artworks").child("example_artwork_id").child("name").getKey();
-//        String desc = databaseReference.child("artworks").child("example_artwork_id").child("desc").getKey();
-//
-//        View newArtwork = inflater.inflate(R.layout.artwork, null);
-//        TextView title = (TextView) newArtwork.findViewById(R.id.artworkTitleTextView);
-//        title.setText(s);
-//        TextView tvDesc = (TextView) newArtwork.findViewById(R.id.artworkDescriptionTextView);
-//        tvDesc.setText(desc);
-//        artworksLinearLayout.addView(newArtwork);
     }
 
     @Override
