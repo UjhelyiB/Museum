@@ -1,4 +1,4 @@
-package hu.bme.museum.loginfragments;
+package hu.bme.museum.login;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import hu.bme.museum.R;
 
+//not used right now
 public class RegistrationFragment extends Fragment {
     public static final String TAG = "RegistrationFragment";
     public static final String REGISTRATION_UNSUCCESSFUL = "Registration unsuccessful!";

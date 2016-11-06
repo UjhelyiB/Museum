@@ -1,4 +1,4 @@
-package hu.bme.museum.loginfragments;
+package hu.bme.museum.login;
 
 import android.app.Fragment;
 import android.content.Intent;
@@ -12,9 +12,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import hu.bme.museum.ApplicationActivity;
-import hu.bme.museum.LoginActivity;
 import hu.bme.museum.R;
 
+
+//Not used right now
 public class LoginFragment extends Fragment {
     public static final String TAG = "LoginFragment";
     public static final String LOGIN_UNSUCCESSFUL = "Login unsuccessful!";

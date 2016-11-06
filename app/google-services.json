@@ -10,12 +10,56 @@
       "client_info": {
         "mobilesdk_app_id": "1:950336849972:android:b5d75907de594a2d",
         "android_client_info": {
+          "package_name": "com.google.firebase.codelab.friendlychat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "950336849972-1bu198sie2fib6qmnsdqhbctp04q44f8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.google.firebase.codelab.friendlychat",
+            "certificate_hash": "F386363F45F56B929C1FCA0B17595BA5EF80920E"
+          }
+        },
+        {
+          "client_id": "950336849972-69hbbv7hojmv6e9id84aha1ut4pks1la.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_LtsZgMCMp8qKZKPcwIXFzGmaF5azTtQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "950336849972-69hbbv7hojmv6e9id84aha1ut4pks1la.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950336849972:android:bc56fd19e2df5ac0",
+        "android_client_info": {
           "package_name": "hu.bme.museum"
         }
       },
       "oauth_client": [
         {
-          "client_id": "950336849972-21ubgr0ovpgucglbo2kg15ifs3m49pu0.apps.googleusercontent.com",
+          "client_id": "950336849972-eiqf3mehrbnfjbotngjqlana42i7v9jv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "hu.bme.museum",

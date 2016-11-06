@@ -1,33 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sign_in_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:text="@string/login"/>
 
-        <Button
-            android:id="@+id/btLoginPage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/login_page"/>
-        <Button
-            android:id="@+id/btRegistrationPage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/registration_page"/>
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible"
+        android:layout_gravity="center"/>
 
-    </LinearLayout>
+</FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/loginFragmentContainer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:orientation="vertical">-->
 
-    </FrameLayout>
+    <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<Button-->
+            <!--android:id="@+id/btLoginPage"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/login_page"/>-->
+        <!--<Button-->
+            <!--android:id="@+id/btRegistrationPage"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/registration_page"/>-->
+
+    <!--</LinearLayout>-->
+
+    <!--<FrameLayout-->
+        <!--android:id="@+id/loginFragmentContainer"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+    <!--</FrameLayout>-->
 
 
-</LinearLayout>
+<!--</LinearLayout>-->

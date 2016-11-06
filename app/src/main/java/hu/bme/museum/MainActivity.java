@@ -4,24 +4,45 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import hu.bme.museum.login.LoginActivity;
+
 public class MainActivity extends AppCompatActivity {
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+
+    private static String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startLogin();
+        checkLogin();
     }
 
-    protected void startLogin(){
-        Intent intent = new Intent();
+    protected void checkLogin(){
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
-        // TODO add login support
+        if (mFirebaseUser == null) {
+            // Not signed in, launch the LogIn activity
+            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(loginIntent);
 
-        // Ignore login for now!
-        intent.setClass(MainActivity.this, ApplicationActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+            finish();
+            return;
+        } else {
+            userName = mFirebaseUser.getDisplayName();
+            startActivity(new Intent(MainActivity.this, ApplicationActivity.class));
+
+            finish();
+            return;
+
+        }
+
+
     }
 }
