@@ -14,20 +14,36 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Random;
 
 import hu.bme.museum.login.LoginActivity;
+import hu.bme.museum.model.User;
 
 public class ApplicationActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "ApplicationActivity";
+    private static final String USERS = "users";
     ApplicationFragmentPagerAdapter pagerAdapter;
     ViewPager viewPager;
 
     public static final String LOGIN_SUCCESSFUL = "Login successful!";
 
+    private FirebaseDatabase firebase;
+    private DatabaseReference dbReference;
     GoogleApiClient googleApiClient;
 
     @Override
@@ -48,11 +64,48 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
         Toolbar toolbar = (Toolbar) findViewById(R.id.topmost_toolbar);
         setSupportActionBar(toolbar);
 
+        addUserToDBIfItIsANewUser();
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .build();
+    }
+
+    private void addUserToDBIfItIsANewUser(){
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user.getToken(true)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                        if (task.isSuccessful()) {
+                            firebase = FirebaseDatabase.getInstance();
+                            dbReference = firebase.getReference(USERS);
+
+                            dbReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    User currentUser = new User();
+                                    for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                                        currentUser = snapshot.getValue(User.class);
+                                        if(currentUser.email.equals(user.getEmail())){
+                                            return;
+                                        }
+                                    }
+                                    currentUser.setEmail(user.getEmail());
+                                    currentUser.setName(user.getDisplayName());
+                                    currentUser.setScore(0);
+                                    currentUser.setLastActive(System.currentTimeMillis()/1000);
+                                    dbReference.child(user.getUid()).setValue(currentUser);
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {}
+                            });
+                        } else {
+                            Toast.makeText(getBaseContext(), "Error in LoginCompleteListener", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     @Override
