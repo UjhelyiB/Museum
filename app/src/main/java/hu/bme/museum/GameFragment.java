@@ -31,7 +31,7 @@ public class GameFragment extends TabFragment {
 
     private LinearLayout gameLayout;
     private LayoutInflater inflater;
-    private ArrayList<Quiz> quizList = new ArrayList<Quiz>();;
+    private ArrayList<Quiz> quizList = new ArrayList<Quiz>();
 
     private DatabaseReference databaseReference;
 
@@ -63,10 +63,6 @@ public class GameFragment extends TabFragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                    Log.d("sfd", "---------------------------");
-                    Log.d("dsf", "---------------------------");
-                    Log.d("sfd", "---------------------------");
-                    Log.d("asdaf", "---------------------------");
                     Quiz currentQuiz = snapshot.getValue(Quiz.class);
                     if(!quizList.contains(currentQuiz)){
                         quizList.add(currentQuiz);
@@ -93,7 +89,6 @@ public class GameFragment extends TabFragment {
         Button answerD = (Button) quizView.findViewById(R.id.quizAnswerButtonD);
 
         question.setText(quiz.question);
-        Log.d("asdlkm", quiz.question);
         answerA.setText(quiz.A);
         answerB.setText(quiz.B);
         answerC.setText(quiz.C);
