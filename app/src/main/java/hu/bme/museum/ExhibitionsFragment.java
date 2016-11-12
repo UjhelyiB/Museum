@@ -76,17 +76,17 @@ public class ExhibitionsFragment extends TabFragment {
             protected void populateViewHolder(MessageViewHolder viewHolder, PieceOfArt artwork, int position) {
                 mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
-                viewHolder.artworkTitle.setText(artwork.getName());
-                viewHolder.artworkDescription.setText(artwork.getDescription());
-                viewHolder.artworkAuthorbutton.setText(artwork.getAuthor());
-                viewHolder.artworkDate.setText(artwork.getDate());
+                viewHolder.artworkTitle.setText(artwork.name);
+                viewHolder.artworkDescription.setText(artwork.description);
+                viewHolder.artworkAuthorbutton.setText(artwork.author);
+                viewHolder.artworkDate.setText(artwork.date);
 
-                if (artwork.getPicture() == null) {
+                if (artwork.imageLink == null) {
                     viewHolder.artworkPicture
                             .setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.artwork_placeholder));
                 } else {
                     Glide.with(getContext())
-                            .load(artwork.getPicture())
+                            .load(artwork.imageLink)
                             .into(viewHolder.artworkPicture);
                 }
             }

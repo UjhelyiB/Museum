@@ -82,6 +82,7 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
                             dbReference = firebase.getReference(USERS);
 
                             dbReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     User currentUser = new User();
@@ -91,10 +92,10 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
                                             return;
                                         }
                                     }
-                                    currentUser.setEmail(user.getEmail());
-                                    currentUser.setName(user.getDisplayName());
-                                    currentUser.setScore(0);
-                                    currentUser.setLastActive(System.currentTimeMillis()/1000);
+                                    currentUser.email = user.getEmail();
+                                    currentUser.name = user.getDisplayName();
+                                    currentUser.score = 0;
+                                    currentUser.lastActive = System.currentTimeMillis()/1000;
                                     dbReference.child(user.getUid()).setValue(currentUser);
                                 }
 
@@ -102,6 +103,7 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
                                 public void onCancelled(DatabaseError databaseError) {}
                             });
                         } else {
+                            Log.d("Error "," in LoginCompleteListener");
                             Toast.makeText(getBaseContext(), "Error in LoginCompleteListener", Toast.LENGTH_SHORT).show();
                         }
                     }
