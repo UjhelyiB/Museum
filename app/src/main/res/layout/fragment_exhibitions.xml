@@ -4,10 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/exhibitionsTitle"
@@ -16,18 +15,19 @@
             android:text="Artworks"
             android:textSize="@dimen/medium_text_size"
             android:textStyle="bold"
-            android:layout_marginLeft="150dp"
-            android:layout_marginTop="10dp"/>
+            android:padding="4dp"
+            android:layout_centerHorizontal="true"/>
 
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginTop="10dp" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@+id/exhibitionsTitle"/>
 
-    </LinearLayout>
-
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/artworkRecyclerView"
@@ -35,8 +35,5 @@
         android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
-
-
-
 
 </LinearLayout>

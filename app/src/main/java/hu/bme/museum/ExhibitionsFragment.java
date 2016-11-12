@@ -3,6 +3,7 @@ package hu.bme.museum;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,12 +14,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 import com.google.firebase.database.DatabaseReference;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
 
 import hu.bme.museum.model.PieceOfArt;
 
@@ -68,7 +72,7 @@ public class ExhibitionsFragment extends TabFragment {
 
         firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<PieceOfArt, MessageViewHolder>(
                 PieceOfArt.class,
-                R.layout.artwork,
+                R.layout.artwork_cardview,
                 MessageViewHolder.class,
                 databaseReference.child(ARTWORK_CHILD)) {
 
@@ -76,17 +80,23 @@ public class ExhibitionsFragment extends TabFragment {
             protected void populateViewHolder(MessageViewHolder viewHolder, PieceOfArt artwork, int position) {
                 mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
-                viewHolder.artworkTitle.setText(artwork.name);
-                viewHolder.artworkDescription.setText(artwork.description);
-                viewHolder.artworkAuthorbutton.setText(artwork.author);
-                viewHolder.artworkDate.setText(artwork.date);
+                viewHolder.artworkCardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(), "View Artwork Details", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-                if (artwork.imageLink == null) {
+                viewHolder.artworkTitle.setText(artwork.getName());
+                viewHolder.artworkAuthorTextView.setText(artwork.getAuthor());
+                viewHolder.artworkDate.setText(artwork.getDate());
+
+                if (artwork.getPicture() == null) {
                     viewHolder.artworkPicture
                             .setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.artwork_placeholder));
                 } else {
                     Glide.with(getContext())
-                            .load(artwork.imageLink)
+                            .load(artwork.getPicture())
                             .into(viewHolder.artworkPicture);
                 }
             }
@@ -112,18 +122,20 @@ public class ExhibitionsFragment extends TabFragment {
     }
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
+        public CardView artworkCardView;
+
         public ImageView artworkPicture;
         public TextView artworkTitle;
-        public TextView artworkDescription;
-        public Button artworkAuthorbutton;
+        public TextView artworkAuthorTextView;
         public TextView artworkDate;
 
         public MessageViewHolder(View v) {
             super(v);
+            artworkCardView = (CardView) v.findViewById(R.id.artworkCardView);
+
             artworkPicture = (ImageView) v.findViewById(R.id.artworkImageView);
             artworkTitle = (TextView) v.findViewById(R.id.artworkTitleTextView);
-            artworkAuthorbutton = (Button) v.findViewById(R.id.artworkArtistNameButton);
-            artworkDescription = (TextView) v.findViewById(R.id.artworkDescriptionTextView);
+            artworkAuthorTextView = (TextView) v.findViewById(R.id.artworkArtistNameTextView);
             artworkDate = (TextView) v.findViewById(R.id.artworkDateTextView);
 
         }
