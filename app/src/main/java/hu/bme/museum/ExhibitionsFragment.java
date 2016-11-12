@@ -87,16 +87,16 @@ public class ExhibitionsFragment extends TabFragment {
                     }
                 });
 
-                viewHolder.artworkTitle.setText(artwork.getName());
-                viewHolder.artworkAuthorTextView.setText(artwork.getAuthor());
-                viewHolder.artworkDate.setText(artwork.getDate());
+                viewHolder.artworkTitle.setText(artwork.name);
+                viewHolder.artworkAuthorTextView.setText(artwork.author);
+                viewHolder.artworkDate.setText(artwork.date);
 
-                if (artwork.getPicture() == null) {
+                if (artwork.imageLink == null) {
                     viewHolder.artworkPicture
                             .setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.artwork_placeholder));
                 } else {
                     Glide.with(getContext())
-                            .load(artwork.getPicture())
+                            .load(artwork.imageLink)
                             .into(viewHolder.artworkPicture);
                 }
             }
