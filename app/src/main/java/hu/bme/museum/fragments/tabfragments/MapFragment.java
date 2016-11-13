@@ -31,7 +31,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 
 import hu.bme.museum.R;
-import hu.bme.museum.model.PieceOfArt;
+import hu.bme.museum.model.Artwork;
 
 import static android.content.Context.LOCATION_SERVICE;
 
@@ -44,7 +44,7 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
     private GoogleMap map;
 
     Marker userMarker;
-    private ArrayList<PieceOfArt> piecesOfArt = new ArrayList<>();
+    private ArrayList<Artwork> piecesOfArt = new ArrayList<>();
     LocationManager locationManager;
     private static View rootView;
 
@@ -157,8 +157,8 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
     //TODO
     //load from DB
     public void loadPieces() {
-        piecesOfArt.add(new PieceOfArt("House", null, new LatLng(getCurrentLocation().getLatitude()+0.003, getCurrentLocation().getLongitude()+0.001), "This is a house.", "Somebody"));
-        piecesOfArt.add(new PieceOfArt("Tractor", null, new LatLng(getCurrentLocation().getLatitude()-0.003, getCurrentLocation().getLongitude()+0.001), "This a a tractor.", "Somebody Else"));
+        piecesOfArt.add(new Artwork("House", null, new LatLng(getCurrentLocation().getLatitude()+0.003, getCurrentLocation().getLongitude()+0.001), "This is a house.", "Somebody"));
+        piecesOfArt.add(new Artwork("Tractor", null, new LatLng(getCurrentLocation().getLatitude()-0.003, getCurrentLocation().getLongitude()+0.001), "This a a tractor.", "Somebody Else"));
     }
 
 

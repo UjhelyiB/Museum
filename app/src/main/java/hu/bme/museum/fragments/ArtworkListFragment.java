@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -22,8 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import hu.bme.museum.R;
-import hu.bme.museum.fragments.tabfragments.SearchFragment;
-import hu.bme.museum.model.PieceOfArt;
+import hu.bme.museum.model.Artwork;
 
 public class ArtworkListFragment extends Fragment {
 
@@ -39,7 +37,7 @@ public class ArtworkListFragment extends Fragment {
 
     //Firebase
     private DatabaseReference databaseReference;
-    private FirebaseRecyclerAdapter<PieceOfArt, ArtworkListFragment.MessageViewHolder> firebaseRecyclerAdapter;
+    private FirebaseRecyclerAdapter<Artwork, ArtworkListFragment.MessageViewHolder> firebaseRecyclerAdapter;
 
     @Nullable
     @Override
@@ -68,23 +66,28 @@ public class ArtworkListFragment extends Fragment {
         // New child entries
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-
-        firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<PieceOfArt, ArtworkListFragment.MessageViewHolder>(
-                PieceOfArt.class,
-                R.layout.artwork_cardview,
-                ArtworkListFragment.MessageViewHolder.class,
-                databaseReference.child(ARTWORK_CHILD)) {
+        firebaseRecyclerAdapter =
+                new FirebaseRecyclerAdapter<Artwork, ArtworkListFragment.MessageViewHolder>(
+                    Artwork.class,
+                    R.layout.artwork_cardview,
+                    ArtworkListFragment.MessageViewHolder.class,
+                    databaseReference.child(ARTWORK_CHILD)) {
 
             @Override
-            protected void populateViewHolder(ArtworkListFragment.MessageViewHolder viewHolder, PieceOfArt artwork, int position) {
+            protected void populateViewHolder(ArtworkListFragment.MessageViewHolder viewHolder,
+                                              final Artwork artwork, int position) {
                 mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 
                 viewHolder.artworkCardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        SearchFragment searchFragment = new SearchFragment();
+                        ArtworkDetailsFragment artworkDetailsFragment =
+                                new ArtworkDetailsFragment();
+                        artworkDetailsFragment.setArtwork(artwork);
+                        
                         getFragmentManager().beginTransaction()
-                                .replace(R.id.browseLinearLayout, searchFragment).addToBackStack(null).commit();
+                                .replace(R.id.browseLinearLayout, artworkDetailsFragment)
+                                .addToBackStack(null).commit();
                     }
                 });
 
@@ -94,7 +97,9 @@ public class ArtworkListFragment extends Fragment {
 
                 if (artwork.imageLink == null) {
                     viewHolder.artworkPicture
-                            .setImageDrawable(ContextCompat.getDrawable(getContext(), R.mipmap.artwork_placeholder));
+                            .setImageDrawable(
+                                    ContextCompat.getDrawable(getContext(),
+                                            R.mipmap.artwork_placeholder));
                 } else {
                     Glide.with(getContext())
                             .load(artwork.imageLink)
