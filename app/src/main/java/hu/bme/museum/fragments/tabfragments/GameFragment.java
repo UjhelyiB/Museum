@@ -2,6 +2,7 @@ package hu.bme.museum.fragments.tabfragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,7 +26,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import hu.bme.museum.R;
+import hu.bme.museum.fragments.tabfragments.TabFragment;
 import hu.bme.museum.model.Quiz;
+import hu.bme.museum.model.User;
 
 public class GameFragment extends TabFragment {
     private static final String QUIZ = "quiz";
@@ -79,7 +84,7 @@ public class GameFragment extends TabFragment {
         });
     }
 
-    public void addQuestion(Quiz quiz){
+    public void addQuestion(final Quiz quiz){
         View quizView = inflater.inflate(R.layout.quiz, null);
 
         TextView question= (TextView) quizView.findViewById(R.id.quizQuestion);
@@ -90,37 +95,40 @@ public class GameFragment extends TabFragment {
 
         question.setText(quiz.question);
         answerA.setText(quiz.A);
-        answerB.setText(quiz.B);
-        answerC.setText(quiz.C);
-        answerD.setText(quiz.D);
+        answerA.setText(quiz.B);
+        answerA.setText(quiz.C);
+        answerA.setText(quiz.D);
 
-        answerA.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked){
-                    answerA.setBackgroundResource(R.drawable.button_checked);
-
-                }else{
-                    answerA.setBackgroundResource(R.drawable.button_original);
-                }
-            }
-        });
+        answerA.setOnClickListener(new AnswerButtonCheckChangedListener(answerA, quiz.A));
+        answerB.setOnClickListener(new AnswerButtonCheckChangedListener(answerB, quiz.B));
+        answerC.setOnClickListener(new AnswerButtonCheckChangedListener(answerC, quiz.C));
+        answerD.setOnClickListener(new AnswerButtonCheckChangedListener(answerD, quiz.D));
 
         gameLayout.addView(quizView, 0);
     }
 
-    private class AnswerButtonCheckChangedListener implements CompoundButton.OnCheckedChangeListener{
+    private class AnswerButtonCheckChangedListener implements View.OnClickListener{
+
+        String text;
+        ToggleButton btn;
+
+        AnswerButtonCheckChangedListener(ToggleButton btn, String text){
+            this.text = text;
+            this.btn = btn;
+        }
 
         @Override
-        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-            if(compoundButton.isChecked()){
-                compoundButton.setBackgroundResource(R.drawable.button_checked);
+        public void onClick(View view) {
+            if(btn.isChecked()){
+                btn.setText(text);
+                btn.setBackgroundResource(R.drawable.button_checked);
 
             }else{
-                compoundButton.setBackgroundResource(R.drawable.button_original);
+                btn.setText(text);
+                btn.setBackgroundResource(R.drawable.button_original);
             }
         }
     }
-
 }
 
 
