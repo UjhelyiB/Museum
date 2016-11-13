@@ -84,7 +84,7 @@ public class ArtworkListFragment extends Fragment {
                         ArtworkDetailsFragment artworkDetailsFragment =
                                 new ArtworkDetailsFragment();
                         artworkDetailsFragment.setArtwork(artwork);
-                        
+
                         getFragmentManager().beginTransaction()
                                 .replace(R.id.browseLinearLayout, artworkDetailsFragment)
                                 .addToBackStack(null).commit();
