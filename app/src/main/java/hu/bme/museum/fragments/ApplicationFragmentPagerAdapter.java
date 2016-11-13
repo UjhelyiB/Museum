@@ -11,6 +11,7 @@ import java.util.List;
 import hu.bme.museum.fragments.browse.BrowseFragment;
 import hu.bme.museum.fragments.game.GameFragment;
 import hu.bme.museum.fragments.map.MapFragment;
+import hu.bme.museum.fragments.search.SearchContainerFragment;
 import hu.bme.museum.fragments.search.SearchFragment;
 
 public class ApplicationFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -26,7 +27,7 @@ public class ApplicationFragmentPagerAdapter extends FragmentPagerAdapter {
         fragments.add(new BrowseFragment());
         fragments.add(new GameFragment());
         fragments.add(new MapFragment());
-        fragments.add(new SearchFragment());
+        fragments.add(new SearchContainerFragment());
     }
 
     @Override

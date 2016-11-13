@@ -20,34 +20,35 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.w3c.dom.Text;
+
 import hu.bme.museum.R;
 import hu.bme.museum.model.Artwork;
 
 public class ArtworkListFragment extends Fragment {
 
     private static final String ARTWORK_CHILD = "artworks";
-    LinearLayout artworksLinearLayout;
     private ProgressBar mProgressBar;
 
     //RecyclerView
     private RecyclerView artworkRecyclerView;
     private LinearLayoutManager linearLayoutManager;
 
-    LayoutInflater inflater;
-
     //Firebase
     private DatabaseReference databaseReference;
     private FirebaseRecyclerAdapter<Artwork, ArtworkListFragment.MessageViewHolder> firebaseRecyclerAdapter;
+
+    private TextView artworkListTitleTextView;
+    private int linearLayoutContainerId;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-
-        this.inflater = inflater;
         View rootView = inflater.inflate(R.layout.fragment_artwork_list, null, false);
 
+        artworkListTitleTextView = (TextView) rootView.findViewById(R.id.artworkListTitleTextView);
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 
         //RecyclerViewInit
@@ -86,7 +87,7 @@ public class ArtworkListFragment extends Fragment {
                         artworkDetailsFragment.setArtwork(artwork);
 
                         getFragmentManager().beginTransaction()
-                                .replace(R.id.browseLinearLayout, artworkDetailsFragment)
+                                .replace(linearLayoutContainerId, artworkDetailsFragment)
                                 .addToBackStack(null).commit();
                     }
                 });
@@ -138,7 +139,16 @@ public class ArtworkListFragment extends Fragment {
             artworkTitle = (TextView) v.findViewById(R.id.artworkTitleTextView);
             artworkAuthorTextView = (TextView) v.findViewById(R.id.artworkArtistNameTextView);
             artworkDate = (TextView) v.findViewById(R.id.artworkDateTextView);
-
         }
+    }
+
+    public void setArtworkListTitle(String title) {
+        if (artworkListTitleTextView != null) {
+            artworkListTitleTextView.setText(title);
+        }
+    }
+
+    public void setLinearLayoutContainerId(int id) {
+        linearLayoutContainerId = id;
     }
 }
