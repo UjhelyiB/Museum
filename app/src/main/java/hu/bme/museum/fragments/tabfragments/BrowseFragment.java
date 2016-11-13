@@ -1,4 +1,4 @@
-package hu.bme.museum;
+package hu.bme.museum.fragments.tabfragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -22,11 +21,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.w3c.dom.Text;
-
+import hu.bme.museum.R;
 import hu.bme.museum.model.PieceOfArt;
 
-public class ExhibitionsFragment extends TabFragment {
+public class BrowseFragment extends TabFragment {
 
     private static final String ARTWORK_CHILD = "artworks";
     LinearLayout artworksLinearLayout;

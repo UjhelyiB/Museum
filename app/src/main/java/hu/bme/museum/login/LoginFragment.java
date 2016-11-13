@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import hu.bme.museum.ApplicationActivity;
+import hu.bme.museum.activities.ApplicationActivity;
 import hu.bme.museum.R;
 
 

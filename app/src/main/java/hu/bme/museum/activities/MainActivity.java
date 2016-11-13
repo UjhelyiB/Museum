@@ -1,4 +1,4 @@
-package hu.bme.museum;
+package hu.bme.museum.activities;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -7,13 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import hu.bme.museum.login.LoginActivity;
+import hu.bme.museum.R;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "MainActivity";

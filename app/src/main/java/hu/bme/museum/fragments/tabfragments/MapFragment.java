@@ -1,4 +1,4 @@
-package hu.bme.museum;
+package hu.bme.museum.fragments.tabfragments;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
+import hu.bme.museum.R;
 import hu.bme.museum.model.PieceOfArt;
 
 import static android.content.Context.LOCATION_SERVICE;

@@ -1,4 +1,4 @@
-package hu.bme.museum;
+package hu.bme.museum.fragments.tabfragments;
 
 import android.support.v4.app.Fragment;
 

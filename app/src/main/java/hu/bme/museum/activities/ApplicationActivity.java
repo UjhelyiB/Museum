@@ -1,4 +1,4 @@
-package hu.bme.museum;
+package hu.bme.museum.activities;
 
 
 import android.content.Intent;
@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,9 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Random;
-
-import hu.bme.museum.login.LoginActivity;
+import hu.bme.museum.fragments.tabfragments.ApplicationFragmentPagerAdapter;
+import hu.bme.museum.R;
 import hu.bme.museum.model.User;
 
 public class ApplicationActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {

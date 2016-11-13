@@ -1,4 +1,4 @@
-package hu.bme.museum.login;
+package hu.bme.museum.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,17 +21,8 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.Random;
-
-import hu.bme.museum.MainActivity;
 import hu.bme.museum.R;
-import hu.bme.museum.model.User;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private static final int RC_SIGN_IN = 9001;

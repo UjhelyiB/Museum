@@ -1,10 +1,12 @@
-package hu.bme.museum;
+package hu.bme.museum.fragments.tabfragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import hu.bme.museum.R;
 
 public class SearchFragment extends TabFragment {
 
