@@ -89,6 +89,16 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     User currentUser = new User();
                                     for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+//                                        //for some reason, at some time, Firebase could not convert properly its data into the class
+//                                        //the error was: com.google.firebase.database.DatabaseException: Failed to convert a value of type java.lang.String to int
+//                                        //so I've put in this code to fix it but somehow it works now, so I just commented it out
+//
+//                                        currentUser.email = (String) snapshot.child("email").getValue();
+//                                        currentUser.name = (String) snapshot.child("name").getValue();
+//                                        currentUser.imageLink = (String) snapshot.child("imageLink").getValue();
+//                                        currentUser.lastActive = (long) snapshot.child("lastActive").getValue();
+//                                        currentUser.score = Integer.parseInt(String.valueOf(snapshot.child("score").getValue()));
+
                                         currentUser = snapshot.getValue(User.class);
                                         if(currentUser.email.equals(user.getEmail())){
                                             return;
