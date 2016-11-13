@@ -3,6 +3,7 @@ package hu.bme.museum.fragments.tabfragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import hu.bme.museum.R;
+import hu.bme.museum.fragments.HighScoreFragment;
 import hu.bme.museum.fragments.tabfragments.TabFragment;
 import hu.bme.museum.model.Quiz;
 import hu.bme.museum.model.User;
@@ -35,6 +37,7 @@ public class GameFragment extends TabFragment {
     private static final String CHALLENGES = "challenges";
 
     private LinearLayout gameLayout;
+    private Button highScoreButton;
     private LayoutInflater inflater;
     private ArrayList<Quiz> quizList = new ArrayList<Quiz>();
 
@@ -47,12 +50,28 @@ public class GameFragment extends TabFragment {
 
         this.inflater = inflater;
         View rootView = inflater.inflate(R.layout.fragment_game, null, false);
-        gameLayout = (LinearLayout) rootView.findViewById(R.id.gameLinearLayout);
+        gameLayout = (LinearLayout) rootView.findViewById(R.id.gameFragmentLinearLayout);
+        highScoreButton = (Button) rootView.findViewById(R.id.gameHighScoreButton);
+
+        setListeners();
 
         loadQuizFromDB();
 
         return rootView;
     }
+
+    public void setListeners(){
+        highScoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment highScoreFragment = new HighScoreFragment();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.gameFragmentLinearLayout, highScoreFragment).addToBackStack(null).commit();
+
+            }
+        });
+    }
+
 
     @Override
     public String getTabTitle() {
@@ -95,9 +114,9 @@ public class GameFragment extends TabFragment {
 
         question.setText(quiz.question);
         answerA.setText(quiz.A);
-        answerA.setText(quiz.B);
-        answerA.setText(quiz.C);
-        answerA.setText(quiz.D);
+        answerB.setText(quiz.B);
+        answerC.setText(quiz.C);
+        answerD.setText(quiz.D);
 
         answerA.setOnClickListener(new AnswerButtonCheckChangedListener(answerA, quiz.A));
         answerB.setOnClickListener(new AnswerButtonCheckChangedListener(answerB, quiz.B));
