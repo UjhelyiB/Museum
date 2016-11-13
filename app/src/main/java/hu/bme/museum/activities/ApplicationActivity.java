@@ -34,7 +34,7 @@ import hu.bme.museum.model.User;
 public class ApplicationActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "ApplicationActivity";
-    private static final String USERS = "users";
+    public static final String USERS = "users";
     ApplicationFragmentPagerAdapter pagerAdapter;
     ViewPager viewPager;
 
