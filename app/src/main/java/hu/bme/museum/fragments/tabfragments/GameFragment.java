@@ -7,9 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -80,10 +83,10 @@ public class GameFragment extends TabFragment {
         View quizView = inflater.inflate(R.layout.quiz, null);
 
         TextView question= (TextView) quizView.findViewById(R.id.quizQuestion);
-        Button answerA = (Button) quizView.findViewById(R.id.quizAnswerButtonA);
-        Button answerB = (Button) quizView.findViewById(R.id.quizAnswerButtonB);
-        Button answerC = (Button) quizView.findViewById(R.id.quizAnswerButtonC);
-        Button answerD = (Button) quizView.findViewById(R.id.quizAnswerButtonD);
+        final ToggleButton answerA = (ToggleButton) quizView.findViewById(R.id.quizAnswerButtonA);
+        ToggleButton answerB = (ToggleButton) quizView.findViewById(R.id.quizAnswerButtonB);
+        ToggleButton answerC = (ToggleButton) quizView.findViewById(R.id.quizAnswerButtonC);
+        ToggleButton answerD = (ToggleButton) quizView.findViewById(R.id.quizAnswerButtonD);
 
         question.setText(quiz.question);
         answerA.setText(quiz.A);
@@ -91,7 +94,33 @@ public class GameFragment extends TabFragment {
         answerC.setText(quiz.C);
         answerD.setText(quiz.D);
 
+        answerA.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked){
+                    answerA.setBackgroundResource(R.drawable.button_checked);
+
+                }else{
+                    answerA.setBackgroundResource(R.drawable.button_original);
+                }
+            }
+        });
+
         gameLayout.addView(quizView, 0);
     }
 
+    private class AnswerButtonCheckChangedListener implements CompoundButton.OnCheckedChangeListener{
+
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            if(compoundButton.isChecked()){
+                compoundButton.setBackgroundResource(R.drawable.button_checked);
+
+            }else{
+                compoundButton.setBackgroundResource(R.drawable.button_original);
+            }
+        }
+    }
+
 }
+
+
