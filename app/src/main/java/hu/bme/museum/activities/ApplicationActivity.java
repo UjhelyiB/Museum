@@ -139,8 +139,6 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
 
                 startActivity(new Intent(this, LoginActivity.class));
                 return true;
-            case R.id.highscore_option:
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

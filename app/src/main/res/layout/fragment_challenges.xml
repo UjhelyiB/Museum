@@ -2,17 +2,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <LinearLayout
         android:id="@+id/gameLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
     </LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center">
+    <Button
+        android:id="@+id/game"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/send"
+        android:textSize="20sp"
+        android:background="@drawable/button_send_answer"
+        android:textColor="#21218b"/>
+</LinearLayout>
+
 
     <Button
         android:id="@+id/gameHighScoreButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/high_score"/>
+        android:gravity="start"
+        android:text="@string/high_score"
+        android:textSize="15sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/transparent"
+        android:textColor="#21218b"/>
+
 </LinearLayout>

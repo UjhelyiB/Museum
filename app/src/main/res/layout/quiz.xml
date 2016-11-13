@@ -10,7 +10,7 @@
         android:textColor="#FFFFFF"
         android:textSize="30sp"
         android:gravity="center"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/button_original"/>
 
     <ToggleButton
@@ -18,48 +18,48 @@
 
         android:text="Button"
         android:textColor="#FFFFFF"
-        android:textSize="30sp"
+        android:textSize="25sp"
 
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:background="@drawable/button_original"
-        />
+        android:layout_gravity="center"/>
     <ToggleButton
         android:id="@+id/quizAnswerButtonB"
 
         android:text="Button"
         android:textColor="#FFFFFF"
-        android:textSize="30sp"
+        android:textSize="25sp"
 
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:background="@drawable/button_original"
-        />
+        android:layout_gravity="center"/>
     <ToggleButton
         android:id="@+id/quizAnswerButtonC"
 
         android:text="Button"
         android:textColor="#FFFFFF"
-        android:textSize="30sp"
+        android:textSize="25sp"
 
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:background="@drawable/button_original"
-        />
+        android:layout_gravity="center"/>
     <ToggleButton
         android:id="@+id/quizAnswerButtonD"
 
         android:text="Button"
         android:textColor="#FFFFFF"
-        android:textSize="30sp"
+        android:textSize="25sp"
 
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:background="@drawable/button_original"
-        />
+        android:layout_gravity="center"/>
 
 </LinearLayout>
