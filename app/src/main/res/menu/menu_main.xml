@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="hu.bme.basicactivity.MainActivity">
     <item
+        android:id="@+id/highscore_option"
+        android:orderInCategory="100"
+        android:title="@string/high_score"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/logout_option"
         android:orderInCategory="100"
         android:title="@string/logout"

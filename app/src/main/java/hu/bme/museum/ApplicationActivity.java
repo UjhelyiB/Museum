@@ -45,6 +45,7 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
     private FirebaseDatabase firebase;
     private DatabaseReference dbReference;
     GoogleApiClient googleApiClient;
+    ApplicationFragmentPagerAdapter fragmentPagerAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,8 +54,9 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setAdapter(new ApplicationFragmentPagerAdapter(getSupportFragmentManager(),
-                ApplicationActivity.this));
+        fragmentPagerAdapter = new ApplicationFragmentPagerAdapter(getSupportFragmentManager(),
+                ApplicationActivity.this);
+        viewPager.setAdapter(fragmentPagerAdapter);
 
         // Give the TabLayout the ViewPager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.slidingTabs);
@@ -126,6 +128,8 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
                 Auth.GoogleSignInApi.signOut(googleApiClient);
 
                 startActivity(new Intent(this, LoginActivity.class));
+                return true;
+            case R.id.highscore_option:
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
