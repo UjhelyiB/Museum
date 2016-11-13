@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "1080349310022-bpumkt2648th8n6dg6vi12igbfsn2qiv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hu.bme.museum",
+            "certificate_hash": "AE37D906CD2473FACFD3EE5BD1C88CCCC3AB0281"
+          }
+        },
+        {
+          "client_id": "1080349310022-6q2ou7jm42a7s2153penvos520s4ehv8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "hu.bme.museum",
+            "certificate_hash": "F386363F45F56B929C1FCA0B17595BA5EF80920E"
+          }
+        },
+        {
           "client_id": "1080349310022-6ptpkqc7qs8u4p87ms9vhkcccqi4i3gk.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +45,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1080349310022-6ptpkqc7qs8u4p87ms9vhkcccqi4i3gk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

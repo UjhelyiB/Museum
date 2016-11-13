@@ -5,15 +5,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -28,10 +33,17 @@ public class HighScoreFragment extends Fragment {
 
     DatabaseReference databaseReference;
 
+    LayoutInflater inflater;
+    LinearLayout highscoreLayout;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        this.inflater = inflater;
         View rootView = inflater.inflate(R.layout.fragment_highscore, null);
+        highscoreLayout = (LinearLayout) rootView.findViewById(R.id.highScoreLinearLayout);
+
+        loadHighScoreFromDB();
 
         return rootView;
     }
@@ -42,47 +54,70 @@ public class HighScoreFragment extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                highscoreLayout.removeAllViews();
+                userList.clear();
+
                 User user;
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     user = snapshot.getValue(User.class);
                     if(!userList.contains(user)){
-
-                        //sorting the user list manually because the ArrayList.sort() requires API level 24
-                        if(userList.size() == 0) {
-                            userList.add(user);
-                        }else if(userList.size() == 1){
-                            if(userList.get(0).score < user.score){
-                                userList.add(0, user);
-                            }else{
-                                userList.add(1, user);
-                            }
-                        } else {
-                            for(int i=0; i< userList.size(); i++){
-                                if(i == 0){
-                                    if(user.score < userList.get(i+1).score){
-                                        userList.add(0, user);
-                                        break;
-                                    }
-                                }else if(i == userList.size()-1){
-                                    if(user.score > userList.get(i+1).score){
-                                        userList.add(i, user);
-                                        break;
-                                    }
-                                } else if(user.score < userList.get(i-1).score && user.score < userList.get(i+1).score){
-                                    userList.add(i, user);
-                                }
-                            }
-                        }
+                        userList.add(user);
                     }
                 }
 
+                //sorting the user list manually because the ArrayList.sort() requires API level 24
+                for(int i=1; i< userList.size()-1; i++){
+                    for(int j=i; j< userList.size(); j++){
+                        User u1 = userList.get(j);
+                        User u2 = userList.get(j+1);
+
+                        int compare = compareUsers(u1, u2);
+                        if (compare == 1) {
+                            userList.remove(j);
+                            userList.remove(j);
+                            userList.add(i, u1);
+                            userList.add(j, u2);
+                        }
+                    }
+
+                }
+
+                //at most top 10 users are shown
+                int listLength;
+                if(userList.size() >= 10){
+                    listLength = 10;
+                }else{
+                    listLength = userList.size();
+                }
+                for(int i=0; i< listLength; i++){
+                    View row = inflater.inflate(R.layout.highscore_row, null);
+
+                    TextView tvName = (TextView) row.findViewById(R.id.highscoreRowName);
+                    TextView tvScore = (TextView) row.findViewById(R.id.highscoreRowScore);
+
+                    Log.d(String.valueOf(i), userList.get(i).name + "_____" + userList.get(i).score);
+
+                    tvName.setText(userList.get(i).name);
+                    tvScore.setText(String.valueOf(userList.get(i).score));
+
+                    highscoreLayout.addView(row);
+                }
 
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
+    }
+
+    public int compareUsers(User u1, User u2){
+        if(u1.score > u2.score){
+            return 1;
+        }else if(u1.score < u2.score){
+            return -1;
+        }else{
+            return 0;
+        }
     }
 }
