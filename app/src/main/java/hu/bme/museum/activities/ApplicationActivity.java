@@ -50,6 +50,8 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_application);
 
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         fragmentPagerAdapter = new ApplicationFragmentPagerAdapter(getSupportFragmentManager(),
