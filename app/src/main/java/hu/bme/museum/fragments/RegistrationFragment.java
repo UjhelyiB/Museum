@@ -1,4 +1,4 @@
-package hu.bme.museum.login;
+package hu.bme.museum.fragments;
 
 import android.app.Fragment;
 import android.os.Bundle;
