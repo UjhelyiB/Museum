@@ -1,4 +1,4 @@
-package hu.bme.museum.fragments.tabfragments;
+package hu.bme.museum.fragments;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -8,11 +8,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import hu.bme.museum.fragments.tabfragments.BrowseFragment;
-import hu.bme.museum.fragments.tabfragments.GameFragment;
-import hu.bme.museum.fragments.tabfragments.MapFragment;
-import hu.bme.museum.fragments.tabfragments.SearchFragment;
-import hu.bme.museum.fragments.tabfragments.TabFragment;
+import hu.bme.museum.fragments.browse.BrowseFragment;
+import hu.bme.museum.fragments.game.GameFragment;
+import hu.bme.museum.fragments.map.MapFragment;
+import hu.bme.museum.fragments.search.SearchFragment;
 
 public class ApplicationFragmentPagerAdapter extends FragmentPagerAdapter {
 

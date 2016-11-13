@@ -27,7 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import hu.bme.museum.fragments.tabfragments.ApplicationFragmentPagerAdapter;
+import hu.bme.museum.fragments.ApplicationFragmentPagerAdapter;
 import hu.bme.museum.R;
 import hu.bme.museum.model.User;
 

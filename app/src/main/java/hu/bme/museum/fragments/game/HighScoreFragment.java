@@ -1,4 +1,4 @@
-package hu.bme.museum.fragments;
+package hu.bme.museum.fragments.game;
 
 
 import android.os.Bundle;

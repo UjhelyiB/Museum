@@ -1,4 +1,4 @@
-package hu.bme.museum.fragments;
+package hu.bme.museum.fragments.game;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,7 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import hu.bme.museum.R;
-import hu.bme.museum.fragments.tabfragments.GameFragment;
+import hu.bme.museum.fragments.game.HighScoreFragment;
 import hu.bme.museum.model.Quiz;
 
 public class ChallengesFragment extends Fragment {

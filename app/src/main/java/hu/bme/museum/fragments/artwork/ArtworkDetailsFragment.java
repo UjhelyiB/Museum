@@ -1,4 +1,4 @@
-package hu.bme.museum.fragments;
+package hu.bme.museum.fragments.artwork;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
