@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,8 +40,8 @@ import static android.content.Context.LOCATION_SERVICE;
 public class MapFragment extends TabFragment implements OnMapReadyCallback {
 
     private static final int REQUEST_CODE_ACCESS_FINE_LOCATION_PERM = 267;
-    private static final long LOCATION_REFRESH_TIME = 5000;
-    private static final float LOCATION_REFRESH_DISTANCE = 10;
+    private static final long LOCATION_REFRESH_TIME = 2000;
+    private static final float LOCATION_REFRESH_DISTANCE = 2;
 
     private GoogleMap map;
 
@@ -78,10 +79,6 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
             }
 
         }
-
-        locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
-                LOCATION_REFRESH_DISTANCE, mLocationListener);
 
         return rootView;
     }
@@ -165,6 +162,7 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
 
     public Location getCurrentLocation(){
         Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
 
         if (ActivityCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -174,7 +172,11 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
                 return null;
             }
         }
-        return locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+
+        locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
+                LOCATION_REFRESH_DISTANCE, mLocationListener);
+        return locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, true));
     }
 
     public void updateMapWithLocation(Location location) {
