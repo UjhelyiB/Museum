@@ -50,7 +50,9 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_application);
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        //disabled it because the DB calls happen in multiple places so we'd get
+        //"Calls to setPersistenceEnabled() must be made before any other usage of FirebaseDatabase instance." error
+        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -101,6 +103,8 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
 
                                         currentUser = snapshot.getValue(User.class);
                                         if(currentUser.email.equals(user.getEmail())){
+                                            currentUser.lastActive = System.currentTimeMillis()/1000;
+                                            dbReference.child(user.getUid()).setValue(currentUser);
                                             return;
                                         }
                                     }

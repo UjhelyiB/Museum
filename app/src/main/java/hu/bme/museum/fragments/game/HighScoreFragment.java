@@ -95,8 +95,6 @@ public class HighScoreFragment extends Fragment {
                     TextView tvName = (TextView) row.findViewById(R.id.highscoreRowName);
                     TextView tvScore = (TextView) row.findViewById(R.id.highscoreRowScore);
 
-                    Log.d(String.valueOf(i), userList.get(i).name + "_____" + userList.get(i).score);
-
                     tvName.setText(userList.get(i).name);
                     tvScore.setText(String.valueOf(userList.get(i).score));
 

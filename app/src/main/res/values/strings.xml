@@ -21,4 +21,7 @@
     <string name="logout">Log out</string>
     <string name="high_score">High Score</string>
     <string name="send">Send!</string>
+    <string name="wrong_answer">Wrong Anwer!</string>
+    <string name="correct_answer">Correct Answer!</string>
+    <string name="new_game">New Game</string>
 </resources>

@@ -158,8 +158,8 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
     //TODO
     //load from DB
     public void loadPieces() {
-        piecesOfArt.add(new Artwork("House", null, new LatLng(getCurrentLocation().getLatitude()+0.003, getCurrentLocation().getLongitude()+0.001), "This is a house.", "Somebody"));
-        piecesOfArt.add(new Artwork("Tractor", null, new LatLng(getCurrentLocation().getLatitude()-0.003, getCurrentLocation().getLongitude()+0.001), "This a a tractor.", "Somebody Else"));
+//        piecesOfArt.add(new Artwork("House", null, new LatLng(getCurrentLocation().getLatitude()+0.003, getCurrentLocation().getLongitude()+0.001), "This is a house.", "Somebody"));
+//        piecesOfArt.add(new Artwork("Tractor", null, new LatLng(getCurrentLocation().getLatitude()-0.003, getCurrentLocation().getLongitude()+0.001), "This a a tractor.", "Somebody Else"));
     }
 
 

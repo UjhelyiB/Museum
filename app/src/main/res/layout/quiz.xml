@@ -10,10 +10,10 @@
         android:textColor="#FFFFFF"
         android:textSize="30sp"
         android:gravity="center"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="5dp"
         android:background="@drawable/button_original"/>
 
-    <ToggleButton
+    <hu.bme.museum.fragments.game.GameButton
         android:id="@+id/quizAnswerButtonA"
 
         android:text="Button"
@@ -25,7 +25,8 @@
         android:layout_margin="5dp"
         android:background="@drawable/button_original"
         android:layout_gravity="center"/>
-    <ToggleButton
+
+    <hu.bme.museum.fragments.game.GameButton
         android:id="@+id/quizAnswerButtonB"
 
         android:text="Button"
@@ -37,7 +38,8 @@
         android:layout_margin="5dp"
         android:background="@drawable/button_original"
         android:layout_gravity="center"/>
-    <ToggleButton
+
+    <hu.bme.museum.fragments.game.GameButton
         android:id="@+id/quizAnswerButtonC"
 
         android:text="Button"
@@ -49,7 +51,8 @@
         android:layout_margin="5dp"
         android:background="@drawable/button_original"
         android:layout_gravity="center"/>
-    <ToggleButton
+
+    <hu.bme.museum.fragments.game.GameButton
         android:id="@+id/quizAnswerButtonD"
 
         android:text="Button"
@@ -61,5 +64,16 @@
         android:layout_margin="5dp"
         android:background="@drawable/button_original"
         android:layout_gravity="center"/>
+
+
+        <Button
+            android:id="@+id/sendAnswerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/send"
+            android:textSize="20sp"
+            android:background="@drawable/button_send_answer"
+            android:textColor="#21218b"/>
 
 </LinearLayout>
