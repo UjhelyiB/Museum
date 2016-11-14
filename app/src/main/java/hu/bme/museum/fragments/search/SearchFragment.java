@@ -43,7 +43,7 @@ public class SearchFragment extends Fragment {
                             R.id.searchContainerLinearLayout);
 
                     searchResultsArtworkList.setArtworkListTitle(
-                            "Search Results: " + searchEditText.getText().toString());
+                            "Search Results: " + "\"" + searchEditText.getText().toString() + "\"" );
 
                     getFragmentManager().beginTransaction()
                             .replace(R.id.searchContainerLinearLayout, searchResultsArtworkList)

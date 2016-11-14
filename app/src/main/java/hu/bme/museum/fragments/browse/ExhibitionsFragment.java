@@ -39,6 +39,7 @@ public class ExhibitionsFragment extends Fragment {
 
     private LayoutInflater inflater;
     private LinearLayout exhibitionsLinearLayout;
+//    private TextView exhibitionsTitleTextView;
 
     private List<Exhibition> exhibitionsList = new ArrayList<>();
 
@@ -50,6 +51,7 @@ public class ExhibitionsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_exhibitions, null, false);
 
         exhibitionsLinearLayout = (LinearLayout) rootView.findViewById(R.id.exhibitionsLinearLayout);
+//        exhibitionsTitleTextView = (TextView) rootView.findViewById(R.id.exhibitionsTitleTextView);
 
         setUpFirebase();
 
@@ -73,7 +75,7 @@ public class ExhibitionsFragment extends Fragment {
                     }
                 }
 
-                for (Exhibition exhibition : exhibitionsList) {
+                for (final Exhibition exhibition : exhibitionsList) {
                     View row = inflater.inflate(R.layout.exhibition_row, null);
 
                     TextView exhibitionNameTextView
@@ -84,6 +86,7 @@ public class ExhibitionsFragment extends Fragment {
                         public void onClick(View view) {
                             ArtworkListFragment artworkListFragment = new ArtworkListFragment();
                             artworkListFragment.setLinearLayoutContainerId(R.id.browseLinearLayout);
+                            artworkListFragment.setArtworkListTitle(exhibition.name);
 
                             getFragmentManager().beginTransaction()
                                     .replace(R.id.browseLinearLayout, artworkListFragment)

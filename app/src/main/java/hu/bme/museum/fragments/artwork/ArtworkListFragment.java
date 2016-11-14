@@ -20,8 +20,6 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import org.w3c.dom.Text;
-
 import hu.bme.museum.R;
 import hu.bme.museum.model.Artwork;
 
@@ -38,6 +36,7 @@ public class ArtworkListFragment extends Fragment {
     private DatabaseReference databaseReference;
     private FirebaseRecyclerAdapter<Artwork, ArtworkListFragment.MessageViewHolder> firebaseRecyclerAdapter;
 
+    private String title = "Artworks";
     private TextView artworkListTitleTextView;
     private int linearLayoutContainerId;
 
@@ -49,6 +48,8 @@ public class ArtworkListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_artwork_list, null, false);
 
         artworkListTitleTextView = (TextView) rootView.findViewById(R.id.artworkListTitleTextView);
+        artworkListTitleTextView.setText(title);
+
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 
         //RecyclerViewInit
@@ -143,9 +144,7 @@ public class ArtworkListFragment extends Fragment {
     }
 
     public void setArtworkListTitle(String title) {
-        if (artworkListTitleTextView != null) {
-            artworkListTitleTextView.setText(title);
-        }
+        this.title = title;
     }
 
     public void setLinearLayoutContainerId(int id) {
