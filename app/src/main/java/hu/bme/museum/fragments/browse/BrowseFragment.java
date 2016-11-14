@@ -12,7 +12,7 @@ import hu.bme.museum.fragments.TabFragment;
 
 public class BrowseFragment extends TabFragment {
 
-    private ArtworkListFragment artworkListFragment;
+    private ExhibitionsFragment exhibitionsFragment;
 
     @Nullable
     @Override
@@ -21,11 +21,10 @@ public class BrowseFragment extends TabFragment {
 
         View rootView = inflater.inflate(R.layout.fragment_browse, null, false);
 
-        artworkListFragment = new ArtworkListFragment();
-        artworkListFragment.setLinearLayoutContainerId(R.id.browseLinearLayout);
+        exhibitionsFragment = new ExhibitionsFragment();
 
         getFragmentManager().beginTransaction().add(R.id.browseLinearLayout,
-                artworkListFragment).commit();
+                exhibitionsFragment).commit();
 
         return rootView;
     }
