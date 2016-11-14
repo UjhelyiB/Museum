@@ -25,4 +25,5 @@
     <string name="correct_answer">Correct Answer!</string>
     <string name="new_game">New Game</string>
     <string name="search_hint">Search for an artwork</string>
+    <string name="highscore_your_score">Your Score:</string>
 </resources>
