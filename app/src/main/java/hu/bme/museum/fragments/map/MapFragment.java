@@ -41,8 +41,8 @@ import static android.content.Context.LOCATION_SERVICE;
 public class MapFragment extends TabFragment implements OnMapReadyCallback {
 
     private static final int REQUEST_CODE_ACCESS_FINE_LOCATION_PERM = 267;
-    private static final long LOCATION_REFRESH_TIME = 2000;
-    private static final float LOCATION_REFRESH_DISTANCE = 2;
+    private static final long LOCATION_REFRESH_TIME = 5000;
+    private static final float LOCATION_REFRESH_DISTANCE = 10;
 
     private GoogleMap map;
 

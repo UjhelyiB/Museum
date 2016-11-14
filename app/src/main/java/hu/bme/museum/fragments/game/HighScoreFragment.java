@@ -40,7 +40,7 @@ public class HighScoreFragment extends Fragment {
     LayoutInflater inflater;
     View rootView;
     LinearLayout highscoreLayout;
-    RelativeLayout ownScoreLinearLayout;
+    LinearLayout ownScoreLinearLayout;
     TextView ownName;
     TextView ownScore;
 
@@ -60,7 +60,7 @@ public class HighScoreFragment extends Fragment {
 
     private void initUI() {
         highscoreLayout = (LinearLayout) rootView.findViewById(R.id.highScoreLinearLayout);
-        ownScoreLinearLayout = (RelativeLayout) rootView.findViewById(R.id.ownScoreLinearLayout);
+        ownScoreLinearLayout = (LinearLayout) rootView.findViewById(R.id.ownScoreLinearLayout);
         ownName = (TextView) ownScoreLinearLayout.findViewById(R.id.highScoreOwnName);
         ownScore = (TextView) ownScoreLinearLayout.findViewById(R.id.highScoreOwnScore);
     }
