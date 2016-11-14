@@ -66,7 +66,7 @@ public class HighScoreFragment extends Fragment {
                 }
 
                 //sorting the user list manually because the ArrayList.sort() requires API level 24
-                for(int i=1; i< userList.size()-1; i++){
+                for(int i=0; i< userList.size()-1; i++){
                     for(int j=1; j< userList.size(); j++){
                         User u1 = userList.get(j-1);
                         User u2 = userList.get(j);
