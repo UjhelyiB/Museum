@@ -9,9 +9,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,23 +38,34 @@ public class HighScoreFragment extends Fragment {
     DatabaseReference databaseReference;
 
     LayoutInflater inflater;
+    View rootView;
     LinearLayout highscoreLayout;
+    RelativeLayout ownScoreLinearLayout;
+    TextView ownName;
+    TextView ownScore;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.inflater = inflater;
-        View rootView = inflater.inflate(R.layout.fragment_highscore, null);
-        highscoreLayout = (LinearLayout) rootView.findViewById(R.id.highScoreLinearLayout);
+        rootView = inflater.inflate(R.layout.fragment_highscore, null);
 
+        initUI();
+
+        databaseReference = FirebaseDatabase.getInstance().getReference(ApplicationActivity.USERS);
         loadHighScoreFromDB();
 
         return rootView;
     }
 
-    public void loadHighScoreFromDB(){
-        databaseReference = FirebaseDatabase.getInstance().getReference(ApplicationActivity.USERS);
+    private void initUI() {
+        highscoreLayout = (LinearLayout) rootView.findViewById(R.id.highScoreLinearLayout);
+        ownScoreLinearLayout = (RelativeLayout) rootView.findViewById(R.id.ownScoreLinearLayout);
+        ownName = (TextView) ownScoreLinearLayout.findViewById(R.id.highScoreOwnName);
+        ownScore = (TextView) ownScoreLinearLayout.findViewById(R.id.highScoreOwnScore);
+    }
 
+    public void loadHighScoreFromDB(){
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -101,6 +116,7 @@ public class HighScoreFragment extends Fragment {
                     highscoreLayout.addView(row);
                 }
 
+                refreshOwnScoreInHighScore();
             }
 
             @Override
@@ -117,5 +133,23 @@ public class HighScoreFragment extends Fragment {
         }else{
             return 0;
         }
+    }
+
+    public void refreshOwnScoreInHighScore(){
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                User currentUser = dataSnapshot.child(user.getUid()).getValue(User.class);
+                ownName.setText(currentUser.name);
+                ownScore.setText(String.valueOf(currentUser.score));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 }
