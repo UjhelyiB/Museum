@@ -18,6 +18,7 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -46,6 +47,7 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
     private GoogleMap map;
 
     Marker userMarker;
+    Location userLocation;
     private ArrayList<Artwork> piecesOfArt = new ArrayList<>();
     LocationManager locationManager;
     private static View rootView;
@@ -68,17 +70,8 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().
                 findFragmentById(R.id.map);
+        locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
         mapFragment.getMapAsync(this);
-
-        if (ActivityCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (!requestNeededPermission()) {
-                return rootView;
-            }
-
-        }
 
         return rootView;
     }
@@ -86,10 +79,14 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
     private final LocationListener mLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(final Location location) {
-            updateMapWithLocation(location);
+            updateMapWithUserLocation();
 
             if(userMarker != null){
                 userMarker.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+            }else{
+                userMarker = map.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude()))
+                        .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.user_marker_icon)))
+                        .title("You"));
             }
         }
 
@@ -121,22 +118,24 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap map) {
         this.map = map;
 
-        updateMapWithLocation(getCurrentLocation());
+        addUserMarker();
+        updateMapWithUserLocation();
 
         loadPieces();
 
         addMarkers();
     }
 
-    private void addMarkers() {
-        Location userLocation = getCurrentLocation();
+    private void addUserMarker(){
+        updateUserLocation();
         if (userLocation != null) {
             userMarker = map.addMarker(new MarkerOptions().position(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))
                     .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.user_marker_icon)))
                     .title("You"));
         }
+    }
 
-
+    private void addMarkers() {
         for (int i = 0; i < piecesOfArt.size(); i++) {
             map.addMarker(new MarkerOptions()
                     .position(piecesOfArt.get(i).position)
@@ -160,32 +159,26 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
     }
 
 
-    public Location getCurrentLocation(){
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-
+    public void updateUserLocation(){
         if (ActivityCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(getActivity(),
-                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (!requestNeededPermission()) {
-                return null;
-            }
+                && ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestNeededPermission();
+        }else{
+            Criteria criteria = new Criteria();
+            criteria.setAccuracy(Criteria.ACCURACY_FINE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
+                    LOCATION_REFRESH_DISTANCE, mLocationListener);
+            userLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, true));
         }
-
-        locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
-                LOCATION_REFRESH_DISTANCE, mLocationListener);
-        return locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, true));
     }
 
-    public void updateMapWithLocation(Location location) {
-        if (location != null) {
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),
-                    location.getLongitude()), 13));
-
+    public void updateMapWithUserLocation() {
+        updateUserLocation();
+        if (userLocation != null) {
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(location.getLatitude(), location.getLongitude()))
+                    .target(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))
                         // Sets the center of the map to location user
                     .zoom(15)                   // Sets the zoom
                     .bearing(0)                // Sets the orientation of the camera to north
@@ -195,16 +188,21 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
         }
     }
 
-    public boolean requestNeededPermission() {
-        ActivityCompat.requestPermissions(getActivity(),
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                REQUEST_CODE_ACCESS_FINE_LOCATION_PERM);
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            return false;
+    public void requestNeededPermission() {
+        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_ACCESS_FINE_LOCATION_PERM);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults){
+        switch (requestCode) {
+            case REQUEST_CODE_ACCESS_FINE_LOCATION_PERM:
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    addUserMarker();
+                    updateMapWithUserLocation();
+                }
         }
-        return true;
     }
 
     @Override
