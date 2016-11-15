@@ -7,8 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
@@ -20,6 +20,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,13 +44,15 @@ import hu.bme.museum.model.Artwork;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-public class MapFragment extends TabFragment implements OnMapReadyCallback {
+public class MapFragment extends TabFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, LocationListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final int REQUEST_CODE_ACCESS_FINE_LOCATION_PERM = 267;
-    private static final long LOCATION_REFRESH_TIME = 5000;
-    private static final float LOCATION_REFRESH_DISTANCE = 10;
+    private static final long LOCATION_REFRESH_TIME = 2000;
+    private static final float LOCATION_REFRESH_DISTANCE = 2;
 
     private GoogleMap map;
+    private GoogleApiClient googleApiClient;
+    LocationRequest locationRequest;
 
     Marker userMarker;
     Location userLocation;
@@ -56,6 +64,20 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        locationRequest = new LocationRequest();
+        locationRequest.setInterval(LOCATION_REFRESH_TIME);
+        locationRequest.setSmallestDisplacement(LOCATION_REFRESH_DISTANCE);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        // Create an instance of GoogleAPIClient.
+        if (googleApiClient == null) {
+            googleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+
         if (rootView != null) {
             ViewGroup parent = (ViewGroup) rootView.getParent();
             if (parent != null)
@@ -70,41 +92,63 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().
                 findFragmentById(R.id.map);
-        locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
         mapFragment.getMapAsync(this);
 
         return rootView;
     }
 
-    private final LocationListener mLocationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(final Location location) {
-            updateMapWithUserLocation();
+    @Override
+    public void onStart() {
+        super.onStart();
+        googleApiClient.connect();
+    }
 
-            if(userMarker != null){
-                userMarker.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
-            }else{
-                userMarker = map.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude()))
-                        .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.user_marker_icon)))
-                        .title("You"));
-            }
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (googleApiClient.isConnected()) {
+            startLocationUpdates();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+
+        googleApiClient.disconnect();
+    }
+
+    @SuppressWarnings("MissingPermission")
+    protected void startLocationUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                googleApiClient, locationRequest, this);
+    }
+
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(
+                googleApiClient, this);
+    }
+
+    @Override
+    public void onLocationChanged(final Location location) {
+        userLocation = location;
+
+        if(userMarker != null){
+            userMarker.setPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+        }else{
+            addUserMarker();
         }
 
-        @Override
-        public void onStatusChanged(String s, int i, Bundle bundle) {
-
-        }
-
-        @Override
-        public void onProviderEnabled(String s) {
-
-        }
-
-        @Override
-        public void onProviderDisabled(String s) {
-
-        }
-    };
+        updateMapWithUserLocation();
+    }
 
     /**
      * Manipulates the map once available.
@@ -118,16 +162,12 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap map) {
         this.map = map;
 
-        addUserMarker();
-        updateMapWithUserLocation();
-
         loadPieces();
 
         addMarkers();
     }
 
     private void addUserMarker(){
-        updateUserLocation();
         if (userLocation != null) {
             userMarker = map.addMarker(new MarkerOptions().position(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))
                     .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.user_marker_icon)))
@@ -159,28 +199,13 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
     }
 
 
-    public void updateUserLocation(){
-        if (ActivityCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestNeededPermission();
-        }else{
-            Criteria criteria = new Criteria();
-            criteria.setAccuracy(Criteria.ACCURACY_FINE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME,
-                    LOCATION_REFRESH_DISTANCE, mLocationListener);
-            userLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, true));
-        }
-    }
-
     public void updateMapWithUserLocation() {
-        updateUserLocation();
+//        updateUserLocation();
         if (userLocation != null) {
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))
                         // Sets the center of the map to location user
-                    .zoom(15)                   // Sets the zoom
+                    .zoom(16)                   // Sets the zoom
                     .bearing(0)                // Sets the orientation of the camera to north
                     .tilt(40)                   // Sets the tilt of the camera to 40 degrees
                     .build();                   // Creates a CameraPosition from the builder
@@ -192,12 +217,15 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
         requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_ACCESS_FINE_LOCATION_PERM);
     }
 
+    @SuppressWarnings("MissingPermission")
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults){
         switch (requestCode) {
             case REQUEST_CODE_ACCESS_FINE_LOCATION_PERM:
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    startLocationUpdates();
 
                     addUserMarker();
                     updateMapWithUserLocation();
@@ -219,5 +247,31 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback {
         drawable.draw(canvas);
 
         return bitmap;
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestNeededPermission();
+
+        }else{
+            startLocationUpdates();
+        }
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d("Map", "Connection Failed!");
+        Toast.makeText(getActivity(), "Connection Failed!", Toast.LENGTH_SHORT).show();
+
     }
 }
