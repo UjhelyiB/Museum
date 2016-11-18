@@ -38,16 +38,16 @@ public class SearchFragment extends Fragment {
                     imm.hideSoftInputFromWindow(
                             getActivity().getWindow().getDecorView().getWindowToken(), 0);
 
-                    searchResultsArtworkList = new ArtworkListFragment();
-                    searchResultsArtworkList.setLinearLayoutContainerId(
-                            R.id.searchContainerLinearLayout);
-
-                    searchResultsArtworkList.setArtworkListTitle(
-                            "Search Results: " + "\"" + searchEditText.getText().toString() + "\"" );
-
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.searchContainerLinearLayout, searchResultsArtworkList)
-                            .addToBackStack(null).commit();
+//                    searchResultsArtworkList = new ArtworkListFragment();
+//                    searchResultsArtworkList.setLinearLayoutContainerId(
+//                            R.id.searchContainerLinearLayout);
+//
+//                    searchResultsArtworkList.setArtworkListTitle(
+//                            "Search Results: " + "\"" + searchEditText.getText().toString() + "\"" );
+//
+//                    getFragmentManager().beginTransaction()
+//                            .replace(R.id.searchContainerLinearLayout, searchResultsArtworkList)
+//                            .addToBackStack(null).commit();
 
                     handled = true;
                 }

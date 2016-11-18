@@ -10,7 +10,6 @@ public class Artwork {
     public String imageLink;
     public LatLng position;
     public String date;
-    public String exhibition_id;
 
     public Artwork() {
 

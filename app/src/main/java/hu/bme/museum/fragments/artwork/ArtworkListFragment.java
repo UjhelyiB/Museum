@@ -22,10 +22,13 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import hu.bme.museum.R;
 import hu.bme.museum.model.Artwork;
+import hu.bme.museum.model.Exhibition;
 
 public class ArtworkListFragment extends Fragment {
 
     private static final String ARTWORK_CHILD = "artworks";
+    private static final String EXHIBITION_CHILD = "exhibitions";
+
     private ProgressBar mProgressBar;
 
     //RecyclerView
@@ -36,7 +39,10 @@ public class ArtworkListFragment extends Fragment {
     private DatabaseReference databaseReference;
     private FirebaseRecyclerAdapter<Artwork, ArtworkListFragment.MessageViewHolder> firebaseRecyclerAdapter;
 
-    private String title = "Artworks";
+    private Exhibition exhibition;
+
+    private String title;
+
     private TextView artworkListTitleTextView;
     private int linearLayoutContainerId;
 
@@ -73,7 +79,7 @@ public class ArtworkListFragment extends Fragment {
                     Artwork.class,
                     R.layout.artwork_cardview,
                     ArtworkListFragment.MessageViewHolder.class,
-                    databaseReference.child(ARTWORK_CHILD)) {
+                    databaseReference.child(EXHIBITION_CHILD).child(exhibition.key).child(ARTWORK_CHILD)) {
 
             @Override
             protected void populateViewHolder(ArtworkListFragment.MessageViewHolder viewHolder,
@@ -145,6 +151,11 @@ public class ArtworkListFragment extends Fragment {
 
     public void setArtworkListTitle(String title) {
         this.title = title;
+    }
+
+    public void setExhibition(Exhibition exhibition) {
+        this.exhibition = exhibition;
+        title = exhibition.name;
     }
 
     public void setLinearLayoutContainerId(int id) {

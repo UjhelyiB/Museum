@@ -48,6 +48,7 @@ public class ExhibitionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         this.inflater = inflater;
+        container.removeAllViews();
         View rootView = inflater.inflate(R.layout.fragment_exhibitions, null, false);
 
         exhibitionsLinearLayout = (LinearLayout) rootView.findViewById(R.id.exhibitionsLinearLayout);
@@ -70,6 +71,7 @@ public class ExhibitionsFragment extends Fragment {
 
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Exhibition exhibition = snapshot.getValue(Exhibition.class);
+                    exhibition.key = snapshot.getKey();
                     if(!exhibitionsList.contains(exhibition)){
                         exhibitionsList.add(exhibition);
                     }
@@ -86,7 +88,7 @@ public class ExhibitionsFragment extends Fragment {
                         public void onClick(View view) {
                             ArtworkListFragment artworkListFragment = new ArtworkListFragment();
                             artworkListFragment.setLinearLayoutContainerId(R.id.browseLinearLayout);
-                            artworkListFragment.setArtworkListTitle(exhibition.name);
+                            artworkListFragment.setExhibition(exhibition);
 
                             getFragmentManager().beginTransaction()
                                     .replace(R.id.browseLinearLayout, artworkListFragment)
