@@ -18,7 +18,7 @@ import hu.bme.museum.model.Exhibition;
 
 public class FirebaseAdapter {
 
-    private final String LOG_TAG = "FirebaseAdapter";
+    private static final String LOG_TAG = "FirebaseAdapter";
 
     private static FirebaseAdapter instance = null;
 
@@ -27,13 +27,11 @@ public class FirebaseAdapter {
     private static final String EXHIBTION_CHILD = "exhibitions";
     private static final String ARTWORK_CHILD = "artworks";
 
-    private List<Artwork> artworks = new ArrayList<>();
-
     private FirebaseAdapter() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
-    public static FirebaseAdapter getFirebaseAdapter() {
+    public static FirebaseAdapter getInstance() {
         if (instance == null) {
             instance = new FirebaseAdapter();
         }
@@ -76,6 +74,8 @@ public class FirebaseAdapter {
     public List<Artwork> getArtworksForExhibtition(String exhibitionKey,
                                                    final ArtworkListFragment artworkListFragment) {
 
+        final List<Artwork> artworks = new ArrayList<>();
+
         databaseReference.child(EXHIBTION_CHILD).child(exhibitionKey).child(ARTWORK_CHILD)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -104,8 +104,35 @@ public class FirebaseAdapter {
         return artworks;
     }
 
-    public List<Artwork> getArtworksForSearchQuery(String query) {
-        List<Artwork> artworks = new ArrayList<>();
-        return artworks;
+    public List<Artwork> getArtworksForSearchQuery(final String query,
+                                                   final ArtworkListFragment artworkListFragment) {
+        final List<Artwork> matchedArtworks = new ArrayList<>();
+
+        databaseReference.child(EXHIBTION_CHILD).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        matchedArtworks.clear();
+
+                        for (DataSnapshot exhibition : dataSnapshot.getChildren()) {
+                            for (DataSnapshot snapshot : exhibition.child(ARTWORK_CHILD).getChildren()) {
+                                Artwork artwork = snapshot.getValue(Artwork.class);
+
+                                if (artwork.containsQuery(query)) {
+                                    matchedArtworks.add(artwork);
+                                }
+                            }
+                        }
+
+                        artworkListFragment.populateArtworks();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        return matchedArtworks;
     }
+
 }

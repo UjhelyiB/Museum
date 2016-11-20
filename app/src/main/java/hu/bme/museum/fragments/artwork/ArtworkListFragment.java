@@ -11,14 +11,14 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.model.Artwork;
-import hu.bme.museum.model.Exhibition;
 
-public class ArtworkListFragment extends Fragment {
+public abstract class ArtworkListFragment extends Fragment {
 
     private ProgressBar mProgressBar;
 
@@ -27,12 +27,10 @@ public class ArtworkListFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private ArtworkAdapter artworkAdapter;
 
-    private List<Artwork> artworks;
+    private List<Artwork> artworks = new ArrayList<>();
 
-    private Exhibition exhibition;
     private String title;
 
-    private TextView artworkListTitleTextView;
     private int linearLayoutContainerId;
 
     @Nullable
@@ -42,13 +40,10 @@ public class ArtworkListFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_artwork_list, null, false);
 
-        artworkListTitleTextView = (TextView) rootView.findViewById(R.id.artworkListTitleTextView);
+        TextView artworkListTitleTextView = (TextView) rootView.findViewById(R.id.artworkListTitleTextView);
         artworkListTitleTextView.setText(title);
 
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
-
-        artworks = FirebaseAdapter.getFirebaseAdapter().getArtworksForExhibtition(exhibition.key,
-                this);
 
         //RecyclerViewInit
         artworkRecyclerView = (RecyclerView) rootView.findViewById(R.id.artworkRecyclerView);
@@ -67,21 +62,16 @@ public class ArtworkListFragment extends Fragment {
         artworkRecyclerView.scrollToPosition(0);
     }
 
-    public void setExhibition(Exhibition exhibition) {
-        this.exhibition = exhibition;
-        title = exhibition.name;
-    }
-
     public void setLinearLayoutContainerId(int id) {
         this.linearLayoutContainerId = id;
     }
 
-//    public void setArtworks(List<Artwork> artworks) {
-//        this.artworks = artworks;
-//    }
-//
-//    public void setArtworkListTitle(String title) {
-//        this.title = title;
-//    }
+    protected void setArtworks(List<Artwork> artworks) {
+        this.artworks = artworks;
+    }
+
+    protected void setArtworkListTitle(String title) {
+        this.title = title;
+    }
 
 }

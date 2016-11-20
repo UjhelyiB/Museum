@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +15,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import hu.bme.museum.R;
+import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.fragments.artwork.ArtworkListFragment;
+import hu.bme.museum.fragments.artwork.SearchArtworkListFragment;
 
 public class SearchFragment extends Fragment {
 
-    private ArtworkListFragment searchResultsArtworkList;
+    private SearchArtworkListFragment searchResultsArtworkList;
 
     @Nullable
     @Override
@@ -32,22 +35,24 @@ public class SearchFragment extends Fragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    String query = searchEditText.getText().toString();
+
+                    Log.w("Search", "Query is: " + query);
+
                     // Hide keyboard
                     InputMethodManager imm = (InputMethodManager) getActivity()
                             .getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(
                             getActivity().getWindow().getDecorView().getWindowToken(), 0);
 
-//                    searchResultsArtworkList = new ArtworkListFragment();
-//                    searchResultsArtworkList.setLinearLayoutContainerId(
-//                            R.id.searchContainerLinearLayout);
-//
-//                    searchResultsArtworkList.setArtworkListTitle(
-//                            "Search Results: " + "\"" + searchEditText.getText().toString() + "\"" );
-//
-//                    getFragmentManager().beginTransaction()
-//                            .replace(R.id.searchContainerLinearLayout, searchResultsArtworkList)
-//                            .addToBackStack(null).commit();
+                    searchResultsArtworkList = new SearchArtworkListFragment();
+                    searchResultsArtworkList.setLinearLayoutContainerId(
+                            R.id.searchContainerLinearLayout);
+                    searchResultsArtworkList.setSearchQuery(query);
+
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.searchContainerLinearLayout, searchResultsArtworkList)
+                            .addToBackStack(null).commit();
 
                     handled = true;
                 }

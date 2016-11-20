@@ -22,4 +22,17 @@ public class Artwork {
         this.description = description;
         this.author = author;
     }
+
+    public boolean containsQuery(String query) {
+        for (String word : query.toLowerCase().split(" ")) {
+            if (author != null && name != null && description != null) {
+                if (author.toLowerCase().contains(word) ||
+                        name.toLowerCase().contains(word) ||
+                        description.toLowerCase().contains(word)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }

@@ -3,12 +3,10 @@ package hu.bme.museum.fragments.browse;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.List;
@@ -17,6 +15,7 @@ import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.fragments.artwork.ArtworkListFragment;
 
+import hu.bme.museum.fragments.artwork.ExhibitionArtworkListFragment;
 import hu.bme.museum.model.Exhibition;
 
 public class ExhibitionsFragment extends Fragment {
@@ -39,7 +38,7 @@ public class ExhibitionsFragment extends Fragment {
         exhibitionsLinearLayout.removeAllViews();
 //        exhibitionsTitleTextView = (TextView) rootView.findViewById(R.id.exhibitionsTitleTextView);
 
-        exhibitions = FirebaseAdapter.getFirebaseAdapter().getExhibitions(this);
+        exhibitions = FirebaseAdapter.getInstance().getExhibitions(this);
 
         return rootView;
     }
@@ -58,7 +57,7 @@ public class ExhibitionsFragment extends Fragment {
             row.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ArtworkListFragment artworkListFragment = new ArtworkListFragment();
+                    ExhibitionArtworkListFragment artworkListFragment = new ExhibitionArtworkListFragment();
                     artworkListFragment.setLinearLayoutContainerId(R.id.browseLinearLayout);
                     artworkListFragment.setExhibition(exhibition);
 
