@@ -1,4 +1,4 @@
-package hu.bme.museum.fragments.artwork;
+package hu.bme.museum.fragments.browse;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import hu.bme.museum.db.FirebaseAdapter;
+import hu.bme.museum.fragments.artwork.ArtworkListFragment;
 import hu.bme.museum.model.Exhibition;
 
 public class ExhibitionArtworkListFragment extends ArtworkListFragment {

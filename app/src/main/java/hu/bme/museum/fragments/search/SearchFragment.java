@@ -15,9 +15,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import hu.bme.museum.R;
-import hu.bme.museum.db.FirebaseAdapter;
-import hu.bme.museum.fragments.artwork.ArtworkListFragment;
-import hu.bme.museum.fragments.artwork.SearchArtworkListFragment;
 
 public class SearchFragment extends Fragment {
 

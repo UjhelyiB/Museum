@@ -1,17 +1,14 @@
-package hu.bme.museum.fragments.artwork;
+package hu.bme.museum.fragments.search;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
+import hu.bme.museum.fragments.artwork.ArtworkListFragment;
 
 public class SearchArtworkListFragment extends ArtworkListFragment {
 
