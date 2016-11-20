@@ -8,6 +8,8 @@ public class Artwork {
     public String author;
     public String description;
     public String imageLink;
+    public double lat;
+    public double lng;
     public LatLng position;
     public String date;
 
