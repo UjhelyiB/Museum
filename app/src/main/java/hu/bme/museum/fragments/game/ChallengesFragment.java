@@ -3,7 +3,6 @@ package hu.bme.museum.fragments.game;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,24 +10,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import hu.bme.museum.R;
-import hu.bme.museum.activities.ApplicationActivity;
-import hu.bme.museum.fragments.game.HighScoreFragment;
+import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.model.Quiz;
-import hu.bme.museum.model.User;
 
 public class ChallengesFragment extends Fragment {
     private static final String QUIZ = "quiz";
@@ -41,10 +30,7 @@ public class ChallengesFragment extends Fragment {
     Button highScoreButton;
     Button newGameButton;
 
-    FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
-
-    ArrayList<Quiz> quizList = new ArrayList<Quiz>();
+    List<Quiz> quizList = new ArrayList<Quiz>();
 
 
     @Nullable
@@ -61,7 +47,7 @@ public class ChallengesFragment extends Fragment {
         setListeners();
 
         if(!challengeAlreadyGenerated){
-            loadQuizFromDB();
+            quizList = FirebaseAdapter.getInstance().getQuiz(this);
             challengeAlreadyGenerated = true;
         }
 
@@ -89,34 +75,14 @@ public class ChallengesFragment extends Fragment {
 
     }
 
-    public void loadQuizFromDB(){
-        databaseReference = FirebaseDatabase.getInstance().getReference(CHALLENGES).child(QUIZ);
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                    Quiz currentQuiz = snapshot.getValue(Quiz.class);
-                    if(!quizList.contains(currentQuiz)){
-                        quizList.add(currentQuiz);
-                    }
-                }
-
-                Random random = new Random();
-                addQuestion(quizList.get(random.nextInt(quizList.size())));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("Error "," in loadQuizFromDB");
-                Toast.makeText(getActivity(), "Error in loadQuizFromDB", Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void populateQuizes(){
+        Random random = new Random();
+        addQuestion(quizList.get(random.nextInt(quizList.size())));
     }
 
     public void addQuestion(final Quiz quiz){
+        gameLayout.removeAllViews();
+
         View quizView = inflater.inflate(R.layout.quiz, null);
 
         TextView question= (TextView) quizView.findViewById(R.id.quizQuestion);
@@ -171,7 +137,8 @@ public class ChallengesFragment extends Fragment {
 
                 if(answerIsCorrect){
                     Toast.makeText(getActivity(), R.string.correct_answer, Toast.LENGTH_SHORT).show();
-                    givePointToUser(FirebaseDatabase.getInstance().getReference(ApplicationActivity.USERS), FirebaseAuth.getInstance().getCurrentUser());
+
+                    FirebaseAdapter.getInstance().givePointToCurrentUser();
                 }else{
                     Toast.makeText(getActivity(), R.string.wrong_answer, Toast.LENGTH_SHORT).show();
                 }
@@ -179,21 +146,5 @@ public class ChallengesFragment extends Fragment {
         });
 
         gameLayout.addView(quizView, 0);
-    }
-
-    public void givePointToUser(final DatabaseReference databaseReference, final FirebaseUser user){
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User updatedUser = dataSnapshot.child(user.getUid()).getValue(User.class);
-                updatedUser.score += 1;
-                databaseReference.child(user.getUid()).setValue(updatedUser);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 }
