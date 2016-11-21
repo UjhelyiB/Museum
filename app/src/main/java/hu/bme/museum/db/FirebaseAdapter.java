@@ -149,16 +149,30 @@ public class FirebaseAdapter {
 
     public List<Quiz> getQuiz(final ChallengesFragment challengesFragment){
         final List<Quiz> quizes = new ArrayList<>();
+        final List<Quiz> allQuizes = new ArrayList<>();
+
+        getAlreadyAnsweredQuizKeysList(null);
 
         databaseReference.child(CHALLENGES_CHILD).child(QUIZ_CHILD).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 quizes.clear();
 
-                for(DataSnapshot quizSnapshot : dataSnapshot.getChildren()){
-                    Quiz quiz = quizSnapshot.getValue(Quiz.class);
-                    quizes.add(quiz);
+                for(final DataSnapshot quizSnapshot : dataSnapshot.getChildren()) {
+                    final Quiz quiz = quizSnapshot.getValue(Quiz.class);
+
+                    allQuizes.add(quiz);
+                    if(!challengesFragment.getAlreadyAnsweredQuizKeysList().contains(quizSnapshot.getKey())){
+                        quizes.add(quiz);
+                    }
                 }
+                if(quizes.isEmpty()){
+                    quizes.addAll(allQuizes);
+
+                    FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+                    databaseReference.child(USERS_CHILD).child(currentUser.getUid()).child(CHALLENGES_CHILD).removeValue();
+                }
+
 
                 challengesFragment.populateQuizes();
             }
@@ -258,5 +272,27 @@ public class FirebaseAdapter {
         });
 
         return artworks;
+    }
+
+    public List<String> getAlreadyAnsweredQuizKeysList(final ChallengesFragment challengesFragment) {
+        final ArrayList<String> alreadyAnsweredQuizes = new ArrayList<>();
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        databaseReference.child(USERS_CHILD).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.child(currentUser.getUid()).hasChild(CHALLENGES_CHILD)){
+                    for(DataSnapshot completedChallengesSnapshot : dataSnapshot.child(currentUser.getUid()).child(CHALLENGES_CHILD).getChildren()){
+                        alreadyAnsweredQuizes.add(completedChallengesSnapshot.getKey());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return alreadyAnsweredQuizes;
     }
 }

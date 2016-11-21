@@ -25,13 +25,13 @@ public class ChallengesFragment extends Fragment {
 
     private boolean challengeAlreadyGenerated = false;
 
-    LayoutInflater inflater;
-    LinearLayout gameLayout;
-    Button highScoreButton;
-    Button newGameButton;
+    private LayoutInflater inflater;
+    private LinearLayout gameLayout;
+    private Button highScoreButton;
+    private Button newGameButton;
 
-    List<Quiz> quizList = new ArrayList<Quiz>();
-
+    private List<Quiz> quizList = new ArrayList<Quiz>();
+    private List<String> alreadyAnsweredQuizKeysList = new ArrayList<>();
 
     @Nullable
     @Override
@@ -46,12 +46,18 @@ public class ChallengesFragment extends Fragment {
 
         setListeners();
 
+        alreadyAnsweredQuizKeysList = FirebaseAdapter.getInstance().getAlreadyAnsweredQuizKeysList(this);
+
         if(!challengeAlreadyGenerated){
             quizList = FirebaseAdapter.getInstance().getQuiz(this);
             challengeAlreadyGenerated = true;
         }
 
         return rootView;
+    }
+
+    public List<String> getAlreadyAnsweredQuizKeysList() {
+        return alreadyAnsweredQuizKeysList;
     }
 
     public void setListeners(){

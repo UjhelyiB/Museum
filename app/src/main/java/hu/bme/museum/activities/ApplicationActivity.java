@@ -35,6 +35,7 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
 
     private static final String TAG = "ApplicationActivity";
     public static final String USERS = "users";
+    private static final String LAST_ACTIVE = "lastActive";
     ApplicationFragmentPagerAdapter pagerAdapter;
     ViewPager viewPager;
 
@@ -103,8 +104,7 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
 
                                         currentUser = snapshot.getValue(User.class);
                                         if(currentUser.email.equals(user.getEmail())){
-                                            currentUser.lastActive = System.currentTimeMillis()/1000;
-                                            dbReference.child(user.getUid()).setValue(currentUser);
+                                            dbReference.child(user.getUid()).child(LAST_ACTIVE).setValue(System.currentTimeMillis()/1000);
                                             return;
                                         }
                                     }
