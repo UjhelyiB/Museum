@@ -18,6 +18,7 @@ import hu.bme.museum.fragments.artwork.ArtworkListFragment;
 import hu.bme.museum.fragments.browse.ExhibitionsFragment;
 import hu.bme.museum.fragments.game.ChallengesFragment;
 import hu.bme.museum.fragments.game.HighScoreFragment;
+import hu.bme.museum.fragments.map.MapFragment;
 import hu.bme.museum.model.Artwork;
 import hu.bme.museum.model.Exhibition;
 import hu.bme.museum.model.Quiz;
@@ -36,7 +37,6 @@ public class FirebaseAdapter {
     private static final String CHALLENGES_CHILD = "challenges";
     private static final String QUIZ_CHILD = "quiz";
     private static final String USERS_CHILD = "users";
-    private static final String SCORE_CHILD = "score";
 
     private FirebaseAdapter() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -82,7 +82,7 @@ public class FirebaseAdapter {
         return exhibitions;
     }
 
-    public List<Artwork> getArtworksForExhibtition(String exhibitionKey,
+    public List<Artwork> getArtworksForExhibition(String exhibitionKey,
                                                    final ArtworkListFragment artworkListFragment) {
 
         final List<Artwork> artworks = new ArrayList<>();
@@ -231,5 +231,32 @@ public class FirebaseAdapter {
 
             }
         });
+    }
+
+    public List<Artwork> getAllArtworksForMap(final MapFragment mapFragment){
+        final ArrayList<Artwork> artworks = new ArrayList<>();
+
+        databaseReference.child(EXHIBTION_CHILD).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot exhibitionsSnapshot : dataSnapshot.getChildren()){
+                    for(DataSnapshot concreteArtworks : exhibitionsSnapshot.child(ARTWORK_CHILD).getChildren()){
+                        Artwork newArtwork = concreteArtworks.getValue(Artwork.class);
+                        newArtwork.position = new LatLng(newArtwork.lat, newArtwork.lng);
+
+                        artworks.add(newArtwork);
+                    }
+                }
+
+                mapFragment.populateMapWithMarkers();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        return artworks;
     }
 }

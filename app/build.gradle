@@ -39,5 +39,7 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:9.6.1'
     // Firebase UI
     compile 'com.firebaseui:firebase-ui-database:0.4.0'
+    //load image to map
+    compile 'com.koushikdutta.ion:ion:2.+'
 }
 apply plugin: 'com.google.gms.google-services'

@@ -3,6 +3,7 @@ package hu.bme.museum.fragments.map;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Criteria;
@@ -18,6 +19,8 @@ import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -35,20 +38,34 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.koushikdutta.ion.Ion;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import hu.bme.museum.R;
+import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.fragments.TabFragment;
+import hu.bme.museum.fragments.artwork.ArtworkDetailsFragment;
 import hu.bme.museum.model.Artwork;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-public class MapFragment extends TabFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, LocationListener, GoogleApiClient.OnConnectionFailedListener {
+public class MapFragment extends TabFragment
+        implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+        LocationListener, GoogleApiClient.OnConnectionFailedListener,
+        GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener{
 
     private static final int REQUEST_CODE_ACCESS_FINE_LOCATION_PERM = 267;
     private static final long LOCATION_REFRESH_TIME = 2000;
     private static final float LOCATION_REFRESH_DISTANCE = 2;
+    private static final int IMAGE_WIDTH = 200;
+    private static final int IMAGE_HEIGHT = 200;
 
     private GoogleMap map;
     private GoogleApiClient googleApiClient;
@@ -56,7 +73,7 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback, Goog
 
     Marker userMarker;
     Location userLocation;
-    private ArrayList<Artwork> piecesOfArt = new ArrayList<>();
+    private List<Artwork> piecesOfArt = new ArrayList<>();
     LocationManager locationManager;
     private static View rootView;
 
@@ -161,26 +178,40 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback, Goog
     @Override
     public void onMapReady(GoogleMap map) {
         this.map = map;
+        map.setInfoWindowAdapter(this);
+        map.setOnInfoWindowClickListener(this);
 
-        loadPieces();
-
-        addMarkers();
+        piecesOfArt = FirebaseAdapter.getInstance().getAllArtworksForMap(this);
     }
 
     private void addUserMarker(){
         if (userLocation != null) {
             userMarker = map.addMarker(new MarkerOptions().position(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))
-                    .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.user_marker_icon)))
-                    .title("You"));
+                    .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromDrawable(R.drawable.user_marker_icon)))
+                    .title(getString(R.string.you)));
         }
     }
 
-    private void addMarkers() {
+    public void populateMapWithMarkers() {
+        map.clear();
+        addUserMarker();
+
         for (int i = 0; i < piecesOfArt.size(); i++) {
-            map.addMarker(new MarkerOptions()
-                    .position(piecesOfArt.get(i).position)
-                    //.icon(BitmapDescriptorFactory.fromResource(piecesOfArt.get(i).getPicture()))
-                    .title(piecesOfArt.get(i).name));
+//            try {
+//                Bitmap image = Ion.with(getContext()).load(piecesOfArt.get(i).imageLink).asBitmap().get();
+//                Bitmap resizedImage = Bitmap.createScaledBitmap(image, 150, 150, false);
+                map.addMarker(new MarkerOptions()
+                        .position(piecesOfArt.get(i).position)
+//                        .icon(BitmapDescriptorFactory.fromBitmap(resizedImage))
+                        .title(piecesOfArt.get(i).name));
+
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            } catch (ExecutionException e) {
+//                e.printStackTrace();
+//            }
+
+
         }
 
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -191,21 +222,12 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback, Goog
         });
     }
 
-    //TODO
-    //load from DB
-    public void loadPieces() {
-//        piecesOfArt.add(new Artwork("House", null, new LatLng(getCurrentLocation().getLatitude()+0.003, getCurrentLocation().getLongitude()+0.001), "This is a house.", "Somebody"));
-//        piecesOfArt.add(new Artwork("Tractor", null, new LatLng(getCurrentLocation().getLatitude()-0.003, getCurrentLocation().getLongitude()+0.001), "This a a tractor.", "Somebody Else"));
-    }
-
-
     public void updateMapWithUserLocation() {
-//        updateUserLocation();
         if (userLocation != null) {
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))
                         // Sets the center of the map to location user
-                    .zoom(16)                   // Sets the zoom
+                    .zoom(18)                   // Sets the zoom
                     .bearing(0)                // Sets the orientation of the camera to north
                     .tilt(40)                   // Sets the tilt of the camera to 40 degrees
                     .build();                   // Creates a CameraPosition from the builder
@@ -238,7 +260,7 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback, Goog
         return "Map";
     }
 
-    private Bitmap getBitmap(int drawableRes) {
+    private Bitmap getBitmapFromDrawable(int drawableRes) {
         Drawable drawable = getResources().getDrawable(drawableRes);
         Canvas canvas = new Canvas();
         Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
@@ -272,6 +294,55 @@ public class MapFragment extends TabFragment implements OnMapReadyCallback, Goog
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d("Map", "Connection Failed!");
         Toast.makeText(getActivity(), "Connection Failed!", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public View getInfoWindow(Marker marker) {
+        View window = getLayoutInflater(null).inflate(R.layout.marker, null);
+
+        ImageView im = (ImageView) window.findViewById(R.id.markerIcon);
+        TextView tv = (TextView) window.findViewById(R.id.markerTitle);
+
+        for(int i=0; i< piecesOfArt.size(); i++){
+            if(piecesOfArt.get(i).name.equals(marker.getTitle())){
+                try {
+
+                    Bitmap image = Ion.with(getContext()).load(piecesOfArt.get(i).imageLink).asBitmap().get();
+                    Bitmap resizedImage = Bitmap.createScaledBitmap(image, IMAGE_WIDTH, IMAGE_HEIGHT, false);
+                    im.setImageBitmap(resizedImage);
+                    tv.setText(piecesOfArt.get(i).name);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return window;
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
+        return null;
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        for(int i=0; i< piecesOfArt.size(); i++){
+            if(piecesOfArt.get(i).name.equals(marker.getTitle())){
+                ArtworkDetailsFragment artworkDetailsFragment =
+                        new ArtworkDetailsFragment();
+                artworkDetailsFragment.setArtwork(piecesOfArt.get(i));
+
+                this.getFragmentManager().beginTransaction()
+                        .replace(R.id.map, artworkDetailsFragment)
+                        .addToBackStack(null).commit();
+            }
+        }
+
 
     }
 }

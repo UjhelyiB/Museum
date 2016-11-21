@@ -19,7 +19,7 @@ public class ExhibitionArtworkListFragment extends ArtworkListFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        setArtworks(FirebaseAdapter.getInstance().getArtworksForExhibtition(exhibition.key, this));
+        setArtworks(FirebaseAdapter.getInstance().getArtworksForExhibition(exhibition.key, this));
 
         return super.onCreateView(inflater, container, savedInstanceState);
     }
