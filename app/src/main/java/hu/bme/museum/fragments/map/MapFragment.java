@@ -6,20 +6,16 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
-import android.location.LocationManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -35,20 +31,10 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.clustering.ClusterManager;
-import com.koushikdutta.ion.Ion;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import hu.bme.museum.R;
-import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.fragments.TabFragment;
-import hu.bme.museum.fragments.artwork.ArtworkDetailsFragment;
-import hu.bme.museum.fragments.map.marker_clustering.ArtworkMarkerItem;
 import hu.bme.museum.fragments.map.marker_clustering.MuseumClusterManager;
-import hu.bme.museum.model.Artwork;
 
 public class    MapFragment extends TabFragment
         implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
@@ -57,8 +43,6 @@ public class    MapFragment extends TabFragment
     private static final int REQUEST_CODE_ACCESS_FINE_LOCATION_PERM = 267;
     private static final long LOCATION_REFRESH_TIME = 2000;
     private static final float LOCATION_REFRESH_DISTANCE = 2;
-    private static final int IMAGE_WIDTH = 200;
-    private static final int IMAGE_HEIGHT = 200;
 
     private GoogleMap map;
     private GoogleApiClient googleApiClient;
@@ -67,8 +51,6 @@ public class    MapFragment extends TabFragment
 
     Marker userMarker;
     Location userLocation;
-    private List<Artwork> piecesOfArt = new ArrayList<>();
-    LocationManager locationManager;
     private static View rootView;
 
     @Nullable
@@ -180,50 +162,14 @@ public class    MapFragment extends TabFragment
     }
 
     private void setUpClusterer() {
-        // Initialize the manager with the context and the map.
-        // (Activity extends context, so we can pass 'this' in the constructor.)
         clusterManager = new MuseumClusterManager(getContext(), map, this);
-
-        // Point the map's listeners at the listeners implemented by the cluster
-        // manager.
-//        map.setOnCameraIdleListener(clusterManager);
-//        map.setOnMarkerClickListener(clusterManager);
-
-        // Add cluster items (markers) to the cluster manager.
-        //addItems();
     }
-
-//    private void addItems() {
-//
-//        // Set some lat/lng coordinates to start with.
-//        double lat = 47.4;
-//        double lng = 10;
-//
-//        // Add ten cluster items in close proximity, for purposes of this example.
-//        for (int i = 0; i < 10; i++) {
-//            double offset = i / 60d;
-//            lat = lat + offset;
-//            lng = lng + offset;
-//            ArtworkMarkerItem offsetItem = new ArtworkMarkerItem("Knight", lat, lng);
-//            clusterManager.addItem(offsetItem);
-//        }
-//    }
 
     private void addUserMarker(){
         if (userLocation != null) {
             userMarker = map.addMarker(new MarkerOptions().position(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))
                     .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromDrawable(R.drawable.user_marker_icon)))
                     .title(getString(R.string.you)));
-        }
-    }
-
-    public void populateMapWithMarkers() {
-        map.clear();
-        addUserMarker();
-
-        for (int i = 0; i < piecesOfArt.size(); i++) {
-            map.addMarker(new MarkerOptions()
-                    .position(piecesOfArt.get(i).position));
         }
     }
 
@@ -300,9 +246,5 @@ public class    MapFragment extends TabFragment
         Log.d("Map", "Connection Failed!");
         Toast.makeText(getActivity(), "Connection Failed!", Toast.LENGTH_SHORT).show();
 
-    }
-
-    public List<Artwork> getPiecesOfArt() {
-        return piecesOfArt;
     }
 }

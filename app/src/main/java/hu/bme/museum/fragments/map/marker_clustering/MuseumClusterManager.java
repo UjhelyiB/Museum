@@ -2,6 +2,7 @@ package hu.bme.museum.fragments.map.marker_clustering;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,8 +27,8 @@ public class MuseumClusterManager extends ClusterManager
         ClusterManager.OnClusterItemInfoWindowClickListener<ArtworkMarkerItem>,
         GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener {
 
-    private static final int IMAGE_WIDTH = 200;
-    private static final int IMAGE_HEIGHT = 200;
+    private static int IMAGE_WIDTH;
+    private static int IMAGE_HEIGHT;
     private GoogleMap map;
     private MapFragment mapFragment;
     private List<Artwork> piecesOfArt;
@@ -35,6 +36,13 @@ public class MuseumClusterManager extends ClusterManager
 
     public MuseumClusterManager(Context context, GoogleMap map, MapFragment mapFragment) {
         super(context, map);
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        mapFragment.getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        IMAGE_WIDTH = metrics.heightPixels/5;
+        IMAGE_HEIGHT = metrics.heightPixels/5;
+
+
         this.map = map;
         this.mapFragment = mapFragment;
 
