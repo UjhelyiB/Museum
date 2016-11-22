@@ -19,8 +19,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:scaleType="fitStart"
-                android:adjustViewBounds="true"
-                android:src="@mipmap/artwork_placeholder"/>
+                android:adjustViewBounds="true"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -59,7 +58,6 @@
 
                 <TextView
                     android:id="@+id/artworkDescriptionTextView"
-                    android:text="@string/loremIpsum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorText"/>

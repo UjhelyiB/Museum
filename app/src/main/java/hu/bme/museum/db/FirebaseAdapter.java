@@ -45,7 +45,9 @@ public class FirebaseAdapter {
 
     public static FirebaseAdapter getInstance() {
         if (instance == null) {
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
             instance = new FirebaseAdapter();
+
         }
         return instance;
     }

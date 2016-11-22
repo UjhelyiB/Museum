@@ -27,8 +27,7 @@
                 android:layout_height="370dp"
                 android:layout_width="match_parent"
                 android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                android:src="@mipmap/artwork_placeholder"/>
+                android:adjustViewBounds="true"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
