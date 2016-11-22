@@ -32,6 +32,7 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.6.1'
     // Google
     compile 'com.google.android.gms:play-services-auth:9.6.1'
+    compile 'com.google.maps.android:android-maps-utils:0.4+'
     //Firebase
     compile 'com.google.firebase:firebase-core:9.6.1'
     compile 'com.google.firebase:firebase-auth:9.6.1'
@@ -39,7 +40,7 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:9.6.1'
     // Firebase UI
     compile 'com.firebaseui:firebase-ui-database:0.4.0'
-    //load image to map
+    //load image to map from network
     compile 'com.koushikdutta.ion:ion:2.+'
 }
 apply plugin: 'com.google.gms.google-services'

@@ -37,6 +37,7 @@ public class ChallengesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        container.removeAllViews();
 
         this.inflater = inflater;
         View rootView = inflater.inflate(R.layout.fragment_challenges, null, false);

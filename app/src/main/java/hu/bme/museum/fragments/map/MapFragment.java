@@ -3,17 +3,14 @@ package hu.bme.museum.fragments.map;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -38,12 +35,9 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
 import com.koushikdutta.ion.Ion;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -52,14 +46,13 @@ import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.fragments.TabFragment;
 import hu.bme.museum.fragments.artwork.ArtworkDetailsFragment;
+import hu.bme.museum.fragments.map.marker_clustering.ArtworkMarkerItem;
+import hu.bme.museum.fragments.map.marker_clustering.MuseumClusterManager;
 import hu.bme.museum.model.Artwork;
 
-import static android.content.Context.LOCATION_SERVICE;
-
-public class MapFragment extends TabFragment
+public class    MapFragment extends TabFragment
         implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        LocationListener, GoogleApiClient.OnConnectionFailedListener,
-        GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener{
+        LocationListener, GoogleApiClient.OnConnectionFailedListener{
 
     private static final int REQUEST_CODE_ACCESS_FINE_LOCATION_PERM = 267;
     private static final long LOCATION_REFRESH_TIME = 2000;
@@ -69,6 +62,7 @@ public class MapFragment extends TabFragment
 
     private GoogleMap map;
     private GoogleApiClient googleApiClient;
+    private MuseumClusterManager clusterManager;
     LocationRequest locationRequest;
 
     Marker userMarker;
@@ -129,9 +123,7 @@ public class MapFragment extends TabFragment
     @Override
     public void onResume() {
         super.onResume();
-        if (googleApiClient.isConnected()) {
-            startLocationUpdates();
-        }
+        startLocationUpdates();
     }
 
     @Override
@@ -145,13 +137,18 @@ public class MapFragment extends TabFragment
 
     @SuppressWarnings("MissingPermission")
     protected void startLocationUpdates() {
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                googleApiClient, locationRequest, this);
+        if(googleApiClient.isConnected()){
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    googleApiClient, locationRequest, this);
+        }
+
     }
 
     protected void stopLocationUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(
-                googleApiClient, this);
+        if(googleApiClient.isConnected()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(
+                    googleApiClient, this);
+        }
     }
 
     @Override
@@ -178,10 +175,40 @@ public class MapFragment extends TabFragment
     @Override
     public void onMapReady(GoogleMap map) {
         this.map = map;
-        map.setInfoWindowAdapter(this);
-        map.setOnInfoWindowClickListener(this);
 
         piecesOfArt = FirebaseAdapter.getInstance().getAllArtworksForMap(this);
+
+        setUpClusterer();
+    }
+
+    private void setUpClusterer() {
+        // Initialize the manager with the context and the map.
+        // (Activity extends context, so we can pass 'this' in the constructor.)
+        clusterManager = new MuseumClusterManager(getContext(), map, this);
+
+        // Point the map's listeners at the listeners implemented by the cluster
+        // manager.
+        map.setOnCameraIdleListener(clusterManager);
+        map.setOnMarkerClickListener(clusterManager);
+
+        // Add cluster items (markers) to the cluster manager.
+        addItems();
+    }
+
+    private void addItems() {
+
+        // Set some lat/lng coordinates to start with.
+        double lat = 47.4;
+        double lng = 10;
+
+        // Add ten cluster items in close proximity, for purposes of this example.
+        for (int i = 0; i < 10; i++) {
+            double offset = i / 60d;
+            lat = lat + offset;
+            lng = lng + offset;
+            ArtworkMarkerItem offsetItem = new ArtworkMarkerItem("Knight", lat, lng);
+            clusterManager.addItem(offsetItem);
+        }
     }
 
     private void addUserMarker(){
@@ -197,36 +224,16 @@ public class MapFragment extends TabFragment
         addUserMarker();
 
         for (int i = 0; i < piecesOfArt.size(); i++) {
-//            try {
-//                Bitmap image = Ion.with(getContext()).load(piecesOfArt.get(i).imageLink).asBitmap().get();
-//                Bitmap resizedImage = Bitmap.createScaledBitmap(image, 150, 150, false);
-                map.addMarker(new MarkerOptions()
-                        .position(piecesOfArt.get(i).position)
-//                        .icon(BitmapDescriptorFactory.fromBitmap(resizedImage))
-                        .title(piecesOfArt.get(i).name));
-
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            } catch (ExecutionException e) {
-//                e.printStackTrace();
-//            }
-
-
+            map.addMarker(new MarkerOptions()
+                    .position(piecesOfArt.get(i).position));
         }
-
-        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                return false;
-            }
-        });
     }
 
     public void updateMapWithUserLocation() {
         if (userLocation != null) {
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))
-                        // Sets the center of the map to location user
+                    // Sets the center of the map to location user
                     .zoom(18)                   // Sets the zoom
                     .bearing(0)                // Sets the orientation of the camera to north
                     .tilt(40)                   // Sets the tilt of the camera to 40 degrees
@@ -297,52 +304,7 @@ public class MapFragment extends TabFragment
 
     }
 
-    @Override
-    public View getInfoWindow(Marker marker) {
-        View window = getLayoutInflater(null).inflate(R.layout.marker, null);
-
-        ImageView im = (ImageView) window.findViewById(R.id.markerIcon);
-        TextView tv = (TextView) window.findViewById(R.id.markerTitle);
-
-        for(int i=0; i< piecesOfArt.size(); i++){
-            if(piecesOfArt.get(i).name.equals(marker.getTitle())){
-                try {
-
-                    Bitmap image = Ion.with(getContext()).load(piecesOfArt.get(i).imageLink).asBitmap().get();
-                    Bitmap resizedImage = Bitmap.createScaledBitmap(image, IMAGE_WIDTH, IMAGE_HEIGHT, false);
-                    im.setImageBitmap(resizedImage);
-                    tv.setText(piecesOfArt.get(i).name);
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return window;
-    }
-
-    @Override
-    public View getInfoContents(Marker marker) {
-        return null;
-    }
-
-    @Override
-    public void onInfoWindowClick(Marker marker) {
-        for(int i=0; i< piecesOfArt.size(); i++){
-            if(piecesOfArt.get(i).name.equals(marker.getTitle())){
-                ArtworkDetailsFragment artworkDetailsFragment =
-                        new ArtworkDetailsFragment();
-                artworkDetailsFragment.setArtwork(piecesOfArt.get(i));
-
-                this.getFragmentManager().beginTransaction()
-                        .replace(R.id.map, artworkDetailsFragment)
-                        .addToBackStack(null).commit();
-            }
-        }
-
-
+    public List<Artwork> getPiecesOfArt() {
+        return piecesOfArt;
     }
 }
