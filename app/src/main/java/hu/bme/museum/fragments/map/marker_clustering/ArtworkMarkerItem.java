@@ -1,6 +1,7 @@
 package hu.bme.museum.fragments.map.marker_clustering;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.maps.android.clustering.ClusterItem;
 
 public class ArtworkMarkerItem implements ClusterItem {

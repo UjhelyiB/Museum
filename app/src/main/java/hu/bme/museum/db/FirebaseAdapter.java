@@ -19,6 +19,7 @@ import hu.bme.museum.fragments.browse.ExhibitionsFragment;
 import hu.bme.museum.fragments.game.ChallengesFragment;
 import hu.bme.museum.fragments.game.HighScoreFragment;
 import hu.bme.museum.fragments.map.MapFragment;
+import hu.bme.museum.fragments.map.marker_clustering.MuseumClusterManager;
 import hu.bme.museum.model.Artwork;
 import hu.bme.museum.model.Exhibition;
 import hu.bme.museum.model.Quiz;
@@ -247,7 +248,7 @@ public class FirebaseAdapter {
         });
     }
 
-    public List<Artwork> getAllArtworksForMap(final MapFragment mapFragment){
+    public List<Artwork> getAllArtworksForClusterManager(final MuseumClusterManager museumClusterManager){
         final ArrayList<Artwork> artworks = new ArrayList<>();
 
         databaseReference.child(EXHIBTION_CHILD).addValueEventListener(new ValueEventListener() {
@@ -262,7 +263,7 @@ public class FirebaseAdapter {
                     }
                 }
 
-                mapFragment.populateMapWithMarkers();
+                museumClusterManager.populateMuseumClusterManager();
             }
 
             @Override

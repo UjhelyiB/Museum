@@ -176,8 +176,6 @@ public class    MapFragment extends TabFragment
     public void onMapReady(GoogleMap map) {
         this.map = map;
 
-        piecesOfArt = FirebaseAdapter.getInstance().getAllArtworksForMap(this);
-
         setUpClusterer();
     }
 
@@ -188,28 +186,28 @@ public class    MapFragment extends TabFragment
 
         // Point the map's listeners at the listeners implemented by the cluster
         // manager.
-        map.setOnCameraIdleListener(clusterManager);
-        map.setOnMarkerClickListener(clusterManager);
+//        map.setOnCameraIdleListener(clusterManager);
+//        map.setOnMarkerClickListener(clusterManager);
 
         // Add cluster items (markers) to the cluster manager.
-        addItems();
+        //addItems();
     }
 
-    private void addItems() {
-
-        // Set some lat/lng coordinates to start with.
-        double lat = 47.4;
-        double lng = 10;
-
-        // Add ten cluster items in close proximity, for purposes of this example.
-        for (int i = 0; i < 10; i++) {
-            double offset = i / 60d;
-            lat = lat + offset;
-            lng = lng + offset;
-            ArtworkMarkerItem offsetItem = new ArtworkMarkerItem("Knight", lat, lng);
-            clusterManager.addItem(offsetItem);
-        }
-    }
+//    private void addItems() {
+//
+//        // Set some lat/lng coordinates to start with.
+//        double lat = 47.4;
+//        double lng = 10;
+//
+//        // Add ten cluster items in close proximity, for purposes of this example.
+//        for (int i = 0; i < 10; i++) {
+//            double offset = i / 60d;
+//            lat = lat + offset;
+//            lng = lng + offset;
+//            ArtworkMarkerItem offsetItem = new ArtworkMarkerItem("Knight", lat, lng);
+//            clusterManager.addItem(offsetItem);
+//        }
+//    }
 
     private void addUserMarker(){
         if (userLocation != null) {
