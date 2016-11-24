@@ -9,11 +9,14 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
-import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+import com.google.maps.android.ui.IconGenerator;
 import com.koushikdutta.ion.Ion;
 
 import java.util.List;
@@ -38,6 +41,7 @@ public class MuseumClusterManager<ClusterItem extends ArtworkMarkerItem> extends
     private MapFragment mapFragment;
     private List<Artwork> piecesOfArt;
     private ArtworkMarkerItem clickedArtworkMarkerItem;
+    private MuseumClusterManager thisMuseumClusterManager;
 
     public MuseumClusterManager(Context context, GoogleMap map, MapFragment mapFragment) {
         super(context, map);
@@ -50,6 +54,7 @@ public class MuseumClusterManager<ClusterItem extends ArtworkMarkerItem> extends
 
         this.map = map;
         this.mapFragment = mapFragment;
+        thisMuseumClusterManager = this;
 
         setupListeners();
 
@@ -64,16 +69,19 @@ public class MuseumClusterManager<ClusterItem extends ArtworkMarkerItem> extends
         setOnClusterItemClickListener(this);
         setOnClusterItemInfoWindowClickListener(this);
         setOnClusterClickListener(this);
+        setRenderer(new ArtworkRenderer());
 
         piecesOfArt = FirebaseAdapter.getInstance().getAllArtworksForClusterManager(this);
     }
 
-    public void populateMuseumClusterManager(){
 
+
+    public void populateMuseumClusterManager(){
         for(int i=0; i< piecesOfArt.size(); i++){
             Artwork currentArtwork = piecesOfArt.get(i);
 
             ArtworkMarkerItem newArtworkMarkerItem = new ArtworkMarkerItem(currentArtwork.name, currentArtwork.imageLink, currentArtwork.lat, currentArtwork.lng);
+
 
             addItem(newArtworkMarkerItem);
         }
@@ -105,35 +113,33 @@ public class MuseumClusterManager<ClusterItem extends ArtworkMarkerItem> extends
 
     @Override
     public View getInfoWindow(Marker marker) {
+        return null;
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
         View window = mapFragment.getLayoutInflater(null).inflate(R.layout.marker, null);
 
         ImageView im = (ImageView) window.findViewById(R.id.markerIcon);
         TextView tv = (TextView) window.findViewById(R.id.markerTitle);
 
         if (clickedArtworkMarkerItem != null) {
-                try {
-                        Bitmap image = Ion.with(mapFragment.getContext()).load(clickedArtworkMarkerItem.getImageLink()).asBitmap().get();
-                        Bitmap resizedImage = Bitmap.createScaledBitmap(image, IMAGE_WIDTH, IMAGE_HEIGHT, false);
-                        im.setImageBitmap(resizedImage);
-                        tv.setText(clickedArtworkMarkerItem.getTitle());
+            try {
+                Bitmap image = Ion.with(mapFragment.getContext()).load(clickedArtworkMarkerItem.getImageLink()).asBitmap().get();
+                Bitmap resizedImage = Bitmap.createScaledBitmap(image, IMAGE_WIDTH, IMAGE_HEIGHT, false);
+                im.setImageBitmap(resizedImage);
+                tv.setText(clickedArtworkMarkerItem.getTitle());
 
-                    clickedArtworkMarkerItem = null;
-                    return window;
+                clickedArtworkMarkerItem = null;
+                return window;
 
-                    }catch(InterruptedException e){
-                        e.printStackTrace();
-                    }catch(ExecutionException e){
-                        e.printStackTrace();
-                    }
-                }
+            }catch(InterruptedException e){
+                e.printStackTrace();
+            }catch(ExecutionException e){
+                e.printStackTrace();
+            }
+        }
 
-        return null;
-
-
-    }
-
-    @Override
-    public View getInfoContents(Marker marker) {
         return null;
     }
 
@@ -143,9 +149,35 @@ public class MuseumClusterManager<ClusterItem extends ArtworkMarkerItem> extends
         for (ArtworkMarkerItem item : cluster.getItems()) {
             builder.include(item.getPosition());
         }
+
         final LatLngBounds bounds = builder.build();
         map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
 
         return true;
+    }
+
+    private class ArtworkRenderer extends DefaultClusterRenderer<ArtworkMarkerItem> {
+        private final IconGenerator mIconGenerator = new IconGenerator(mapFragment.getContext());
+
+        public ArtworkRenderer() {
+            super(mapFragment.getContext(), map, thisMuseumClusterManager);
+        }
+
+        @Override
+        protected void onBeforeClusterItemRendered(ArtworkMarkerItem artworkMarkerItem, MarkerOptions markerOptions) {
+            Bitmap icon = mIconGenerator.makeIcon(artworkMarkerItem.getTitle());
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(artworkMarkerItem.getTitle());
+
+        }
+
+        @Override
+        protected void onBeforeClusterRendered(Cluster<ArtworkMarkerItem> cluster, MarkerOptions markerOptions) {
+            super.onBeforeClusterRendered(cluster, markerOptions);
+        }
+
+        @Override
+        protected boolean shouldRenderAsCluster(Cluster cluster) {
+            return cluster.getSize() > 1;
+        }
     }
 }
