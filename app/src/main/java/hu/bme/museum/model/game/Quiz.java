@@ -14,10 +14,8 @@ import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.fragments.game.AnswerButtonCheckChangedListener;
 import hu.bme.museum.fragments.game.GameButton;
-import hu.bme.museum.model.game.Challenge;
 
 public class Quiz extends Challenge {
-    public String key;
     public String question;
     public String A;
     public String B;
@@ -81,18 +79,22 @@ public class Quiz extends Challenge {
                         answerIsCorrect = false;
                     }
                 }
-
-                FirebaseAdapter.getInstance().addQuizToUserCompletedQuizes(key);
-                if(answerIsCorrect){
-                    Toast.makeText(activity, R.string.correct_answer, Toast.LENGTH_SHORT).show();
-
-                    FirebaseAdapter.getInstance().givePointToCurrentUser();
-                }else{
-                    Toast.makeText(activity, R.string.wrong_answer, Toast.LENGTH_SHORT).show();
-                }
+                sendAnswer(answerIsCorrect, activity);
             }
         });
 
         layout.addView(quizView, 0);
+    }
+
+    @Override
+    public void sendAnswer(boolean answerIsCorrect, Activity activity) {
+        FirebaseAdapter.getInstance().addQuizToUserCompletedQuizes(key);
+        if(answerIsCorrect){
+            Toast.makeText(activity, R.string.correct_answer, Toast.LENGTH_SHORT).show();
+
+            FirebaseAdapter.getInstance().givePointToCurrentUser();
+        }else{
+            Toast.makeText(activity, R.string.wrong_answer, Toast.LENGTH_SHORT).show();
+        }
     }
 }

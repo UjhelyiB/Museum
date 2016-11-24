@@ -5,5 +5,9 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
 public abstract class Challenge {
+    public String key;
+
     public abstract void addQuestion(LinearLayout layout, LayoutInflater inflater, final Activity activity);
+
+    public abstract void sendAnswer(boolean answerIsCorrect, Activity activity);
 }

@@ -30,6 +30,7 @@ import hu.bme.museum.model.game.Challenge;
 import hu.bme.museum.model.browse.Exhibition;
 import hu.bme.museum.model.game.Quiz;
 import hu.bme.museum.model.User;
+import hu.bme.museum.model.game.ShortAnswer;
 
 public class FirebaseAdapter {
 
@@ -43,6 +44,7 @@ public class FirebaseAdapter {
     private static final String ARTWORK_CHILD = "artworks";
     private static final String CHALLENGES_CHILD = "challenges";
     private static final String QUIZ_CHILD = "quiz";
+    private static final String SHORT_ANSWER_CHILD = "shortAnswer";
     private static final String USERS_CHILD = "users";
     private static final String SCORE_CHILD = "score";
     private static final String LAST_ACTIVE = "lastActive";
@@ -166,12 +168,12 @@ public class FirebaseAdapter {
 
         getAlreadyAnsweredQuizKeysList(null);
 
-        databaseReference.child(CHALLENGES_CHILD).child(QUIZ_CHILD).addValueEventListener(new ValueEventListener() {
+        databaseReference.child(CHALLENGES_CHILD).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 quizes.clear();
 
-                for(final DataSnapshot quizSnapshot : dataSnapshot.getChildren()) {
+                for(final DataSnapshot quizSnapshot : dataSnapshot.child(QUIZ_CHILD).getChildren()) {
                     final Quiz quiz = quizSnapshot.getValue(Quiz.class);
                     quiz.key = quizSnapshot.getKey();
 
@@ -180,6 +182,17 @@ public class FirebaseAdapter {
                         quizes.add(quiz);
                     }
                 }
+
+                for(final DataSnapshot shortAnswerSnapshot : dataSnapshot.child(SHORT_ANSWER_CHILD).getChildren()) {
+                    final ShortAnswer shortAnswer = shortAnswerSnapshot.getValue(ShortAnswer.class);
+                    shortAnswer.key = shortAnswerSnapshot.getKey();
+
+                    allQuizes.add(shortAnswer);
+                    if(!challengesFragment.getAlreadyAnsweredQuizKeysList().contains(shortAnswerSnapshot.getKey())){
+                        quizes.add(shortAnswer);
+                    }
+                }
+
                 if(quizes.isEmpty()){
                     quizes.addAll(allQuizes);
 
@@ -218,7 +231,7 @@ public class FirebaseAdapter {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.d("Error ","in getChallenge");
+                Log.d("Error ","in getUsers");
             }
         });
 
