@@ -274,17 +274,19 @@ public class FirebaseAdapter {
         });
     }
 
-    public void givePointToCurrentUser(){
+    public void givePointToCurrentUser(final String challengeKey){
         final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         databaseReference.child(USERS_CHILD).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User updatedUser = dataSnapshot.child(currentUser.getUid()).getValue(User.class);
-                updatedUser.score += 1;
-                databaseReference.child(USERS_CHILD).child(currentUser.getUid()).child(SCORE_CHILD).setValue(updatedUser.score);
+                if(!dataSnapshot.child(currentUser.getUid()).child(CHALLENGES_CHILD).hasChild(challengeKey)){
+                    User updatedUser = dataSnapshot.child(currentUser.getUid()).getValue(User.class);
+                    updatedUser.score += 1;
+                    databaseReference.child(USERS_CHILD).child(currentUser.getUid()).child(SCORE_CHILD).setValue(updatedUser.score);
 
-                databaseReference.removeEventListener(this);
+                    databaseReference.removeEventListener(this);
+                }
             }
 
             @Override

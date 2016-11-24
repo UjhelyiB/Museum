@@ -35,10 +35,11 @@ public class VisitLocation extends Challenge {
 
     @Override
     public void sendAnswer(boolean answerIsCorrect, Activity activity) {
-        FirebaseAdapter.getInstance().givePointToCurrentUser();
+        FirebaseAdapter.getInstance().givePointToCurrentUser(key);
 
         TextView locationVisited = (TextView) visitLocationView.findViewById(R.id.locationVisited);
         locationVisited.setText(R.string.good_job_location_visited);
+        locationVisited.setVisibility(View.VISIBLE);
 
         FirebaseAdapter.getInstance().addQuizToUserCompletedQuizes(key);
     }

@@ -93,7 +93,7 @@ public class Quiz extends Challenge {
         if(answerIsCorrect){
             Toast.makeText(activity, R.string.correct_answer, Toast.LENGTH_SHORT).show();
 
-            FirebaseAdapter.getInstance().givePointToCurrentUser();
+            FirebaseAdapter.getInstance().givePointToCurrentUser(key);
         }else{
             Toast.makeText(activity, R.string.wrong_answer, Toast.LENGTH_SHORT).show();
         }

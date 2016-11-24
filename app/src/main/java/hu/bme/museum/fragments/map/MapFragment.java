@@ -148,7 +148,7 @@ public class    MapFragment extends TabFragment
         }
 
         updateMapWithUserLocation();
-        if(visitLocationChallenge != null && visitLocationChallenge.getGoalLocation().distanceTo(userLocation) < 6){
+        if(visitLocationChallenge != null && visitLocationChallenge.getGoalLocation().distanceTo(userLocation) < 8){
             visitLocationChallenge.sendAnswer(true, null);
         }
     }
