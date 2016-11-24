@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.fragments.ApplicationFragmentPagerAdapter;
 import hu.bme.museum.R;
 import hu.bme.museum.model.User;
@@ -34,11 +35,7 @@ import hu.bme.museum.model.User;
 public class ApplicationActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "ApplicationActivity";
-    public static final String USERS = "users";
-    private static final String LAST_ACTIVE = "lastActive";
 
-    private FirebaseDatabase firebase;
-    private DatabaseReference dbReference;
     GoogleApiClient googleApiClient;
     ApplicationFragmentPagerAdapter fragmentPagerAdapter;
 
@@ -61,7 +58,7 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
         Toolbar toolbar = (Toolbar) findViewById(R.id.topmost_toolbar);
         setSupportActionBar(toolbar);
 
-        addUserToDBIfItIsANewUser();
+        FirebaseAdapter.getInstance().addUserToDBIfItIsANewUser(this);
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
@@ -69,54 +66,7 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
                 .build();
     }
 
-    private void addUserToDBIfItIsANewUser(){
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        user.getToken(true)
-                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
-                    public void onComplete(@NonNull Task<GetTokenResult> task) {
-                        if (task.isSuccessful()) {
-                            firebase = FirebaseDatabase.getInstance();
-                            dbReference = firebase.getReference(USERS);
 
-                            dbReference.addListenerForSingleValueEvent(new ValueEventListener() {
-
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    User currentUser = new User();
-                                    for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-//                                        //for some reason, at some time, Firebase could not convert properly its data into the class
-//                                        //the error was: com.google.firebase.database.DatabaseException: Failed to convert a value of type java.lang.String to int
-//                                        //so I've put in this code to fix it but somehow it works now, so I just commented it out
-//
-//                                        currentUser.email = (String) snapshot.child("email").getValue();
-//                                        currentUser.name = (String) snapshot.child("name").getValue();
-//                                        currentUser.imageLink = (String) snapshot.child("imageLink").getValue();
-//                                        currentUser.lastActive = (long) snapshot.child("lastActive").getValue();
-//                                        currentUser.score = Integer.parseInt(String.valueOf(snapshot.child("score").getValue()));
-
-                                        currentUser = snapshot.getValue(User.class);
-                                        if(currentUser.email.equals(user.getEmail())){
-                                            dbReference.child(user.getUid()).child(LAST_ACTIVE).setValue(System.currentTimeMillis()/1000);
-                                            return;
-                                        }
-                                    }
-                                    currentUser.email = user.getEmail();
-                                    currentUser.name = user.getDisplayName();
-                                    currentUser.score = 0;
-                                    currentUser.lastActive = System.currentTimeMillis()/1000;
-                                    dbReference.child(user.getUid()).setValue(currentUser);
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {}
-                            });
-                        } else {
-                            Log.d("Error "," in LoginCompleteListener");
-                            Toast.makeText(getBaseContext(), "Error in LoginCompleteListener", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

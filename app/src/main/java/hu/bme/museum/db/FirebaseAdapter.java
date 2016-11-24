@@ -1,10 +1,17 @@
 package hu.bme.museum.db;
 
+import android.app.Application;
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,6 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import hu.bme.museum.R;
+import hu.bme.museum.activities.ApplicationActivity;
 import hu.bme.museum.fragments.artwork.ArtworkListFragment;
 import hu.bme.museum.fragments.browse.ExhibitionsFragment;
 import hu.bme.museum.fragments.game.ChallengesFragment;
@@ -39,6 +48,9 @@ public class FirebaseAdapter {
     private static final String QUIZ_CHILD = "quiz";
     private static final String USERS_CHILD = "users";
     private static final String SCORE_CHILD = "score";
+    private static final String LAST_ACTIVE = "lastActive";
+
+    private boolean alreadyGreetedTheUser = false;
 
     private FirebaseAdapter() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -318,5 +330,55 @@ public class FirebaseAdapter {
             }
         });
         return alreadyAnsweredQuizes;
+    }
+
+    public void addUserToDBIfItIsANewUser(final ApplicationActivity applicationActivity){
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        user.getToken(true)
+                .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                    public void onComplete(@NonNull Task<GetTokenResult> task) {
+                        if (task.isSuccessful()) {
+
+                            databaseReference.child(USERS_CHILD).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    User currentUser = new User();
+                                    for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+//                                        //for some reason, at some time, Firebase could not convert properly its data into the class
+//                                        //the error was: com.google.firebase.database.DatabaseException: Failed to convert a value of type java.lang.String to int
+//                                        //so I've put in this code to fix it but somehow it works now, so I just commented it out
+//
+//                                        currentUser.email = (String) snapshot.child("email").getValue();
+//                                        currentUser.name = (String) snapshot.child("name").getValue();
+//                                        currentUser.imageLink = (String) snapshot.child("imageLink").getValue();
+//                                        currentUser.lastActive = (long) snapshot.child("lastActive").getValue();
+//                                        currentUser.score = Integer.parseInt(String.valueOf(snapshot.child("score").getValue()));
+
+                                        currentUser = snapshot.getValue(User.class);
+                                        if(currentUser.email.equals(user.getEmail())){
+                                            databaseReference.child(USERS_CHILD).child(user.getUid())
+                                                    .child(LAST_ACTIVE).setValue(System.currentTimeMillis()/1000);
+
+                                            return;
+                                        }
+                                    }
+                                    currentUser.email = user.getEmail();
+                                    currentUser.name = user.getDisplayName();
+                                    currentUser.score = 0;
+                                    currentUser.lastActive = System.currentTimeMillis()/1000;
+                                    databaseReference.child(USERS_CHILD).child(user.getUid()).setValue(currentUser);
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {}
+                            });
+                        } else {
+                            Log.d("Error "," in LoginCompleteListener");
+                            Toast.makeText(applicationActivity.getBaseContext(), "Error in LoginCompleteListener", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }

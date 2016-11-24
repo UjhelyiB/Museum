@@ -22,9 +22,7 @@ import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.model.User;
 
 public class HighScoreFragment extends Fragment {
-    private List<User> userList = new ArrayList<User>();
-
-    DatabaseReference databaseReference;
+    private List<User> userList = new ArrayList<>();
 
     private LayoutInflater inflater;
     private View rootView;
@@ -42,8 +40,6 @@ public class HighScoreFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_highscore, null);
 
         initUI();
-
-        databaseReference = FirebaseDatabase.getInstance().getReference(ApplicationActivity.USERS);
 
         userList = FirebaseAdapter.getInstance().getUsers(this);
 

@@ -42,15 +42,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             startActivity(loginIntent);
 
             finish();
-            return;
         } else {
             userName = firebaseUser.getDisplayName();
 
             startActivity(new Intent(MainActivity.this, ApplicationActivity.class));
 
             finish();
-            return;
-
         }
     }
 
@@ -59,16 +56,5 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }
-
-//    public static FirebaseAuth getFirebaseAuth() {
-//        return firebaseAuth;
-//    }
-//
-//    public static FirebaseUser getFirebaseUser() {
-//        return firebaseUser;
-//    }
-//    public static GoogleApiClient getGoogleApiClient() {
-//        return googleApiClient;
-//    }
 
 }
