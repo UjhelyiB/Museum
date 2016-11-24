@@ -231,6 +231,8 @@ public class    MapFragment extends TabFragment
             requestNeededPermission();
 
         }else{
+            userLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            addUserMarker();
             startLocationUpdates();
         }
 

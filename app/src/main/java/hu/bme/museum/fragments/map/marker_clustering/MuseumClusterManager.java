@@ -7,8 +7,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
 import com.koushikdutta.ion.Ion;
 
@@ -21,11 +25,12 @@ import hu.bme.museum.fragments.artwork.ArtworkDetailsFragment;
 import hu.bme.museum.fragments.map.MapFragment;
 import hu.bme.museum.model.Artwork;
 
-public class MuseumClusterManager extends ClusterManager
+public class MuseumClusterManager<ClusterItem extends ArtworkMarkerItem> extends ClusterManager
         implements
         ClusterManager.OnClusterItemClickListener<ArtworkMarkerItem>,
         ClusterManager.OnClusterItemInfoWindowClickListener<ArtworkMarkerItem>,
-        GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener {
+        GoogleMap.InfoWindowAdapter, GoogleMap.OnInfoWindowClickListener,
+        ClusterManager.OnClusterClickListener<ArtworkMarkerItem> {
 
     private static int IMAGE_WIDTH;
     private static int IMAGE_HEIGHT;
@@ -58,6 +63,7 @@ public class MuseumClusterManager extends ClusterManager
 
         setOnClusterItemClickListener(this);
         setOnClusterItemInfoWindowClickListener(this);
+        setOnClusterClickListener(this);
 
         piecesOfArt = FirebaseAdapter.getInstance().getAllArtworksForClusterManager(this);
     }
@@ -129,5 +135,17 @@ public class MuseumClusterManager extends ClusterManager
     @Override
     public View getInfoContents(Marker marker) {
         return null;
+    }
+
+    @Override
+    public boolean onClusterClick(Cluster<ArtworkMarkerItem> cluster) {
+        LatLngBounds.Builder builder = LatLngBounds.builder();
+        for (ArtworkMarkerItem item : cluster.getItems()) {
+            builder.include(item.getPosition());
+        }
+        final LatLngBounds bounds = builder.build();
+        map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+
+        return true;
     }
 }
