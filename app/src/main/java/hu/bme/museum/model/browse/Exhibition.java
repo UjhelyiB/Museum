@@ -1,4 +1,4 @@
-package hu.bme.museum.model;
+package hu.bme.museum.model.browse;
 
 public class Exhibition {
     public String key;

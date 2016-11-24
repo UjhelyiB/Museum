@@ -16,7 +16,6 @@
     <hu.bme.museum.fragments.game.GameButton
         android:id="@+id/quizAnswerButtonA"
 
-        android:text="Button"
         android:textColor="#FFFFFF"
         android:textSize="25sp"
 
@@ -29,7 +28,6 @@
     <hu.bme.museum.fragments.game.GameButton
         android:id="@+id/quizAnswerButtonB"
 
-        android:text="Button"
         android:textColor="#FFFFFF"
         android:textSize="25sp"
 
@@ -42,7 +40,6 @@
     <hu.bme.museum.fragments.game.GameButton
         android:id="@+id/quizAnswerButtonC"
 
-        android:text="Button"
         android:textColor="#FFFFFF"
         android:textSize="25sp"
 
@@ -55,7 +52,6 @@
     <hu.bme.museum.fragments.game.GameButton
         android:id="@+id/quizAnswerButtonD"
 
-        android:text="Button"
         android:textColor="#FFFFFF"
         android:textSize="25sp"
 
@@ -67,7 +63,7 @@
 
 
         <Button
-            android:id="@+id/sendAnswerButton"
+            android:id="@+id/sendQuizAnswerButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

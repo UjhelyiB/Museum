@@ -14,7 +14,7 @@ import java.util.List;
 import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
 
-import hu.bme.museum.model.Exhibition;
+import hu.bme.museum.model.browse.Exhibition;
 
 public class ExhibitionsFragment extends Fragment {
 

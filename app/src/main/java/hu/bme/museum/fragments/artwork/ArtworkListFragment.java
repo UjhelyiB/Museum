@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hu.bme.museum.R;
-import hu.bme.museum.db.FirebaseAdapter;
-import hu.bme.museum.model.Artwork;
+import hu.bme.museum.model.browse.Artwork;
 
 public abstract class ArtworkListFragment extends Fragment {
 

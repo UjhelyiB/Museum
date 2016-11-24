@@ -8,7 +8,7 @@ import android.widget.ToggleButton;
 import hu.bme.museum.R;
 
 public class GameButton extends ToggleButton{
-    boolean isCorrect = false;
+    public boolean isCorrect = false;
     String text;
 
     public GameButton(Context context, AttributeSet attrs, int defStyleAttr) {

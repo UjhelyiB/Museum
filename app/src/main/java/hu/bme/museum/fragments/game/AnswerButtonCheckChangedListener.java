@@ -7,10 +7,10 @@ import hu.bme.museum.R;
 
 public class AnswerButtonCheckChangedListener implements View.OnClickListener{
 
-        String text;
-        ToggleButton btn;
+        private String text;
+        private ToggleButton btn;
 
-        AnswerButtonCheckChangedListener(ToggleButton btn, String text){
+        public AnswerButtonCheckChangedListener(ToggleButton btn, String text){
             this.text = text;
             this.btn = btn;
         }

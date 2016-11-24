@@ -1,4 +1,4 @@
-package hu.bme.museum.model;
+package hu.bme.museum.model.browse;
 
 import com.google.android.gms.maps.model.LatLng;
 

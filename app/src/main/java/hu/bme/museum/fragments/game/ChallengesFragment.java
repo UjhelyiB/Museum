@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +15,7 @@ import java.util.Random;
 
 import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
-import hu.bme.museum.model.Quiz;
+import hu.bme.museum.model.game.Challenge;
 
 public class ChallengesFragment extends Fragment {
     private static final String QUIZ = "quiz";
@@ -30,7 +28,7 @@ public class ChallengesFragment extends Fragment {
     private Button highScoreButton;
     private Button newGameButton;
 
-    private List<Quiz> quizList = new ArrayList<Quiz>();
+    private List<Challenge> challengeList = new ArrayList<>();
     private List<String> alreadyAnsweredQuizKeysList = new ArrayList<>();
 
     @Nullable
@@ -50,7 +48,7 @@ public class ChallengesFragment extends Fragment {
         alreadyAnsweredQuizKeysList = FirebaseAdapter.getInstance().getAlreadyAnsweredQuizKeysList(this);
 
         if(!challengeAlreadyGenerated){
-            quizList = FirebaseAdapter.getInstance().getQuiz(this);
+            challengeList = FirebaseAdapter.getInstance().getChallenge(this);
             challengeAlreadyGenerated = true;
         }
 
@@ -83,75 +81,9 @@ public class ChallengesFragment extends Fragment {
 
     public void populateQuizes(){
         Random random = new Random();
-        addQuestion(quizList.get(random.nextInt(quizList.size())));
+        Challenge challenge = challengeList.get(random.nextInt(challengeList.size()));
+        challenge.addQuestion(gameLayout, inflater, getActivity());
     }
 
-    public void addQuestion(final Quiz quiz){
-        gameLayout.removeAllViews();
 
-        View quizView = inflater.inflate(R.layout.quiz, null);
-
-        TextView question= (TextView) quizView.findViewById(R.id.quizQuestion);
-        GameButton answerA = (GameButton) quizView.findViewById(R.id.quizAnswerButtonA);
-        GameButton answerB = (GameButton) quizView.findViewById(R.id.quizAnswerButtonB);
-        GameButton answerC = (GameButton) quizView.findViewById(R.id.quizAnswerButtonC);
-        GameButton answerD = (GameButton) quizView.findViewById(R.id.quizAnswerButtonD);
-        Button sendButton = (Button) quizView.findViewById(R.id.sendAnswerButton);
-
-        question.setText(quiz.question);
-        answerA.setText(quiz.A);
-        answerB.setText(quiz.B);
-        answerC.setText(quiz.C);
-        answerD.setText(quiz.D);
-
-        if(quiz.correctAnswer.equals("A")){
-            answerA.setCorrect(true);
-        }else if(quiz.correctAnswer.equals("B")){
-            answerB.setCorrect(true);
-        }else if(quiz.correctAnswer.equals("C")){
-            answerC.setCorrect(true);
-        }else{
-            answerD.setCorrect(true);
-        }
-
-        final ArrayList<GameButton> gameButtons = new ArrayList<GameButton>();
-        gameButtons.add(answerA);
-        gameButtons.add(answerB);
-        gameButtons.add(answerC);
-        gameButtons.add(answerD);
-
-
-        answerA.setOnClickListener(new AnswerButtonCheckChangedListener(answerA, quiz.A));
-        answerB.setOnClickListener(new AnswerButtonCheckChangedListener(answerB, quiz.B));
-        answerC.setOnClickListener(new AnswerButtonCheckChangedListener(answerC, quiz.C));
-        answerD.setOnClickListener(new AnswerButtonCheckChangedListener(answerD, quiz.D));
-
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                boolean answerIsCorrect = true;
-
-                for(int i=0; i< gameButtons.size(); i++){
-                    gameButtons.get(i).answerSent();
-                    gameButtons.get(i).setEnabled(false);
-                    if(!gameButtons.get(i).isCorrect && gameButtons.get(i).isChecked()){
-                        answerIsCorrect = false;
-                    }else if(gameButtons.get(i).isCorrect && !gameButtons.get(i).isChecked()){
-                        answerIsCorrect = false;
-                    }
-                }
-
-                FirebaseAdapter.getInstance().addQuizToUserCompletedQuizes(quiz.key);
-                if(answerIsCorrect){
-                    Toast.makeText(getActivity(), R.string.correct_answer, Toast.LENGTH_SHORT).show();
-
-                    FirebaseAdapter.getInstance().givePointToCurrentUser();
-                }else{
-                    Toast.makeText(getActivity(), R.string.wrong_answer, Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        gameLayout.addView(quizView, 0);
-    }
 }

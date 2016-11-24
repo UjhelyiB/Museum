@@ -26,7 +26,7 @@ import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.fragments.artwork.ArtworkDetailsFragment;
 import hu.bme.museum.fragments.map.MapFragment;
-import hu.bme.museum.model.Artwork;
+import hu.bme.museum.model.browse.Artwork;
 
 public class MuseumClusterManager<ClusterItem extends ArtworkMarkerItem> extends ClusterManager
         implements
@@ -99,7 +99,7 @@ public class MuseumClusterManager<ClusterItem extends ArtworkMarkerItem> extends
     @Override
     public void onClusterItemInfoWindowClick(ArtworkMarkerItem artworkMarkerItem) {
         for(int i=0; i< piecesOfArt.size(); i++) {
-            if (piecesOfArt.get(i).name == artworkMarkerItem.getTitle()) {
+            if (piecesOfArt.get(i).name.equals(artworkMarkerItem.getTitle())) {
                 ArtworkDetailsFragment artworkDetailsFragment =
                         new ArtworkDetailsFragment();
                 artworkDetailsFragment.setArtwork(piecesOfArt.get(i));
@@ -133,9 +133,7 @@ public class MuseumClusterManager<ClusterItem extends ArtworkMarkerItem> extends
                 clickedArtworkMarkerItem = null;
                 return window;
 
-            }catch(InterruptedException e){
-                e.printStackTrace();
-            }catch(ExecutionException e){
+            }catch(Exception e){
                 e.printStackTrace();
             }
         }

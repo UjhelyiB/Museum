@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import hu.bme.museum.R;
-import hu.bme.museum.model.Artwork;
+import hu.bme.museum.model.browse.Artwork;
 
 public class ArtworkDetailsFragment extends Fragment {
 

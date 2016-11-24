@@ -1,7 +1,5 @@
 package hu.bme.museum.db;
 
-import android.app.Application;
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,17 +19,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import hu.bme.museum.R;
 import hu.bme.museum.activities.ApplicationActivity;
 import hu.bme.museum.fragments.artwork.ArtworkListFragment;
 import hu.bme.museum.fragments.browse.ExhibitionsFragment;
 import hu.bme.museum.fragments.game.ChallengesFragment;
 import hu.bme.museum.fragments.game.HighScoreFragment;
-import hu.bme.museum.fragments.map.MapFragment;
 import hu.bme.museum.fragments.map.marker_clustering.MuseumClusterManager;
-import hu.bme.museum.model.Artwork;
-import hu.bme.museum.model.Exhibition;
-import hu.bme.museum.model.Quiz;
+import hu.bme.museum.model.browse.Artwork;
+import hu.bme.museum.model.game.Challenge;
+import hu.bme.museum.model.browse.Exhibition;
+import hu.bme.museum.model.game.Quiz;
 import hu.bme.museum.model.User;
 
 public class FirebaseAdapter {
@@ -163,9 +160,9 @@ public class FirebaseAdapter {
         return matchedArtworks;
     }
 
-    public List<Quiz> getQuiz(final ChallengesFragment challengesFragment){
-        final List<Quiz> quizes = new ArrayList<>();
-        final List<Quiz> allQuizes = new ArrayList<>();
+    public List<Challenge> getChallenge(final ChallengesFragment challengesFragment){
+        final List<Challenge> quizes = new ArrayList<>();
+        final List<Challenge> allQuizes = new ArrayList<>();
 
         getAlreadyAnsweredQuizKeysList(null);
 
@@ -196,7 +193,7 @@ public class FirebaseAdapter {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.d("Error ","in getQuiz");
+                Log.d("Error ","in getChallenge");
             }
         });
 
@@ -221,7 +218,7 @@ public class FirebaseAdapter {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.d("Error ","in getQuiz");
+                Log.d("Error ","in getChallenge");
             }
         });
 

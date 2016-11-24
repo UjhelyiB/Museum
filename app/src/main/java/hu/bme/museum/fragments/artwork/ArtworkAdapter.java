@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import hu.bme.museum.R;
-import hu.bme.museum.model.Artwork;
+import hu.bme.museum.model.browse.Artwork;
 
 public class ArtworkAdapter extends RecyclerView.Adapter<ArtworkAdapter.ViewHolder> {
 

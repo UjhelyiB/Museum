@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.fragments.artwork.ArtworkListFragment;
-import hu.bme.museum.model.Exhibition;
+import hu.bme.museum.model.browse.Exhibition;
 
 public class ExhibitionArtworkListFragment extends ArtworkListFragment {
 
