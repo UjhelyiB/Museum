@@ -38,6 +38,7 @@ public class FirebaseAdapter {
     private static final String CHALLENGES_CHILD = "challenges";
     private static final String QUIZ_CHILD = "quiz";
     private static final String USERS_CHILD = "users";
+    private static final String SCORE_CHILD = "score";
 
     private FirebaseAdapter() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -163,6 +164,7 @@ public class FirebaseAdapter {
 
                 for(final DataSnapshot quizSnapshot : dataSnapshot.getChildren()) {
                     final Quiz quiz = quizSnapshot.getValue(Quiz.class);
+                    quiz.key = quizSnapshot.getKey();
 
                     allQuizes.add(quiz);
                     if(!challengesFragment.getAlreadyAnsweredQuizKeysList().contains(quizSnapshot.getKey())){
@@ -223,6 +225,8 @@ public class FirebaseAdapter {
                 User currentUser = dataSnapshot.child(user.getUid()).getValue(User.class);
 
                 highScoreFragment.refreshOwnScoreInHighScore(currentUser);
+
+                databaseReference.removeEventListener(this);
             }
 
             @Override
@@ -240,12 +244,29 @@ public class FirebaseAdapter {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 User updatedUser = dataSnapshot.child(currentUser.getUid()).getValue(User.class);
                 updatedUser.score += 1;
-                databaseReference.child(USERS_CHILD).child(currentUser.getUid()).setValue(updatedUser);
+                databaseReference.child(USERS_CHILD).child(currentUser.getUid()).child(SCORE_CHILD).setValue(updatedUser.score);
+
+                databaseReference.removeEventListener(this);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
 
+    public void addQuizToUserCompletedQuizes(final String key){
+        final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        databaseReference.child(USERS_CHILD).child(currentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                databaseReference.child(USERS_CHILD).child(currentUser.getUid()).child(CHALLENGES_CHILD).child(key).setValue(1);
+                databaseReference.removeEventListener(this);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
             }
         });
     }

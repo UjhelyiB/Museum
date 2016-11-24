@@ -36,6 +36,8 @@ public class HighScoreFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        container.removeAllViews();
+
         this.inflater = inflater;
         rootView = inflater.inflate(R.layout.fragment_highscore, null);
 

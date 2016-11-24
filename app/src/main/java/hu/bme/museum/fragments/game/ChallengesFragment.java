@@ -79,7 +79,6 @@ public class ChallengesFragment extends Fragment {
                         .replace(R.id.gameFragmentLinearLayout, challengesFragment).addToBackStack(null).commit();
             }
         });
-
     }
 
     public void populateQuizes(){
@@ -142,6 +141,7 @@ public class ChallengesFragment extends Fragment {
                     }
                 }
 
+                FirebaseAdapter.getInstance().addQuizToUserCompletedQuizes(quiz.key);
                 if(answerIsCorrect){
                     Toast.makeText(getActivity(), R.string.correct_answer, Toast.LENGTH_SHORT).show();
 

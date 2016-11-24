@@ -36,10 +36,6 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
     private static final String TAG = "ApplicationActivity";
     public static final String USERS = "users";
     private static final String LAST_ACTIVE = "lastActive";
-    ApplicationFragmentPagerAdapter pagerAdapter;
-    ViewPager viewPager;
-
-    public static final String LOGIN_SUCCESSFUL = "Login successful!";
 
     private FirebaseDatabase firebase;
     private DatabaseReference dbReference;
@@ -50,10 +46,6 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_application);
-
-        //disabled it because the DB calls happen in multiple places so we'd get
-        //"Calls to setPersistenceEnabled() must be made before any other usage of FirebaseDatabase instance." error
-        //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -72,7 +64,7 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
         addUserToDBIfItIsANewUser();
 
         googleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API)
                 .build();
     }
