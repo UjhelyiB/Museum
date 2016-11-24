@@ -15,6 +15,7 @@ import java.util.Random;
 
 import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
+import hu.bme.museum.fragments.map.MapFragment;
 import hu.bme.museum.model.game.Challenge;
 
 public class ChallengesFragment extends Fragment {
@@ -30,6 +31,9 @@ public class ChallengesFragment extends Fragment {
 
     private List<Challenge> challengeList = new ArrayList<>();
     private List<String> alreadyAnsweredQuizKeysList = new ArrayList<>();
+
+    private MapFragment mapFragment;
+    private Challenge challenge;
 
     @Nullable
     @Override
@@ -73,6 +77,7 @@ public class ChallengesFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 ChallengesFragment challengesFragment = new ChallengesFragment();
+                challengesFragment.setMapFragment(mapFragment);
                 getFragmentManager().beginTransaction()
                         .replace(R.id.gameFragmentLinearLayout, challengesFragment).addToBackStack(null).commit();
             }
@@ -80,10 +85,17 @@ public class ChallengesFragment extends Fragment {
     }
 
     public void populateQuizes(){
+        if(challenge != null){
+            challenge= null;
+        }
+
         Random random = new Random();
-        Challenge challenge = challengeList.get(random.nextInt(challengeList.size()));
+        challenge = challengeList.get(random.nextInt(challengeList.size()));
         challenge.addQuestion(gameLayout, inflater, getActivity());
+        challenge.setMapFragment(mapFragment);
     }
 
-
+    public void setMapFragment(MapFragment mapFragment) {
+        this.mapFragment = mapFragment;
+    }
 }

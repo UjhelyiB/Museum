@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
+import hu.bme.museum.fragments.map.MapFragment;
 
 public class ShortAnswer extends Challenge {
     public String correctAnswer;
@@ -20,7 +21,7 @@ public class ShortAnswer extends Challenge {
     public void addQuestion(LinearLayout layout, LayoutInflater inflater, final Activity activity) {
         layout.removeAllViews();
 
-        View shortAnswerView = inflater.inflate(R.layout.short_answer_challenge, null);
+        View shortAnswerView = inflater.inflate(R.layout.challenge_short_answer, null);
 
         TextView question = (TextView) shortAnswerView.findViewById(R.id.shortAnswerQuestion);
         final EditText editText = (EditText) shortAnswerView.findViewById(R.id.shortAnswerEditText);
@@ -58,4 +59,7 @@ public class ShortAnswer extends Challenge {
             Toast.makeText(activity, R.string.wrong_answer, Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public void setMapFragment(MapFragment mapFragment) {}
 }

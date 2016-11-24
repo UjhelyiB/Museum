@@ -24,10 +24,17 @@ public class ApplicationFragmentPagerAdapter extends FragmentPagerAdapter {
         super(fm);
         this.context = context;
 
-        fragments.add(new BrowseFragment());
-        fragments.add(new GameFragment());
-        fragments.add(new MapFragment());
-        fragments.add(new SearchContainerFragment());
+        BrowseFragment browseFragment = new BrowseFragment();
+        GameFragment gameFragment = new GameFragment();
+        MapFragment mapFragment = new MapFragment();
+        SearchContainerFragment searchContainerFragment = new SearchContainerFragment();
+
+        gameFragment.setMapFragment(mapFragment);
+
+        fragments.add(browseFragment);
+        fragments.add(gameFragment);
+        fragments.add(mapFragment);
+        fragments.add(searchContainerFragment);
     }
 
     @Override

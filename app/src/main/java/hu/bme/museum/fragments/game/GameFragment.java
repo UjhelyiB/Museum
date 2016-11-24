@@ -8,8 +8,11 @@ import android.view.ViewGroup;
 
 import hu.bme.museum.R;
 import hu.bme.museum.fragments.TabFragment;
+import hu.bme.museum.fragments.map.MapFragment;
 
 public class GameFragment extends TabFragment {
+
+    private MapFragment mapFragment;
 
     @Nullable
     @Override
@@ -19,6 +22,7 @@ public class GameFragment extends TabFragment {
         View rootView = inflater.inflate(R.layout.fragment_game, null, false);
 
         ChallengesFragment challengesFragment = new ChallengesFragment();
+        challengesFragment.setMapFragment(mapFragment);
 
         getFragmentManager().beginTransaction().add(R.id.gameFragmentLinearLayout, challengesFragment).commit();
 
@@ -32,6 +36,9 @@ public class GameFragment extends TabFragment {
         return "Game";
     }
 
+    public void setMapFragment(MapFragment mapFragment) {
+        this.mapFragment = mapFragment;
+    }
 }
 
 

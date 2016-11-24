@@ -28,4 +28,6 @@
     <string name="highscore_your_score">Your Score:</string>
     <string name="you">You</string>
     <string name="authentication_failed">Authentication failed.</string>
+    <string name="good_job">Good job!</string>
+    <string name="good_job_location_visited">Good job! You\'ve visited the location!</string>
 </resources>

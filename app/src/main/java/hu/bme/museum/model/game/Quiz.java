@@ -14,6 +14,7 @@ import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.fragments.game.AnswerButtonCheckChangedListener;
 import hu.bme.museum.fragments.game.GameButton;
+import hu.bme.museum.fragments.map.MapFragment;
 
 public class Quiz extends Challenge {
     public String question;
@@ -28,7 +29,7 @@ public class Quiz extends Challenge {
     public void addQuestion(LinearLayout layout, LayoutInflater inflater, final Activity activity){
         layout.removeAllViews();
 
-        View quizView = inflater.inflate(R.layout.quiz, null);
+        View quizView = inflater.inflate(R.layout.challenge_quiz, null);
 
         TextView question= (TextView) quizView.findViewById(R.id.quizQuestion);
         GameButton answerA = (GameButton) quizView.findViewById(R.id.quizAnswerButtonA);
@@ -97,4 +98,7 @@ public class Quiz extends Challenge {
             Toast.makeText(activity, R.string.wrong_answer, Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public void setMapFragment(MapFragment mapFragment) {}
 }

@@ -34,7 +34,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import hu.bme.museum.R;
 import hu.bme.museum.fragments.TabFragment;
+import hu.bme.museum.fragments.game.GameFragment;
 import hu.bme.museum.fragments.map.marker_clustering.MuseumClusterManager;
+import hu.bme.museum.model.game.VisitLocation;
 
 public class    MapFragment extends TabFragment
         implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
@@ -49,9 +51,11 @@ public class    MapFragment extends TabFragment
     private MuseumClusterManager clusterManager;
     LocationRequest locationRequest;
 
-    Marker userMarker;
-    Location userLocation;
+    private Marker userMarker;
     private static View rootView;
+
+    public static Location userLocation;
+    private VisitLocation visitLocationChallenge;
 
     @Nullable
     @Override
@@ -144,6 +148,9 @@ public class    MapFragment extends TabFragment
         }
 
         updateMapWithUserLocation();
+        if(visitLocationChallenge != null && visitLocationChallenge.getGoalLocation().distanceTo(userLocation) < 6){
+            visitLocationChallenge.sendAnswer(true, null);
+        }
     }
 
     /**
@@ -247,6 +254,9 @@ public class    MapFragment extends TabFragment
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d("Map", "Connection Failed!");
         Toast.makeText(getActivity(), "Connection Failed!", Toast.LENGTH_SHORT).show();
+    }
 
+    public void setvisitLocationChallenge(VisitLocation visitLocationChallenge){
+        this.visitLocationChallenge = visitLocationChallenge;
     }
 }

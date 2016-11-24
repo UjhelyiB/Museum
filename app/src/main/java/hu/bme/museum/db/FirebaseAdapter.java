@@ -1,5 +1,6 @@
 package hu.bme.museum.db;
 
+import android.location.Location;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ import hu.bme.museum.model.browse.Exhibition;
 import hu.bme.museum.model.game.Quiz;
 import hu.bme.museum.model.User;
 import hu.bme.museum.model.game.ShortAnswer;
+import hu.bme.museum.model.game.VisitLocation;
 
 public class FirebaseAdapter {
 
@@ -45,6 +47,7 @@ public class FirebaseAdapter {
     private static final String CHALLENGES_CHILD = "challenges";
     private static final String QUIZ_CHILD = "quiz";
     private static final String SHORT_ANSWER_CHILD = "shortAnswer";
+    private static final String VISIT_LOCATION_CHILD = "visitLocation";
     private static final String USERS_CHILD = "users";
     private static final String SCORE_CHILD = "score";
     private static final String LAST_ACTIVE = "lastActive";
@@ -190,6 +193,19 @@ public class FirebaseAdapter {
                     allQuizes.add(shortAnswer);
                     if(!challengesFragment.getAlreadyAnsweredQuizKeysList().contains(shortAnswerSnapshot.getKey())){
                         quizes.add(shortAnswer);
+                    }
+                }
+
+                for(final DataSnapshot visitLocationSnapshot : dataSnapshot.child(VISIT_LOCATION_CHILD).getChildren()) {
+                    final VisitLocation visitLocation = visitLocationSnapshot.getValue(VisitLocation.class);
+                    visitLocation.key = visitLocationSnapshot.getKey();
+                    visitLocation.goalLocation = new Location("");
+                    visitLocation.goalLocation.setLatitude(visitLocation.lat);
+                    visitLocation.goalLocation.setLongitude(visitLocation.lng);
+
+                    allQuizes.add(visitLocation);
+                    if(!challengesFragment.getAlreadyAnsweredQuizKeysList().contains(visitLocationSnapshot.getKey())){
+                        quizes.add(visitLocation);
                     }
                 }
 
