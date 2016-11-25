@@ -34,7 +34,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import hu.bme.museum.R;
 import hu.bme.museum.fragments.TabFragment;
-import hu.bme.museum.fragments.game.GameFragment;
 import hu.bme.museum.fragments.map.marker_clustering.MuseumClusterManager;
 import hu.bme.museum.model.game.VisitLocation;
 
@@ -165,15 +164,15 @@ public class    MapFragment extends TabFragment
     public void onMapReady(GoogleMap map) {
         this.map = map;
 
-        setUpClusterer();
+        setUpClusterManager();
     }
 
-    private void setUpClusterer() {
+    private void setUpClusterManager() {
         clusterManager = new MuseumClusterManager(getContext(), map, this);
     }
 
     private void addUserMarker(){
-        if (userLocation != null) {
+        if (userLocation != null && userMarker == null) {
             userMarker = map.addMarker(new MarkerOptions().position(new LatLng(userLocation.getLatitude(), userLocation.getLongitude()))
                     .icon(BitmapDescriptorFactory.fromBitmap(getBitmapFromDrawable(R.drawable.user_marker_icon)))
                     .title(getString(R.string.you)));
