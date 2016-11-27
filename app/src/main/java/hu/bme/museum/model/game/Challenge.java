@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
+import hu.bme.museum.fragments.map.MapFragment;
 import hu.bme.museum.fragments.map.MapTabFragment;
 
 public abstract class Challenge {
@@ -13,5 +14,5 @@ public abstract class Challenge {
 
     public abstract void sendAnswer(boolean answerIsCorrect, Activity activity);
 
-    public abstract void setMapFragment(MapTabFragment mapFragment);
+    public abstract void setMapFragment(MapFragment mapFragment);
 }

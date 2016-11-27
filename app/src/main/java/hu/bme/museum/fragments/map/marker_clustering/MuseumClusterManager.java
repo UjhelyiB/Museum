@@ -24,6 +24,7 @@ import java.util.List;
 import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.fragments.artwork.ArtworkDetailsFragment;
+import hu.bme.museum.fragments.map.MapFragment;
 import hu.bme.museum.fragments.map.MapTabFragment;
 import hu.bme.museum.model.browse.Artwork;
 
@@ -37,12 +38,12 @@ public class MuseumClusterManager<ClusterItem extends ArtworkMarkerItem> extends
     private static int IMAGE_WIDTH;
     private static int IMAGE_HEIGHT;
     private GoogleMap map;
-    private MapTabFragment mapFragment;
+    private MapFragment mapFragment;
     private List<Artwork> piecesOfArt;
     private ArtworkMarkerItem clickedArtworkMarkerItem;
     private MuseumClusterManager thisMuseumClusterManager;
 
-    public MuseumClusterManager(Context context, GoogleMap map, MapTabFragment mapFragment) {
+    public MuseumClusterManager(Context context, GoogleMap map, MapFragment mapFragment) {
         super(context, map);
 
         DisplayMetrics metrics = new DisplayMetrics();
@@ -101,11 +102,10 @@ public class MuseumClusterManager<ClusterItem extends ArtworkMarkerItem> extends
             if (piecesOfArt.get(i).name.equals(artworkMarkerItem.getTitle())) {
                 ArtworkDetailsFragment artworkDetailsFragment =
                         new ArtworkDetailsFragment();
+                artworkDetailsFragment.setParentTabFragment(mapFragment.getParentTabFragment());
                 artworkDetailsFragment.setArtwork(piecesOfArt.get(i));
 
-                mapFragment.getFragmentManager().beginTransaction()
-                        .replace(R.id.map, artworkDetailsFragment)
-                        .addToBackStack(null).commit();
+                mapFragment.getParentTabFragment().changeTabChildFragment(artworkDetailsFragment);
             }
         }
     }

@@ -14,6 +14,7 @@ import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.fragments.game.AnswerButtonCheckChangedListener;
 import hu.bme.museum.fragments.game.GameButton;
+import hu.bme.museum.fragments.map.MapFragment;
 import hu.bme.museum.fragments.map.MapTabFragment;
 
 public class Quiz extends Challenge {
@@ -100,5 +101,5 @@ public class Quiz extends Challenge {
     }
 
     @Override
-    public void setMapFragment(MapTabFragment mapFragment) {}
+    public void setMapFragment(MapFragment mapFragment) {}
 }

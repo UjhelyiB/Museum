@@ -16,6 +16,7 @@ import java.util.Random;
 import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.fragments.TabChildFragment;
+import hu.bme.museum.fragments.map.MapFragment;
 import hu.bme.museum.fragments.map.MapTabFragment;
 import hu.bme.museum.model.game.Challenge;
 
@@ -33,7 +34,7 @@ public class ChallengesFragment extends TabChildFragment {
     private List<Challenge> challengeList = new ArrayList<>();
     private List<String> alreadyAnsweredQuizKeysList = new ArrayList<>();
 
-    private MapTabFragment mapFragment;
+    private MapFragment mapFragment;
     private Challenge challenge;
 
     @Nullable
@@ -98,7 +99,7 @@ public class ChallengesFragment extends TabChildFragment {
         challenge.setMapFragment(mapFragment);
     }
 
-    public void setMapFragment(MapTabFragment mapFragment) {
+    public void setMapFragment(MapFragment mapFragment) {
         this.mapFragment = mapFragment;
     }
 }
