@@ -37,7 +37,7 @@ import hu.bme.museum.fragments.TabFragment;
 import hu.bme.museum.fragments.map.marker_clustering.MuseumClusterManager;
 import hu.bme.museum.model.game.VisitLocation;
 
-public class    MapFragment extends TabFragment
+public class MapTabFragment extends TabFragment
         implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         LocationListener, GoogleApiClient.OnConnectionFailedListener{
 

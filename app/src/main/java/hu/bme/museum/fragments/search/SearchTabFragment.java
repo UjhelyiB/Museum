@@ -1,4 +1,4 @@
-package hu.bme.museum.fragments.browse;
+package hu.bme.museum.fragments.search;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,27 +10,26 @@ import hu.bme.museum.R;
 import hu.bme.museum.fragments.artwork.ArtworkListFragment;
 import hu.bme.museum.fragments.TabFragment;
 
-public class BrowseFragment extends TabFragment {
+public class SearchTabFragment extends TabFragment {
 
-    private ExhibitionsFragment exhibitionsFragment;
+    private SearchFragment searchFragment;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_browse, null, false);
+        View rootView = inflater.inflate(R.layout.fragment_search_container, null, false);
 
-        exhibitionsFragment = new ExhibitionsFragment();
-
-        getFragmentManager().beginTransaction().add(R.id.browseLinearLayout,
-                exhibitionsFragment).commit();
+        searchFragment = new SearchFragment();
+        getFragmentManager().beginTransaction().add(R.id.searchContainerLinearLayout,
+                searchFragment).commit();
 
         return rootView;
     }
 
     @Override
     public String getTabTitle() {
-        return "Browse";
+        return "Search";
     }
 }

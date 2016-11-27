@@ -20,12 +20,11 @@ import com.google.maps.android.ui.IconGenerator;
 import com.koushikdutta.ion.Ion;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.fragments.artwork.ArtworkDetailsFragment;
-import hu.bme.museum.fragments.map.MapFragment;
+import hu.bme.museum.fragments.map.MapTabFragment;
 import hu.bme.museum.model.browse.Artwork;
 
 public class MuseumClusterManager<ClusterItem extends ArtworkMarkerItem> extends ClusterManager
@@ -38,12 +37,12 @@ public class MuseumClusterManager<ClusterItem extends ArtworkMarkerItem> extends
     private static int IMAGE_WIDTH;
     private static int IMAGE_HEIGHT;
     private GoogleMap map;
-    private MapFragment mapFragment;
+    private MapTabFragment mapFragment;
     private List<Artwork> piecesOfArt;
     private ArtworkMarkerItem clickedArtworkMarkerItem;
     private MuseumClusterManager thisMuseumClusterManager;
 
-    public MuseumClusterManager(Context context, GoogleMap map, MapFragment mapFragment) {
+    public MuseumClusterManager(Context context, GoogleMap map, MapTabFragment mapFragment) {
         super(context, map);
 
         DisplayMetrics metrics = new DisplayMetrics();

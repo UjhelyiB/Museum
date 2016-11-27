@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
-import hu.bme.museum.fragments.map.MapFragment;
+import hu.bme.museum.fragments.map.MapTabFragment;
 
 public class VisitLocation extends Challenge {
     public String question;
@@ -17,7 +17,7 @@ public class VisitLocation extends Challenge {
     public double lng;
     public Location goalLocation;
 
-    private MapFragment mapFragment;
+    private MapTabFragment mapFragment;
     private View visitLocationView;
 
     @Override
@@ -45,7 +45,7 @@ public class VisitLocation extends Challenge {
     }
 
     @Override
-    public void setMapFragment(MapFragment mapFragment) {
+    public void setMapFragment(MapTabFragment mapFragment) {
         this.mapFragment = mapFragment;
         mapFragment.setvisitLocationChallenge(this);
     }

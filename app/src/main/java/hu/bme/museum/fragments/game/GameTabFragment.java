@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 
 import hu.bme.museum.R;
 import hu.bme.museum.fragments.TabFragment;
-import hu.bme.museum.fragments.map.MapFragment;
+import hu.bme.museum.fragments.map.MapTabFragment;
 
-public class GameFragment extends TabFragment {
+public class GameTabFragment extends TabFragment {
 
-    private MapFragment mapFragment;
+    private MapTabFragment mapFragment;
 
     @Nullable
     @Override
@@ -36,7 +36,7 @@ public class GameFragment extends TabFragment {
         return "Game";
     }
 
-    public void setMapFragment(MapFragment mapFragment) {
+    public void setMapFragment(MapTabFragment mapFragment) {
         this.mapFragment = mapFragment;
     }
 }

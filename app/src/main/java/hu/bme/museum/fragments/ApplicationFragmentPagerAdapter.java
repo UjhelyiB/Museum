@@ -8,11 +8,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import hu.bme.museum.fragments.browse.BrowseFragment;
-import hu.bme.museum.fragments.game.GameFragment;
-import hu.bme.museum.fragments.map.MapFragment;
-import hu.bme.museum.fragments.search.SearchContainerFragment;
-import hu.bme.museum.fragments.search.SearchFragment;
+import hu.bme.museum.fragments.browse.BrowseTabFragment;
+import hu.bme.museum.fragments.game.GameTabFragment;
+import hu.bme.museum.fragments.map.MapTabFragment;
+import hu.bme.museum.fragments.search.SearchTabFragment;
 
 public class ApplicationFragmentPagerAdapter extends FragmentPagerAdapter {
 
@@ -24,17 +23,17 @@ public class ApplicationFragmentPagerAdapter extends FragmentPagerAdapter {
         super(fm);
         this.context = context;
 
-        BrowseFragment browseFragment = new BrowseFragment();
-        GameFragment gameFragment = new GameFragment();
-        MapFragment mapFragment = new MapFragment();
-        SearchContainerFragment searchContainerFragment = new SearchContainerFragment();
+        BrowseTabFragment browseTabFragment = new BrowseTabFragment();
+        GameTabFragment gameTabFragment = new GameTabFragment();
+        MapTabFragment mapFragment = new MapTabFragment();
+        SearchTabFragment searchTabFragment = new SearchTabFragment();
 
-        gameFragment.setMapFragment(mapFragment);
+        gameTabFragment.setMapFragment(mapFragment);
 
-        fragments.add(browseFragment);
-        fragments.add(gameFragment);
+        fragments.add(browseTabFragment);
+        fragments.add(gameTabFragment);
         fragments.add(mapFragment);
-        fragments.add(searchContainerFragment);
+        fragments.add(searchTabFragment);
     }
 
     @Override
