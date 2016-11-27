@@ -43,6 +43,11 @@ public abstract class TabFragment extends Fragment {
                 .commit();
     }
 
+    public void changeTabChildFragmentNoBackStack(TabChildFragment tabChildFragment) {
+        currentTabChildFragment = tabChildFragment;
+        setTabChildFragment(tabChildFragment);
+    }
+
     public boolean isBackStackEmpty() {
         if (backStack.isEmpty()) {
             return true;

@@ -83,7 +83,8 @@ public class ChallengesFragment extends TabChildFragment {
                 challengesFragment.setParentTabFragment(getParentTabFragment());
                 challengesFragment.setMapFragment(mapFragment);
 
-                getParentTabFragment().changeTabChildFragment(challengesFragment);
+                // No back stack to avoid keeping state of challenges
+                getParentTabFragment().changeTabChildFragmentNoBackStack(challengesFragment);
             }
         });
     }

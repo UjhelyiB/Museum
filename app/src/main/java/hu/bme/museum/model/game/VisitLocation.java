@@ -48,7 +48,9 @@ public class VisitLocation extends Challenge {
     @Override
     public void setMapFragment(MapFragment mapFragment) {
         this.mapFragment = mapFragment;
-        mapFragment.setvisitLocationChallenge(this);
+        if (mapFragment != null) {
+            mapFragment.setvisitLocationChallenge(this);
+        }
     }
 
     public Location getGoalLocation() {
