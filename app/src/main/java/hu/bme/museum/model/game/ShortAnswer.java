@@ -62,5 +62,5 @@ public class ShortAnswer extends Challenge {
     }
 
     @Override
-    public void setMapFragment(MapFragment mapFragment) {}
+    public void setMapTabFragment(MapTabFragment mapTabFragment) {}
 }

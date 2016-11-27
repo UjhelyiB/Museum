@@ -101,5 +101,5 @@ public class Quiz extends Challenge {
     }
 
     @Override
-    public void setMapFragment(MapFragment mapFragment) {}
+    public void setMapTabFragment(MapTabFragment mapTabFragment) {}
 }

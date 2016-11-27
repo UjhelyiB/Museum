@@ -50,7 +50,9 @@ public class MapTabFragment extends TabFragment {
 
         View rootView = inflater.inflate(R.layout.fragment_map_tab, null, false);
 
-        mapFragment = new MapFragment();
+        if (mapFragment == null) {
+            mapFragment = new MapFragment();
+        }
         mapFragment.setParentTabFragment(this);
 
         this.initializeTabChildFragment(mapFragment);
@@ -64,6 +66,9 @@ public class MapTabFragment extends TabFragment {
     }
 
     public MapFragment getMapFragment() {
+        if (mapFragment == null) {
+            mapFragment = new MapFragment();
+        }
         return mapFragment;
     }
 }

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import hu.bme.museum.R;
 import hu.bme.museum.fragments.TabFragment;
-import hu.bme.museum.fragments.map.MapFragment;
 import hu.bme.museum.fragments.map.MapTabFragment;
 
 public class GameTabFragment extends TabFragment {
@@ -26,7 +25,7 @@ public class GameTabFragment extends TabFragment {
 
         ChallengesFragment challengesFragment = new ChallengesFragment();
         challengesFragment.setParentTabFragment(this);
-        challengesFragment.setMapFragment(mapTabFragment.getMapFragment());
+        challengesFragment.setMapTabFragment(mapTabFragment);
 
         this.initializeTabChildFragment(challengesFragment);
 

@@ -14,5 +14,5 @@ public abstract class Challenge {
 
     public abstract void sendAnswer(boolean answerIsCorrect, Activity activity);
 
-    public abstract void setMapFragment(MapFragment mapFragment);
+    public abstract void setMapTabFragment(MapTabFragment mapTabFragment);
 }

@@ -18,7 +18,7 @@ public class VisitLocation extends Challenge {
     public double lng;
     public Location goalLocation;
 
-    private MapFragment mapFragment;
+    private MapTabFragment mapTabFragment;
     private View visitLocationView;
 
     @Override
@@ -46,11 +46,12 @@ public class VisitLocation extends Challenge {
     }
 
     @Override
-    public void setMapFragment(MapFragment mapFragment) {
-        this.mapFragment = mapFragment;
-        if (mapFragment != null) {
-            mapFragment.setvisitLocationChallenge(this);
+    public void setMapTabFragment(MapTabFragment mapTabFragment) {
+        this.mapTabFragment = mapTabFragment;
+        if (mapTabFragment != null) {
+            MapFragment mapFragment = mapTabFragment.getMapFragment();
 
+            mapFragment.setvisitLocationChallenge(this);
             if(mapFragment.getUserLocation().distanceTo(goalLocation) < 10){
                 sendAnswer(true, null);
             }

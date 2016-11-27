@@ -2,7 +2,6 @@ package hu.bme.museum.fragments.game;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +33,7 @@ public class ChallengesFragment extends TabChildFragment {
     private List<Challenge> challengeList = new ArrayList<>();
     private List<String> alreadyAnsweredQuizKeysList = new ArrayList<>();
 
-    private MapFragment mapFragment;
+    private MapTabFragment mapTabFragment;
     private Challenge challenge;
 
     @Nullable
@@ -81,7 +80,7 @@ public class ChallengesFragment extends TabChildFragment {
             public void onClick(View view) {
                 ChallengesFragment challengesFragment = new ChallengesFragment();
                 challengesFragment.setParentTabFragment(getParentTabFragment());
-                challengesFragment.setMapFragment(mapFragment);
+                challengesFragment.setMapTabFragment(mapTabFragment);
 
                 // No back stack to avoid keeping state of challenges
                 getParentTabFragment().changeTabChildFragmentNoBackStack(challengesFragment);
@@ -97,10 +96,10 @@ public class ChallengesFragment extends TabChildFragment {
         Random random = new Random();
         challenge = challengeList.get(random.nextInt(challengeList.size()));
         challenge.addQuestion(gameLayout, inflater, getActivity());
-        challenge.setMapFragment(mapFragment);
+        challenge.setMapTabFragment(mapTabFragment);
     }
 
-    public void setMapFragment(MapFragment mapFragment) {
-        this.mapFragment = mapFragment;
+    public void setMapTabFragment(MapTabFragment mapTabFragment) {
+        this.mapTabFragment = mapTabFragment;
     }
 }
