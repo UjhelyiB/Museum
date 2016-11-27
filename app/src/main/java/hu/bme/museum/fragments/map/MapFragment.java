@@ -146,7 +146,7 @@ public class MapFragment extends TabChildFragment implements OnMapReadyCallback,
         }
 
         updateMapWithUserLocation();
-        if(visitLocationChallenge != null && visitLocationChallenge.getGoalLocation().distanceTo(userLocation) < 8){
+        if(visitLocationChallenge != null && visitLocationChallenge.getGoalLocation().distanceTo(userLocation) < 10){
             visitLocationChallenge.sendAnswer(true, null);
         }
     }
