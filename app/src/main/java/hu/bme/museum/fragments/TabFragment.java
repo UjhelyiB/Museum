@@ -58,7 +58,7 @@ public abstract class TabFragment extends Fragment {
 
     public void onBackPressed() {
         if (!backStack.isEmpty()) {
-            setTabChildFragment(backStack.pop());
+            changeTabChildFragmentNoBackStack(backStack.pop());
         }
     }
 }
