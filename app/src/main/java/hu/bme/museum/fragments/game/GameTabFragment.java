@@ -13,7 +13,7 @@ import hu.bme.museum.fragments.map.MapTabFragment;
 
 public class GameTabFragment extends TabFragment {
 
-    private MapFragment mapFragment;
+    private MapTabFragment mapTabFragment;
 
     @Nullable
     @Override
@@ -26,7 +26,7 @@ public class GameTabFragment extends TabFragment {
 
         ChallengesFragment challengesFragment = new ChallengesFragment();
         challengesFragment.setParentTabFragment(this);
-        challengesFragment.setMapFragment(mapFragment);
+        challengesFragment.setMapFragment(mapTabFragment.getMapFragment());
 
         this.initializeTabChildFragment(challengesFragment);
 
@@ -40,8 +40,8 @@ public class GameTabFragment extends TabFragment {
         return "Game";
     }
 
-    public void setMapFragment(MapFragment mapFragment) {
-        this.mapFragment = mapFragment;
+    public void setMapTabFragment(MapTabFragment mapTabFragment) {
+        this.mapTabFragment = mapTabFragment;
     }
 }
 

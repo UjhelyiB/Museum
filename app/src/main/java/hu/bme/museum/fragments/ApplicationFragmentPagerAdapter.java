@@ -28,7 +28,7 @@ public class ApplicationFragmentPagerAdapter extends FragmentPagerAdapter {
         MapTabFragment mapTabFragment = new MapTabFragment();
         SearchTabFragment searchTabFragment = new SearchTabFragment();
 
-        gameTabFragment.setMapFragment(mapTabFragment.getMapFragment());
+        gameTabFragment.setMapTabFragment(mapTabFragment);
 
         fragments.add(browseTabFragment);
         fragments.add(gameTabFragment);
