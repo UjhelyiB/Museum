@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import hu.bme.museum.R;
-import hu.bme.museum.fragments.artwork.ArtworkListFragment;
 import hu.bme.museum.fragments.TabFragment;
 
 public class BrowseTabFragment extends TabFragment {
@@ -19,12 +18,14 @@ public class BrowseTabFragment extends TabFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+        this.setTabChildFragmentContainerId(R.id.browseLinearLayout);
+
         View rootView = inflater.inflate(R.layout.fragment_browse, null, false);
 
         exhibitionsFragment = new ExhibitionsFragment();
+        exhibitionsFragment.setParentTabFragment(this);
 
-        getFragmentManager().beginTransaction().add(R.id.browseLinearLayout,
-                exhibitionsFragment).commit();
+        this.initializeTabChildFragment(exhibitionsFragment);
 
         return rootView;
     }

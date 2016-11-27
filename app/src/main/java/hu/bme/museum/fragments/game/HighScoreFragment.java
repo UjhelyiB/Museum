@@ -19,9 +19,10 @@ import java.util.List;
 import hu.bme.museum.R;
 import hu.bme.museum.activities.ApplicationActivity;
 import hu.bme.museum.db.FirebaseAdapter;
+import hu.bme.museum.fragments.TabChildFragment;
 import hu.bme.museum.model.User;
 
-public class HighScoreFragment extends Fragment {
+public class HighScoreFragment extends TabChildFragment {
     private List<User> userList = new ArrayList<>();
 
     private LayoutInflater inflater;

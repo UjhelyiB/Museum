@@ -14,13 +14,13 @@ import java.util.List;
 import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
 
+import hu.bme.museum.fragments.TabChildFragment;
 import hu.bme.museum.model.browse.Exhibition;
 
-public class ExhibitionsFragment extends Fragment {
+public class ExhibitionsFragment extends TabChildFragment {
 
     private LayoutInflater inflater;
     private LinearLayout exhibitionsLinearLayout;
-//    private TextView exhibitionsTitleTextView;
 
     private List<Exhibition> exhibitions;
 
@@ -34,7 +34,6 @@ public class ExhibitionsFragment extends Fragment {
 
         exhibitionsLinearLayout = (LinearLayout) rootView.findViewById(R.id.exhibitionsLinearLayout);
         exhibitionsLinearLayout.removeAllViews();
-//        exhibitionsTitleTextView = (TextView) rootView.findViewById(R.id.exhibitionsTitleTextView);
 
         exhibitions = FirebaseAdapter.getInstance().getExhibitions(this);
 
@@ -56,12 +55,10 @@ public class ExhibitionsFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     ExhibitionArtworkListFragment artworkListFragment = new ExhibitionArtworkListFragment();
-                    artworkListFragment.setLinearLayoutContainerId(R.id.browseLinearLayout);
+                    artworkListFragment.setParentTabFragment(getParentTabFragment());
                     artworkListFragment.setExhibition(exhibition);
 
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.browseLinearLayout, artworkListFragment)
-                            .addToBackStack(null).commit();
+                    getParentTabFragment().changeTabChildFragment(artworkListFragment);
                 }
             });
 

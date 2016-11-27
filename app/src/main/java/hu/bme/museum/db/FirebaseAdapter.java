@@ -62,7 +62,6 @@ public class FirebaseAdapter {
         if (instance == null) {
             FirebaseDatabase.getInstance().setPersistenceEnabled(true);
             instance = new FirebaseAdapter();
-
         }
         return instance;
     }
@@ -136,6 +135,7 @@ public class FirebaseAdapter {
 
     public List<Artwork> getArtworksForSearchQuery(final String query,
                                                    final ArtworkListFragment artworkListFragment) {
+
         final List<Artwork> matchedArtworks = new ArrayList<>();
 
         databaseReference.child(EXHIBTION_CHILD).addValueEventListener(new ValueEventListener() {

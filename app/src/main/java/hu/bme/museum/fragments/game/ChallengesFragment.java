@@ -15,10 +15,11 @@ import java.util.Random;
 
 import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
+import hu.bme.museum.fragments.TabChildFragment;
 import hu.bme.museum.fragments.map.MapTabFragment;
 import hu.bme.museum.model.game.Challenge;
 
-public class ChallengesFragment extends Fragment {
+public class ChallengesFragment extends TabChildFragment {
     private static final String QUIZ = "quiz";
     private static final String CHALLENGES = "challenges";
 
@@ -63,23 +64,25 @@ public class ChallengesFragment extends Fragment {
         return alreadyAnsweredQuizKeysList;
     }
 
-    public void setListeners(){
+    public void setListeners() {
         highScoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment highScoreFragment = new HighScoreFragment();
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.gameFragmentLinearLayout, highScoreFragment).addToBackStack(null).commit();
+                HighScoreFragment highScoreFragment = new HighScoreFragment();
+                highScoreFragment.setParentTabFragment(getParentTabFragment());
 
+                getParentTabFragment().changeTabChildFragment(highScoreFragment);
             }
         });
+
         newGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ChallengesFragment challengesFragment = new ChallengesFragment();
+                challengesFragment.setParentTabFragment(getParentTabFragment());
                 challengesFragment.setMapFragment(mapFragment);
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.gameFragmentLinearLayout, challengesFragment).addToBackStack(null).commit();
+
+                getParentTabFragment().changeTabChildFragment(challengesFragment);
             }
         });
     }

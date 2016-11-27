@@ -15,14 +15,14 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import hu.bme.museum.R;
+import hu.bme.museum.fragments.TabFragment;
 import hu.bme.museum.model.browse.Artwork;
 
 public class ArtworkAdapter extends RecyclerView.Adapter<ArtworkAdapter.ViewHolder> {
 
     private List<Artwork> artworks;
 
-    private Fragment fragment;
-    private int linearLayoutContainerId;
+    private TabFragment parentTabFragment;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public CardView artworkCardView;
@@ -44,10 +44,9 @@ public class ArtworkAdapter extends RecyclerView.Adapter<ArtworkAdapter.ViewHold
         }
     }
 
-    public ArtworkAdapter(List<Artwork> artworks, Fragment fragment, int linearLayoutContainerId) {
+    public ArtworkAdapter(List<Artwork> artworks, TabFragment parentTabFragment) {
         this.artworks = artworks;
-        this.fragment = fragment;
-        this.linearLayoutContainerId = linearLayoutContainerId;
+        this.parentTabFragment = parentTabFragment;
     }
 
     // Create new views (invoked by the layout manager)
@@ -75,9 +74,7 @@ public class ArtworkAdapter extends RecyclerView.Adapter<ArtworkAdapter.ViewHold
                         new ArtworkDetailsFragment();
                 artworkDetailsFragment.setArtwork(artworks.get(position));
 
-                fragment.getFragmentManager().beginTransaction()
-                        .replace(linearLayoutContainerId, artworkDetailsFragment)
-                        .addToBackStack(null).commit();
+                parentTabFragment.changeTabChildFragment(artworkDetailsFragment);
             }
         });
 
@@ -88,10 +85,10 @@ public class ArtworkAdapter extends RecyclerView.Adapter<ArtworkAdapter.ViewHold
         if (artworks.get(position).imageLink == null) {
             holder.artworkPicture
                     .setImageDrawable(
-                            ContextCompat.getDrawable(fragment.getContext(),
+                            ContextCompat.getDrawable(parentTabFragment.getContext(),
                                     R.mipmap.artwork_placeholder));
         } else {
-            Glide.with(fragment.getContext())
+            Glide.with(parentTabFragment.getContext())
                     .load(artworks.get(position).imageLink)
                     .into(holder.artworkPicture);
         }

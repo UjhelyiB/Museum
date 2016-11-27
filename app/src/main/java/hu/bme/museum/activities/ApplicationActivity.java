@@ -59,8 +59,8 @@ public class ApplicationActivity extends AppCompatActivity implements GoogleApiC
             public void onTabSelected(TabLayout.Tab tab) {
                 if (enableSaveToHistory) {
                     tabBackStack.push(previousTab);
-                    previousTab = tab.getPosition();
                 }
+                previousTab = tab.getPosition();
             }
 
             @Override

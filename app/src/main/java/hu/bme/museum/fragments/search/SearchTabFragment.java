@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import hu.bme.museum.R;
-import hu.bme.museum.fragments.artwork.ArtworkListFragment;
 import hu.bme.museum.fragments.TabFragment;
 
 public class SearchTabFragment extends TabFragment {
@@ -19,11 +18,14 @@ public class SearchTabFragment extends TabFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+        this.setTabChildFragmentContainerId(R.id.searchContainerLinearLayout);
+
         View rootView = inflater.inflate(R.layout.fragment_search_container, null, false);
 
         searchFragment = new SearchFragment();
-        getFragmentManager().beginTransaction().add(R.id.searchContainerLinearLayout,
-                searchFragment).commit();
+        searchFragment.setParentTabFragment(this);
+
+        this.initializeTabChildFragment(searchFragment);
 
         return rootView;
     }

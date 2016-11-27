@@ -19,12 +19,15 @@ public class GameTabFragment extends TabFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
+        this.setTabChildFragmentContainerId(R.id.gameFragmentLinearLayout);
+
         View rootView = inflater.inflate(R.layout.fragment_game, null, false);
 
         ChallengesFragment challengesFragment = new ChallengesFragment();
+        challengesFragment.setParentTabFragment(this);
         challengesFragment.setMapFragment(mapFragment);
 
-        getFragmentManager().beginTransaction().add(R.id.gameFragmentLinearLayout, challengesFragment).commit();
+        this.initializeTabChildFragment(challengesFragment);
 
         return rootView;
     }

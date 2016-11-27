@@ -13,9 +13,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import hu.bme.museum.R;
+import hu.bme.museum.fragments.TabChildFragment;
 import hu.bme.museum.model.browse.Artwork;
 
-public class ArtworkDetailsFragment extends Fragment {
+public class ArtworkDetailsFragment extends TabChildFragment {
 
     private LayoutInflater inflater;
     private Artwork artwork;

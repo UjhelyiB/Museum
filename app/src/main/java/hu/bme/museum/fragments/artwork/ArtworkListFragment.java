@@ -15,9 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hu.bme.museum.R;
+import hu.bme.museum.fragments.TabChildFragment;
 import hu.bme.museum.model.browse.Artwork;
 
-public abstract class ArtworkListFragment extends Fragment {
+public abstract class ArtworkListFragment extends TabChildFragment {
 
     private ProgressBar mProgressBar;
 
@@ -29,8 +30,6 @@ public abstract class ArtworkListFragment extends Fragment {
     private List<Artwork> artworks = new ArrayList<>();
 
     private String title;
-
-    private int linearLayoutContainerId;
 
     @Nullable
     @Override
@@ -56,13 +55,9 @@ public abstract class ArtworkListFragment extends Fragment {
 
     public void populateArtworks() {
         mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-        artworkAdapter = new ArtworkAdapter(artworks, this, linearLayoutContainerId);
+        artworkAdapter = new ArtworkAdapter(artworks, this.getParentTabFragment());
         artworkRecyclerView.setAdapter(artworkAdapter);
         artworkRecyclerView.scrollToPosition(0);
-    }
-
-    public void setLinearLayoutContainerId(int id) {
-        this.linearLayoutContainerId = id;
     }
 
     protected void setArtworks(List<Artwork> artworks) {

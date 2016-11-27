@@ -15,8 +15,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import hu.bme.museum.R;
+import hu.bme.museum.fragments.TabChildFragment;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends TabChildFragment {
 
     private SearchArtworkListFragment searchResultsArtworkList;
 
@@ -43,13 +44,10 @@ public class SearchFragment extends Fragment {
                             getActivity().getWindow().getDecorView().getWindowToken(), 0);
 
                     searchResultsArtworkList = new SearchArtworkListFragment();
-                    searchResultsArtworkList.setLinearLayoutContainerId(
-                            R.id.searchContainerLinearLayout);
+                    searchResultsArtworkList.setParentTabFragment(getParentTabFragment());
                     searchResultsArtworkList.setSearchQuery(query);
 
-                    getFragmentManager().beginTransaction()
-                            .replace(R.id.searchContainerLinearLayout, searchResultsArtworkList)
-                            .addToBackStack(null).commit();
+                    getParentTabFragment().changeTabChildFragment(searchResultsArtworkList);
 
                     handled = true;
                 }
