@@ -252,4 +252,8 @@ public class MapFragment extends TabChildFragment implements OnMapReadyCallback,
     public void setvisitLocationChallenge(VisitLocation visitLocationChallenge){
         this.visitLocationChallenge = visitLocationChallenge;
     }
+
+    public static Location getUserLocation() {
+        return userLocation;
+    }
 }

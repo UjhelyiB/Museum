@@ -50,6 +50,10 @@ public class VisitLocation extends Challenge {
         this.mapFragment = mapFragment;
         if (mapFragment != null) {
             mapFragment.setvisitLocationChallenge(this);
+
+            if(mapFragment.getUserLocation().distanceTo(goalLocation) < 10){
+                sendAnswer(true, null);
+            }
         }
     }
 
