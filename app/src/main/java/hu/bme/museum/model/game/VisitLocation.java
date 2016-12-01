@@ -51,14 +51,17 @@ public class VisitLocation extends Challenge {
         if (mapTabFragment != null) {
             MapFragment mapFragment = mapTabFragment.getMapFragment();
 
-            mapFragment.setvisitLocationChallenge(this);
-            if(mapFragment.getUserLocation() != null){
-                float distance = mapFragment.getUserLocation().distanceTo(goalLocation);
+            if (mapFragment != null) {
+                mapFragment.setvisitLocationChallenge(this);
 
-                if(distance < 11){
-                    sendAnswer(true, null);
+                if (mapFragment.getUserLocation() != null) {
+                    float distance = mapFragment.getUserLocation().distanceTo(goalLocation);
+
+                    if (distance < 11) {
+                        sendAnswer(true, null);
+                    }
+
                 }
-
             }
         }
     }

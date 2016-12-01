@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.flaviofaria.kenburnsview.KenBurnsView;
 
 import hu.bme.museum.R;
 import hu.bme.museum.fragments.TabChildFragment;
@@ -18,10 +19,12 @@ import hu.bme.museum.model.browse.Artwork;
 
 public class ArtworkDetailsFragment extends TabChildFragment {
 
+    private boolean imagePaused = false;
+
     private LayoutInflater inflater;
     private Artwork artwork;
 
-    public ImageView artworkPictureImageView;
+    public KenBurnsView artworkPictureImageView;
     public TextView artworkTitleTextView;
     public TextView artworkAuthorTextView;
     public TextView artworkDateTextView;
@@ -39,7 +42,7 @@ public class ArtworkDetailsFragment extends TabChildFragment {
         this.inflater = inflater;
         View rootView = inflater.inflate(R.layout.fragment_artwork_details, null, false);
 
-        artworkPictureImageView = (ImageView) rootView.findViewById(R.id.artworkImageView);
+        artworkPictureImageView = (KenBurnsView) rootView.findViewById(R.id.artworkImageView);
         artworkTitleTextView = (TextView) rootView.findViewById(R.id.artworkTitleTextView);
         artworkAuthorTextView = (TextView) rootView.findViewById(R.id.artworkArtistNameTextView);
         artworkDateTextView = (TextView) rootView.findViewById(R.id.artworkDateTextView);
@@ -60,6 +63,18 @@ public class ArtworkDetailsFragment extends TabChildFragment {
                 .load(artwork.imageLink)
                 .into(artworkPictureImageView);
         }
+
+        artworkPictureImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (imagePaused) {
+                    artworkPictureImageView.resume();
+                } else {
+                    artworkPictureImageView.pause();
+                }
+                imagePaused = !imagePaused;
+            }
+        });
 
         return rootView;
     }
