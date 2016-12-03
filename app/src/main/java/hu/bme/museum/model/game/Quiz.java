@@ -16,6 +16,7 @@ import hu.bme.museum.fragments.game.AnswerButtonCheckChangedListener;
 import hu.bme.museum.fragments.game.GameButton;
 import hu.bme.museum.fragments.map.MapFragment;
 import hu.bme.museum.fragments.map.MapTabFragment;
+import tyrantgit.explosionfield.ExplosionField;
 
 public class Quiz extends Challenge {
     public String question;
@@ -25,6 +26,14 @@ public class Quiz extends Challenge {
     public String D;
     public String correctAnswer;
 
+    private GameButton answerA;
+    private GameButton answerB;
+    private GameButton answerC;
+    private GameButton answerD;
+    private Button sendButton;
+    private TextView questionTextView;
+
+    private ExplosionField explosionField;
 
     @Override
     public void addQuestion(LinearLayout layout, LayoutInflater inflater, final Activity activity){
@@ -32,14 +41,16 @@ public class Quiz extends Challenge {
 
         View quizView = inflater.inflate(R.layout.challenge_quiz, null);
 
-        TextView question= (TextView) quizView.findViewById(R.id.quizQuestion);
-        GameButton answerA = (GameButton) quizView.findViewById(R.id.quizAnswerButtonA);
-        GameButton answerB = (GameButton) quizView.findViewById(R.id.quizAnswerButtonB);
-        GameButton answerC = (GameButton) quizView.findViewById(R.id.quizAnswerButtonC);
-        GameButton answerD = (GameButton) quizView.findViewById(R.id.quizAnswerButtonD);
-        Button sendButton = (Button) quizView.findViewById(R.id.sendQuizAnswerButton);
+        questionTextView = (TextView) quizView.findViewById(R.id.quizQuestion);
+        answerA = (GameButton) quizView.findViewById(R.id.quizAnswerButtonA);
+        answerB = (GameButton) quizView.findViewById(R.id.quizAnswerButtonB);
+        answerC = (GameButton) quizView.findViewById(R.id.quizAnswerButtonC);
+        answerD = (GameButton) quizView.findViewById(R.id.quizAnswerButtonD);
+        sendButton = (Button) quizView.findViewById(R.id.sendQuizAnswerButton);
 
-        question.setText(this.question);
+        explosionField = ExplosionField.attach2Window(activity);
+
+        questionTextView.setText(question);
         answerA.setText(this.A);
         answerB.setText(this.B);
         answerC.setText(this.C);
@@ -70,6 +81,9 @@ public class Quiz extends Challenge {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                explosionField.explode(view);
+                sendButton.setEnabled(false);
+
                 boolean answerIsCorrect = true;
 
                 for(int i=0; i< gameButtons.size(); i++){

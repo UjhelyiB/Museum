@@ -17,12 +17,7 @@ import hu.bme.museum.R;
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = "MainActivity";
 
-    private static FirebaseAuth firebaseAuth;
     private static FirebaseUser firebaseUser;
-
-    //private static GoogleApiClient googleApiClient;
-
-    private static String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +28,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     protected void checkLogin(){
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (firebaseUser == null) {
             // Not signed in, launch the LogIn activity
@@ -43,12 +37,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
             finish();
         } else {
-            userName = firebaseUser.getDisplayName();
-
             startActivity(new Intent(MainActivity.this, ApplicationActivity.class));
 
             finish();
         }
+    }
+
+    public static FirebaseUser getFirebaseUser() {
+        return firebaseUser;
     }
 
     @Override

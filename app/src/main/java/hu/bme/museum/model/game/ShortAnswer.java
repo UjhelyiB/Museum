@@ -13,10 +13,13 @@ import hu.bme.museum.R;
 import hu.bme.museum.db.FirebaseAdapter;
 import hu.bme.museum.fragments.map.MapFragment;
 import hu.bme.museum.fragments.map.MapTabFragment;
+import tyrantgit.explosionfield.ExplosionField;
 
 public class ShortAnswer extends Challenge {
     public String correctAnswer;
     public String question;
+
+    private ExplosionField explosionField;
 
     @Override
     public void addQuestion(LinearLayout layout, LayoutInflater inflater, final Activity activity) {
@@ -26,13 +29,18 @@ public class ShortAnswer extends Challenge {
 
         TextView question = (TextView) shortAnswerView.findViewById(R.id.shortAnswerQuestion);
         final EditText editText = (EditText) shortAnswerView.findViewById(R.id.shortAnswerEditText);
-        Button sendButton = (Button) shortAnswerView.findViewById(R.id.sendShortAnswerButton);
+        final Button sendButton = (Button) shortAnswerView.findViewById(R.id.sendShortAnswerButton);
+
+        explosionField = ExplosionField.attach2Window(activity);
 
         question.setText(this.question);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                explosionField.explode(view);
+                sendButton.setEnabled(false);
+
                 boolean answerIsCorrect = true;
 
                 if(editText.getText().toString().toLowerCase().equals(correctAnswer.toLowerCase())){

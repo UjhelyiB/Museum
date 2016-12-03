@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import hu.bme.museum.R;
+import hu.bme.museum.db.FirebaseAdapter;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private static final int RC_SIGN_IN = 9001;
@@ -32,14 +33,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private static GoogleApiClient googleApiClient;
 
-    private FirebaseAuth firebaseAuth;
-
     @Override
     protected void  onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        firebaseAuth = FirebaseAuth.getInstance();
 
         initUI();
     }
@@ -97,7 +94,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        firebaseAuth.signInWithCredential(credential)
+        FirebaseAuth.getInstance().signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

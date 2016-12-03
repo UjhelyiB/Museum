@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import hu.bme.museum.activities.ApplicationActivity;
+import hu.bme.museum.activities.MainActivity;
 import hu.bme.museum.fragments.artwork.ArtworkListFragment;
 import hu.bme.museum.fragments.browse.ExhibitionsFragment;
 import hu.bme.museum.fragments.game.ChallengesFragment;
@@ -51,8 +52,6 @@ public class FirebaseAdapter {
     private static final String USERS_CHILD = "users";
     private static final String SCORE_CHILD = "score";
     private static final String LAST_ACTIVE = "lastActive";
-
-    private boolean alreadyGreetedTheUser = false;
 
     private FirebaseAdapter() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
