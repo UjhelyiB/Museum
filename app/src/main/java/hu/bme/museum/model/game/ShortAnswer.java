@@ -20,6 +20,9 @@ public class ShortAnswer extends Challenge {
     public String question;
 
     private ExplosionField explosionField;
+    private EditText editText;
+    private  Button sendButton;
+    private TextView questionTextView;
 
     @Override
     public void addQuestion(LinearLayout layout, LayoutInflater inflater, final Activity activity) {
@@ -27,13 +30,13 @@ public class ShortAnswer extends Challenge {
 
         View shortAnswerView = inflater.inflate(R.layout.challenge_short_answer, null);
 
-        TextView question = (TextView) shortAnswerView.findViewById(R.id.shortAnswerQuestion);
-        final EditText editText = (EditText) shortAnswerView.findViewById(R.id.shortAnswerEditText);
-        final Button sendButton = (Button) shortAnswerView.findViewById(R.id.sendShortAnswerButton);
+        questionTextView = (TextView) shortAnswerView.findViewById(R.id.shortAnswerQuestion);
+        editText = (EditText) shortAnswerView.findViewById(R.id.shortAnswerEditText);
+        sendButton = (Button) shortAnswerView.findViewById(R.id.sendShortAnswerButton);
 
         explosionField = ExplosionField.attach2Window(activity);
 
-        question.setText(this.question);
+        questionTextView.setText(this.question);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,12 +44,14 @@ public class ShortAnswer extends Challenge {
                 explosionField.explode(view);
                 sendButton.setEnabled(false);
 
-                boolean answerIsCorrect = true;
+                boolean answerIsCorrect;
 
                 if(editText.getText().toString().toLowerCase().equals(correctAnswer.toLowerCase())){
                     answerIsCorrect = true;
+                    editText.setBackgroundResource(R.drawable.button_correct_answer);
                 }else{
                     answerIsCorrect = false;
+                    editText.setBackgroundResource(R.drawable.button_wrong_answer);
                 }
 
                 sendAnswer(answerIsCorrect, activity);

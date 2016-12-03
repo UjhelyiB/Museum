@@ -7,5 +7,13 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="EditTextColors" parent="TextAppearance.AppCompat">
+        <!-- Hint color and label color in FALSE state -->
+        <item name="android:textColorHint">#FFFFFF</item>
+        <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="colorControlNormal">#FFFFFF</item>
+        <item name="colorControlActivated">#777777</item>
+    </style>
 
 </resources>

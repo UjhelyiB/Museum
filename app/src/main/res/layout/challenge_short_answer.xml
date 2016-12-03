@@ -1,35 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/shortAnswerQuestion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#FFFFFF"
-        android:textSize="25sp"
+        android:background="@drawable/button_original"
         android:gravity="center"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/button_original"/>
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"/>
 
-    <EditText
-        android:id="@+id/shortAnswerEditText"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#FFFFFF"
-        android:textSize="25sp"
-        android:gravity="center"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/button_original"/>
+        android:theme="@style/EditTextColors"
+        android:layout_margin="30dp">
+        <EditText
+            android:id="@+id/shortAnswerEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textAlignment="center"
+            android:hint="@string/your_answer"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/button_original"/>
+    </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/sendShortAnswerButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/send"
-        android:textSize="20sp"
         android:background="@drawable/button_send_answer"
-        android:textColor="#21218b"/>
+        android:text="@string/send"
+        android:textColor="#21218b"
+        android:textSize="20sp" />
 </LinearLayout>
