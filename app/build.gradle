@@ -46,5 +46,6 @@ dependencies {
     compile 'com.flaviofaria:kenburnsview:1.0.7'
     compile 'tyrantgit:explosionfield:1.0.1'
     compile 'com.android.support:design:25.0.1'
+    compile 'com.ToxicBakery.viewpager.transforms:view-pager-transforms:1.2.32@aar'
 }
 apply plugin: 'com.google.gms.google-services'

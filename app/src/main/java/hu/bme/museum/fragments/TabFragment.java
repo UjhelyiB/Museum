@@ -1,8 +1,11 @@
 package hu.bme.museum.fragments;
 
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 
 import java.util.Stack;
+
+import hu.bme.museum.R;
 
 public abstract class TabFragment extends Fragment {
 
@@ -38,9 +41,13 @@ public abstract class TabFragment extends Fragment {
     // Does not modify the backStack. Used internally to avoid a loop when calling
     // changeTabChildFragment while popping the backStack
     private void setTabChildFragment(TabChildFragment tabChildFragment) {
-        getFragmentManager().beginTransaction()
-                .replace(tabChildFragmentContainerId, tabChildFragment)
-                .commit();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+
+        ft.setCustomAnimations(R.anim.slide_in_upwards, R.anim.slide_out_downwards);
+
+        ft.replace(tabChildFragmentContainerId, tabChildFragment);
+
+        ft.commit();
     }
 
     public void changeTabChildFragmentNoBackStack(TabChildFragment tabChildFragment) {

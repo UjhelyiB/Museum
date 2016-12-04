@@ -77,6 +77,7 @@ public class MapFragment extends TabChildFragment implements OnMapReadyCallback,
             ViewGroup parent = (ViewGroup) rootView.getParent();
             if (parent != null)
                 parent.removeView(rootView);
+                userMarker = null;
         }
         try {
             rootView = inflater.inflate(R.layout.fragment_map, container, false);
